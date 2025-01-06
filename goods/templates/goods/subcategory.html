@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %} 
+
+    <!-- Ec breadcrumb start -->
+    {% block breadcrumb %}
+        {% include "includes/breadcrumb.html" %}
+    {% endblock  %}
+    <!-- Ec breadcrumb end -->
+
+        <!--  Category Section Start -->
+        <section class="section ec-category-section ec-category-wrapper-5 section-space-p">
+            <div class="container ec-category-wrapper-5">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <div class="section-title">
+                            <h2 class="ec-bg-title">Classic</h2>
+                            <h2 class="ec-title">Classic</h2>
+                            <p class="sub-title">Browse The Collection of Top Categories</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row cat-space-2 margin-minus-tb-15">
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <div class="cat-card">
+                            <img class="cat-icon" src="{% static "assets/images/cat-banner/11.jpg" %}" alt="cat-icon">
+                            <a class="btn-primary btn-primary-1" href="javacript:void(0)">shop now</a>
+                            <div class="cat-detail">
+                                <div class="cat-detail-block">
+                                    <h4>Watches</h4>
+                                    <h5>Starting at <br>$79.00</h5>
+                                    <a class="btn-primary" href="">shop now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <div class="cat-card">
+                            <img class="cat-icon" src="{% static "assets/images/cat-banner/12.jpg" %}" alt="cat-icon">
+                            <a class="btn-primary btn-primary-1" href="javacript:void(0)">shop now</a>
+                            <div class="cat-detail">
+                                <div class="cat-detail-block">
+                                    <h4>Head Phones</h4>
+                                    <h5>Starting at <br>$93.00</h5>
+                                    <a class="btn-primary" href="">shop now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <div class="cat-card">
+                            <img class="cat-icon" src="{% static "assets/images/cat-banner/13.jpg" %}" alt="cat-icon">
+                            <a class="btn-primary btn-primary-1" href="javacript:void(0)">shop now</a>
+                            <div class="cat-detail">
+                                <div class="cat-detail-block">
+                                    <h4>Shoes</h4>
+                                    <h5>Starting at <br>$60.00</h5>
+                                    <a class="btn-primary" href="">shop now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                        <div class="cat-card">
+                            <img class="cat-icon" src="{% static "assets/images/cat-banner/14.jpg" %}" alt="cat-icon">
+                            <a class="btn-primary btn-primary-1" href="javacript:void(0)">shop now</a>
+                            <div class="cat-detail">
+                                <div class="cat-detail-block">
+                                    <h4>Belts</h4>
+                                    <h5>Starting at <br>$80.00</h5>
+                                    <a class="btn-primary" href="">shop now</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+{% endblock %}
