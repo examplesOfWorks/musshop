@@ -1,4 +1,5 @@
 {% load static %}
+{% load goods_tags %}
 
  <!DOCTYPE html>
  <html lang="en">
@@ -20,6 +21,9 @@
  
      <!-- css Icon Font -->
      <link rel="stylesheet" href="{% static "assets/css/vendor/ecicons.min.css" %}" />
+
+     <!-- css Images -->
+     <link rel="stylesheet" href="{% static "assets/css/images/images.css" %}" />
  
      <!-- css All Plugins Files -->
      <link rel="stylesheet" href="{% static "assets/css/plugins/animate.css" %}" />
@@ -246,18 +250,24 @@
                                  <li><a href="{% url "main:about" %}">О магазине</a></li>
                                  <li><a href="{% url "main:project" %}">О проекте</a></li>
 
-                                 <li class="dropdown"><a href="{% url "catalog:search" %}">Каталог</a>
+                                 <li class="dropdown"><a href="{% url "catalog:search" "all" %}">Каталог</a>
                                      <ul class="sub-menu">
                                         
-                                            <li class="dropdown position-static"><a href="{% url "catalog:category" %}">Категория
-                                                <i class="ecicon eci-angle-right"></i></a>
-                                                <ul class="sub-menu sub-menu-child">
-                                                    <li><a href="{% url "catalog:subcategory" %}">Подкатегория</a>
-                                                </ul>
-                                            </li>
-                                        
+                                     {% tag_all_categories as all_categories %}
+                                     {% for cat in all_categories %}
+                                        <li class="dropdown position-static"><a href="{% url "catalog:category" cat.category.slug %}">{{cat.category.name}}
+                                            <i class="ecicon eci-angle-right"></i></a>
+                                            <ul class="sub-menu sub-menu-child">
+                                                {% for subcat in cat.subcategory %}
+                                                <li><a href="{% url "catalog:search" subcat.slug %}">{{ subcat.name }}</a>
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                     {% endfor %}
+
                                      </ul>
-                                 </li>
+                                  </li>
 
                                  <li class="dropdown scroll-to"><a href="javascript:void(0)"><img
                                      src="{% static "assets/images/icons/scroll.svg" %}" class="svg_img header_svg scroll" alt="" /></a>

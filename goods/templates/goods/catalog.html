@@ -41,10 +41,19 @@
                     <!-- Shop Top End -->
 
                     <!-- Shop content Start -->
+                    {% comment %} <h1>Подкатегория: {% for subcat in subcategory %}{{ subcat }}{% endfor %}</h1> {% endcomment %}
+                    {% if subcategory %}<h1>Подкатегория: {{ subcategory.name }}</h1>{% endif %}
+                    {% if subcategory_types %}
+                        {% for type in subcategory_types %}
+                        <ul>
+                            <li><a href="#">{{ type }}</a></li>
+                        </ul>
+                        {% endfor %}
+                    {% endif %}
                     <div class="shop-pro-content">
                         <div class="shop-pro-inner">
                             <div class="row">
-                                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6 pro-gl-content">
+                                {% comment %} <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6 pro-gl-content">
                                     <div class="ec-product-inner">
                                         <div class="ec-pro-image-outer">
                                             <div class="ec-pro-image">
@@ -120,8 +129,91 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6 pro-gl-content">
+                                </div> {% endcomment %}
+                                <!-- Product Card starts -->
+                                {% if products %}
+                                    {% for product in products %}
+                                    
+                                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6 pro-gl-content">
+                                        <div class="ec-product-inner">
+                                            <div class="ec-pro-image-outer">
+                                                <div class="ec-pro-image">
+                                                    <a href="product-left-sidebar.html" class="image">
+                                                        <img class="main-image"
+                                                            src="{% static "assets/images/product-image/1_1.jpg" %}" alt="Product" />
+                                                        <img class="hover-image"
+                                                            src="{% static "assets/images/product-image/1_2.jpg" %}" alt="Product" />
+                                                    </a>
+                                                    <a href="#" class="quickview" data-link-action="quickview"
+                                                        title="Quick view" data-bs-toggle="modal"
+                                                        data-bs-target="#ec_quickview_modal"><img
+                                                            src="{% static "assets/images/icons/quickview.svg" %}" class="svg_img pro_svg"
+                                                            alt="" /></a>
+                                                    <div class="ec-pro-actions">
+                                                        <a href="compare.html" class="ec-btn-group compare"
+                                                            title="Compare"><img src="{% static "assets/images/icons/compare.svg" %}"
+                                                                class="svg_img pro_svg" alt="" /></a>
+                                                        <button title="Add To Cart" class=" add-to-cart"><img
+                                                                src="{% static "assets/images/icons/cart.svg" %}" class="svg_img pro_svg"
+                                                                alt="" /> Add To Cart</button>
+                                                        <a class="ec-btn-group wishlist" title="Wishlist"><img
+                                                                src="{% static "assets/images/icons/wishlist.svg" %}"
+                                                                class="svg_img pro_svg" alt="" /></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="ec-pro-content">
+                                                <h5 class="ec-pro-title"><a href="{% url "catalog:product" product.article %}">{{ product.name }}</a></h5>
+                                                <div class="ec-pro-rating">
+                                                    <i class="ecicon eci-star fill"></i>
+                                                    <i class="ecicon eci-star fill"></i>
+                                                    <i class="ecicon eci-star fill"></i>
+                                                    <i class="ecicon eci-star fill"></i>
+                                                    <i class="ecicon eci-star"></i>
+                                                </div>
+                                                <div class="ec-pro-list-desc">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dutmmy text ever since the 1500s, when an unknown printer took a galley.</div>
+                                                <span class="ec-price">
+                                                    <span class="old-price">$40.00</span>
+                                                    <span class="new-price">$30.00</span>
+                                                </span>
+                                                <div class="ec-pro-option">
+                                                    <div class="ec-pro-color">
+                                                        <span class="ec-pro-opt-label">Color</span>
+                                                        <ul class="ec-opt-swatch ec-change-img">
+                                                            <li class="active"><a href="#" class="ec-opt-clr-img"
+                                                                    data-src="{% static "assets/images/product-image/1_1.jpg" %}"
+                                                                    data-src-hover="{% static "assets/images/product-image/1_1.jpg" %}"
+                                                                    data-tooltip="Gray"><span
+                                                                        style="background-color:#90cdf7;"></span></a></li>
+                                                            <li><a href="#" class="ec-opt-clr-img"
+                                                                    data-src="{% static "assets/images/product-image/1_2.jpg" %}"
+                                                                    data-src-hover="{% static "assets/images/product-image/1_2.jpg" %}"
+                                                                    data-tooltip="Orange"><span
+                                                                        style="background-color:#ff3b66;"></span></a></li>
+                                                            
+                                                        </ul>
+                                                    </div>
+                                                    <div class="ec-pro-size">
+                                                        <span class="ec-pro-opt-label">Size</span>
+                                                        <ul class="ec-opt-size">
+                                                            <li class="active"><a href="#" class="ec-opt-sz"
+                                                                    data-old="$40.00" data-new="$30.00"
+                                                                    data-tooltip="Small">S</a></li>
+                                                            <li><a href="#" class="ec-opt-sz" data-old="$50.00"
+                                                                    data-new="$40.00" data-tooltip="Medium">M</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>  
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                    {% else %}
+                                    <h3>Товары не найдены</h3>
+                                {% endif %}
+
+                                {% comment %} <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6 pro-gl-content">
                                     <div class="ec-product-inner">
                                         <div class="ec-pro-image-outer">
                                             <div class="ec-pro-image">
@@ -222,6 +314,7 @@
                                                 </div>
                                             </div>
                                         </div>
+
                                         <div class="ec-pro-content">
                                             <h5 class="ec-pro-title"><a href="product-left-sidebar.html">Cute Baby Toy's</a></h5>
                                             <div class="ec-pro-rating">
@@ -265,6 +358,8 @@
                                                 </div>
                                             </div>
                                         </div>
+
+
                                     </div>
                                 </div>
                                 <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6 pro-gl-content">
@@ -604,8 +699,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                               
+                                </div> {% endcomment %}
+                               <!-- Product Card ends -->
                             </div>
                         </div>
                         <!-- Ec Pagination Start -->

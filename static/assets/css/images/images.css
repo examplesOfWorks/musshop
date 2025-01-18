@@ -1,0 +1,28 @@
+.category_block {
+    width: 400px;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    padding: 15px;
+}
+
+.category_image img {
+    object-fit: contain;
+    width: 70%;
+    height: 70%;
+   
+}
+
+.catalog_block {
+    width: 765px;
+    height: 850px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.catalog_block img {
+    object-fit: contain;
+    width: 70%;
+    height: 70%;
+}
