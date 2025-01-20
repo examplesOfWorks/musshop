@@ -13,16 +13,17 @@
    
 }
 
-.catalog_block {
+/* .catalog_block {
     width: 765px;
     height: 850px;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
+    justify-content: center;   
+    
+} */
 
-.catalog_block img {
+/* .catalog_image {
     object-fit: contain;
-    width: 70%;
-    height: 70%;
-}
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+} */

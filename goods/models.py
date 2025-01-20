@@ -66,7 +66,7 @@ class Products(models.Model):
     description = models.TextField(blank=True, null=True, verbose_name='Описание')
     specifications = models.TextField(blank=True, null=True, verbose_name='Характеристики')
     instructions = models.FileField(upload_to='goods_instructions', blank=True, null=True, verbose_name='Инструкции')
-    image = models.ImageField(upload_to='goods_images', blank=True, null=True, verbose_name='Изображение')
+    # image = models.ImageField(upload_to='goods_images', blank=True, null=True, verbose_name='Изображение')
     price = models.DecimalField(default=0.00, max_digits=7, decimal_places=2, verbose_name='Цена')
     discount =  models.DecimalField(default=0.00, max_digits=4, decimal_places=2, verbose_name='Скидка в %')
     quantity = models.PositiveBigIntegerField(default=0.00, verbose_name='Количество')
@@ -93,3 +93,8 @@ class Products(models.Model):
         if self.discount:
             return round(self.price - self.price*self.discount/100, 2)
         return self.price
+    
+class Gallery(models.Model):
+    image = models.ImageField(upload_to='goods_images', verbose_name='Изображение')
+    product = models.ForeignKey(to=Products, on_delete=models.CASCADE, related_name='images', verbose_name='Товар')
+

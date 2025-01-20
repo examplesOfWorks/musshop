@@ -1,5 +1,5 @@
 from django.contrib import admin
-from goods.models import Categories, Subcategories, Brands, Types, Products
+from goods.models import Categories, Subcategories, Brands, Types, Products, Gallery
 
 @admin.register(Categories)
 class CategoriesAdmin(admin.ModelAdmin):
@@ -23,6 +23,11 @@ class TypesAdmin(admin.ModelAdmin):
     list_display = ['name',]
     list_filter = ['subcategory']
 
+
+class GalleryInline(admin.TabularInline):
+    fk_name = 'product'
+    model = Gallery
+
 @admin.register(Products)
 class ProductsAdmin(admin.ModelAdmin):
     prepopulated_fields= {'slug': ('article',)}
@@ -30,6 +35,7 @@ class ProductsAdmin(admin.ModelAdmin):
     list_editable = ['discount']
     search_fields = ['name', 'article', 'specifications','description']
     list_filter = ['discount', 'quantity', 'subcategory', 'brand', 'type']
+    inlines = [GalleryInline,]
     fields = [
         'name',
         'article',
@@ -41,7 +47,7 @@ class ProductsAdmin(admin.ModelAdmin):
         'description',
         'instructions',
         'warranty',
-        'image',
+        # 'image',
         ('price', 'discount'),
         'quantity',
     ]

@@ -8,79 +8,88 @@
         {% include "includes/breadcrumb.html" %}
     {% endblock  %}
     <!-- Ec breadcrumb end -->
-
+ 
+    
     <!-- Sart Single product -->
     <section class="ec-page-content section-space-p">
         <div class="container">
             <div class="row">
-                <div class="ec-pro-rightside ec-common-rightside col-lg-9 order-lg-last col-md-12 order-md-first">
+                <div class="ec-pro-rightside ec-common-rightside col-lg-12 col-md-12">
 
                     <!-- Single product content Start -->
                     <div class="single-pro-block">
                         <div class="single-pro-inner">
                             <div class="row">
-                                <div class="single-pro-img">
+                                <div class="single-pro-img single-pro-img-no-sidebar">
                                     <div class="single-product-scroll">
                                         <div class="single-product-cover">
-                                            <div class="single-slide zoom-image-hover">
-                                                <img class="img-responsive" src="{% static "assets/images/product-image/9_1.jpg" %}"
-                                                    alt="">
-                                            </div>
-                                            <div class="single-slide zoom-image-hover">
-                                                <img class="img-responsive" src="{% static "assets/images/product-image/9_2.jpg" %}"
-                                                    alt="">
-                                            </div>
-                                            <div class="single-slide zoom-image-hover">
-                                                <img class="img-responsive" src="{% static "assets/images/product-image/9_3.jpg" %}"
-                                                    alt="">
-                                            </div>
-                                            <div class="single-slide zoom-image-hover">
-                                                <img class="img-responsive" src="{% static "assets/images/product-image/9_4.jpg" %}"
-                                                    alt="">
-                                            </div>
-                                            <div class="single-slide zoom-image-hover">
-                                                <img class="img-responsive" src="{% static "assets/images/product-image/9_3.jpg" %}"
-                                                    alt="">
-                                            </div>
+                                            {% if product.images.all %}
+                                                {% for img in product.images.all %}
+                                                    <div class="single-slide zoom-image-hover">
+                                                        <img class="img-responsive" src="{{ img.image.url }}"
+                                                            alt="">
+                                                    </div>
+                                                {% endfor %}
+                                            {% else %}      
+                                                <div class="single-slide">
+                                                    <img class="img-responsive" src="{% static "assets/images/product-360/1_2.jpg" %}"
+                                                        alt="">
+                                                </div>
+                                            {% endif %}
                                         </div>
                                         <div class="single-nav-thumb">
-                                            <div class="single-slide">
-                                                <img class="img-responsive" src="{% static "assets/images/product-image/9_1.jpg" %}"
-                                                    alt="">
-                                            </div>
-                                            <div class="single-slide">
-                                                <img class="img-responsive" src="{% static "assets/images/product-image/9_2.jpg" %}"
-                                                    alt="">
-                                            </div>
-                                            <div class="single-slide">
-                                                <img class="img-responsive" src="{% static "assets/images/product-image/9_3.jpg" %}"
-                                                    alt="">
-                                            </div>
-                                            <div class="single-slide">
-                                                <img class="img-responsive" src="{% static "assets/images/product-image/9_4.jpg" %}"
-                                                    alt="">
-                                            </div>
-                                            <div class="single-slide">
-                                                <img class="img-responsive" src="{% static "assets/images/product-image/9_3.jpg" %}"
-                                                    alt="">
-                                            </div>
+                                            {% if product.images.all %}
+                                                {% for img in product.images.all %}
+                                                    <div class="single-slide">
+                                                        <img class="img-responsive" src="{{ img.image.url }}"
+                                                            alt="">
+                                                    </div>
+                                                {% endfor %}
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
-                                <div class="single-pro-desc">
+                                <div class="single-pro-desc single-pro-desc-no-sidebar">
                                     <div class="single-pro-content">
                                         <h5 class="ec-single-title">{{ product.name }}</h5>
+                                        <div class="ec-single-rating-wrap">
+                                            <div class="ec-single-rating">
+                                                <i class="ecicon eci-star fill"></i>
+                                                <i class="ecicon eci-star fill"></i>
+                                                <i class="ecicon eci-star fill"></i>
+                                                <i class="ecicon eci-star fill"></i>
+                                                <i class="ecicon eci-star-o"></i>
+                                            </div>
+                                            <span class="ec-read-review"><a href="#ec-spt-nav-review">Be the first to
+                                                    review this product</a></span>
+                                        </div>
+                                        <div class="ec-single-desc">Lorem Ipsum is simply dummy text of the printing and
+                                            typesetting industry. Lorem Ipsum has been the industry's standard dummy
+                                            text ever since the 1990</div>
 
                                         <div class="ec-single-price-stoke">
                                             <div class="ec-single-price">
-                                                <span class="new-price">{{ product.price }} ₽</span>
+                                                {% if product.discount %}
+                                                    <span class="ec-single-ps-title">Скидка {{ product.discount }}%</span>
+                                                    <span class="old-price">{{ product.price }} ₽</span>
+                                                    <span class="new-price">{{ product.sell_price }} ₽</span>
+                                                {% else %}
+                                                    <span class="new-price">{{ product.price }} ₽</span>
+                                                {% endif %}
                                             </div>
                                             <div class="ec-single-stoke">
-                                                <span class="ec-single-ps-title">Осталось: {{ product.quantity }}</span>
-                                                <span class="ec-single-sku">Артикул: {{ product.article }}</span>
+                                                <span class="ec-single-ps-title">{% if product.quantity == 0 %} Пока нет в наличии {% else %} В наличии: {{ product.quantity }}{% endif %}</span>
+                                                <span class="ec-single-sku">{{ product.article }}</span>
                                             </div>
                                         </div>
-
+                                        <div class="ec-pro-variation">
+                                            <div class="ec-pro-variation-inner ec-pro-variation-size">
+                                                <span>Бренд</span>
+                                                <div class="ec-pro-variation-content">
+                                                    <span>{{ product.brand }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="ec-single-qty">
                                             <div class="qty-plus-minus">
                                                 <input class="qty-input" type="text" name="ec_qtybtn" value="1" />
@@ -91,13 +100,6 @@
                                             <div class="ec-single-wishlist">
                                                 <a class="ec-btn-group wishlist" title="Wishlist"><img
                                                         src="{% static "assets/images/icons/wishlist.svg" %}" class="svg_img pro_svg"
-                                                        alt="" /></a>
-                                            </div>
-                                            <div class="ec-single-quickview">
-                                                <a href="#" class="ec-btn-group quickview" data-link-action="quickview"
-                                                    title="Quick view" data-bs-toggle="modal"
-                                                    data-bs-target="#ec_quickview_modal"><img
-                                                        src="{% static "assets/images/icons/quickview.svg" %}" class="svg_img pro_svg"
                                                         alt="" /></a>
                                             </div>
                                         </div>
@@ -114,11 +116,11 @@
                                 <ul class="nav nav-tabs">
                                     <li class="nav-item">
                                         <a class="nav-link active" data-bs-toggle="tab"
-                                            data-bs-target="#ec-spt-nav-details" role="tablist">Описание</a>
+                                            data-bs-target="#ec-spt-nav-details" role="tablist">Детали</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" data-bs-toggle="tab" data-bs-target="#ec-spt-nav-info"
-                                            role="tablist">Характеристики</a>
+                                            role="tablist">Описание</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" data-bs-toggle="tab" data-bs-target="#ec-spt-nav-review"
@@ -134,18 +136,18 @@
                                 </div>
                                 <div id="ec-spt-nav-info" class="tab-pane fade">
                                     <div class="ec-single-pro-tab-moreinfo">
-                                        {% comment %} {% if specifications %}{{ specifications }}{% endif %} {% endcomment %}
+                                        {% if specifications %}
                                         <ul>
                                             {% for specification in specifications %}
                                             <li>{{ specification }}</li>
                                             {% endfor %}
                                         </ul>
-                                        
-                                        <ul>
+                                        {% endif %}
+                                        {% comment %} <ul>
                                             <li><span>Weight</span> 1000 g</li>
                                             <li><span>Dimensions</span> 35 × 30 × 7 cm</li>
                                             <li><span>Color</span> Black, Pink, Red, White</li>
-                                        </ul>
+                                        </ul> {% endcomment %}
                                     </div>
                                 </div>
 
@@ -154,7 +156,7 @@
                                         <div class="ec-t-review-wrapper">
                                             <div class="ec-t-review-item">
                                                 <div class="ec-t-review-avtar">
-                                                    <img src="{% static "assets/images/review-image/1.jpg" %}" alt="" />
+                                                    <img src="assets/images/review-image/1.jpg" alt="" />
                                                 </div>
                                                 <div class="ec-t-review-content">
                                                     <div class="ec-t-review-top">
@@ -179,7 +181,7 @@
                                             </div>
                                             <div class="ec-t-review-item">
                                                 <div class="ec-t-review-avtar">
-                                                    <img src="{% static "assets/images/review-image/2.jpg" %}" alt="" />
+                                                    <img src="assets/images/review-image/2.jpg" alt="" />
                                                 </div>
                                                 <div class="ec-t-review-content">
                                                     <div class="ec-t-review-top">
@@ -241,515 +243,10 @@
                     </div>
                     <!-- product details description area end -->
                 </div>
-                <!-- Sidebar Area Start -->
-                <div class="ec-pro-leftside ec-common-leftside col-lg-3 order-lg-first col-md-12 order-md-last">
-                    <div class="ec-sidebar-wrap">
-                        <!-- Sidebar Category Block -->
-                        <div class="ec-sidebar-block">
-                            <div class="ec-sb-title">
-                                <h3 class="ec-sidebar-title">Category</h3>
-                            </div>
-                            <div class="ec-sb-block-content">
-                                <ul>
-                                    <li>
-                                        <div class="ec-sidebar-block-item">clothes</div>
-                                        <ul style="display: block;">
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Men <span>-25</span></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Women <span>-52</span></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Boy <span>-40</span></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Girl <span>-35</span></a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="ec-sb-block-content">
-                                <ul>
-                                    <li>
-                                        <div class="ec-sidebar-block-item">shoes</div>
-                                        <ul>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Men <span>-25</span></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Women <span>-52</span></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Boy <span>-40</span></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Girl <span>-35</span></a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="ec-sb-block-content">
-                                <ul>
-                                    <li>
-                                        <div class="ec-sidebar-block-item">bag</div>
-                                        <ul>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Men <span>-25</span></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Women <span>-52</span></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Boy <span>-40</span></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Girl <span>-35</span></a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="ec-sb-block-content">
-                                <ul>
-                                    <li>
-                                        <div class="ec-sidebar-block-item">cosmetics</div>
-                                        <ul>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Men <span>-25</span></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Women <span>-52</span></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Boy <span>-40</span></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Girl <span>-35</span></a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="ec-sb-block-content">
-                                <ul>
-                                    <li>
-                                        <div class="ec-sidebar-block-item">electronics</div>
-                                        <ul>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Men <span>-25</span></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Women <span>-52</span></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Boy <span>-40</span></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Girl <span>-35</span></a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="ec-sb-block-content">
-                                <ul>
-                                    <li>
-                                        <div class="ec-sidebar-block-item">phone</div>
-                                        <ul>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Men <span>-25</span></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Women <span>-52</span></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Boy <span>-40</span></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Girl <span>-35</span></a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="ec-sb-block-content">
-                                <ul>
-                                    <li>
-                                        <div class="ec-sidebar-block-item">accessories</div>
-                                        <ul>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Men <span>-25</span></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Women <span>-52</span></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Boy <span>-40</span></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="ec-sidebar-sub-item"><a href="#">Girl <span>-35</span></a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- Sidebar Category Block -->
-                    </div>
-                </div>
+
             </div>
         </div>
     </section>
     <!-- End Single product -->
-
-    <!-- Related Product Start -->
-    <section class="section ec-releted-product section-space-p">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <div class="section-title">
-                        <h2 class="ec-bg-title">Related products</h2>
-                        <h2 class="ec-title">Related products</h2>
-                        <p class="sub-title">Browse The Collection of Top Products</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row margin-minus-b-30">
-                <!-- Related Product Content -->
-                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6 pro-gl-content">
-                    <div class="ec-product-inner">
-                        <div class="ec-pro-image-outer">
-                            <div class="ec-pro-image">
-                                <a href="product-left-sidebar.html" class="image">
-                                    <img class="main-image"
-                                        src="{% static "assets/images/product-image/6_1.jpg" %}" alt="Product" />
-                                    <img class="hover-image"
-                                        src="{% static "assets/images/product-image/6_2.jpg" %}" alt="Product" />
-                                </a>
-                                <span class="percentage">20%</span>
-                                <a href="#" class="quickview" data-link-action="quickview"
-                                    title="Quick view" data-bs-toggle="modal"
-                                    data-bs-target="#ec_quickview_modal"><img
-                                        src="{% static "assets/images/icons/quickview.svg" %}" class="svg_img pro_svg"
-                                        alt="" /></a>
-                                <div class="ec-pro-actions">
-                                    <a href="compare.html" class="ec-btn-group compare"
-                                        title="Compare"><img src="{% static "assets/images/icons/compare.svg" %}"
-                                            class="svg_img pro_svg" alt="" /></a>
-                                    <button title="Add To Cart" class=" add-to-cart"><img
-                                            src="{% static "assets/images/icons/cart.svg" %}" class="svg_img pro_svg"
-                                            alt="" /> Add To Cart</button>
-                                    <a class="ec-btn-group wishlist" title="Wishlist"><img
-                                            src="{% static "assets/images/icons/wishlist.svg" %}"
-                                            class="svg_img pro_svg" alt="" /></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ec-pro-content">
-                            <h5 class="ec-pro-title"><a href="product-left-sidebar.html">Round Neck T-Shirt</a></h5>
-                            <div class="ec-pro-rating">
-                                <i class="ecicon eci-star fill"></i>
-                                <i class="ecicon eci-star fill"></i>
-                                <i class="ecicon eci-star fill"></i>
-                                <i class="ecicon eci-star fill"></i>
-                                <i class="ecicon eci-star"></i>
-                            </div>
-                            <div class="ec-pro-list-desc">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dutmmy text ever since the 1500s, when an unknown printer took a galley.</div>
-                            <span class="ec-price">
-                                <span class="old-price">$27.00</span>
-                                <span class="new-price">$22.00</span>
-                            </span>
-                            <div class="ec-pro-option">
-                                <div class="ec-pro-color">
-                                    <span class="ec-pro-opt-label">Color</span>
-                                    <ul class="ec-opt-swatch ec-change-img">
-                                        <li class="active"><a href="#" class="ec-opt-clr-img"
-                                                data-src="{% static "assets/images/product-image/6_1.jpg" %}"
-                                                data-src-hover="{% static "assets/images/product-image/6_1.jpg" %}"
-                                                data-tooltip="Gray"><span
-                                                    style="background-color:#e8c2ff;"></span></a></li>
-                                        <li><a href="#" class="ec-opt-clr-img"
-                                                data-src="{% static "assets/images/product-image/6_2.jpg" %}"
-                                                data-src-hover="{% static "assets/images/product-image/6_2.jpg" %}"
-                                                data-tooltip="Orange"><span
-                                                    style="background-color:#9cfdd5;"></span></a></li>
-                                    </ul>
-                                </div>
-                                <div class="ec-pro-size">
-                                    <span class="ec-pro-opt-label">Size</span>
-                                    <ul class="ec-opt-size">
-                                        <li class="active"><a href="#" class="ec-opt-sz"
-                                                data-old="$25.00" data-new="$20.00"
-                                                data-tooltip="Small">S</a></li>
-                                        <li><a href="#" class="ec-opt-sz" data-old="$27.00"
-                                                data-new="$22.00" data-tooltip="Medium">M</a></li>
-                                        <li><a href="#" class="ec-opt-sz" data-old="$35.00"
-                                                data-new="$30.00" data-tooltip="Extra Large">XL</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6 pro-gl-content">
-                    <div class="ec-product-inner">
-                        <div class="ec-pro-image-outer">
-                            <div class="ec-pro-image">
-                                <a href="product-left-sidebar.html" class="image">
-                                    <img class="main-image"
-                                        src="{% static "assets/images/product-image/7_1.jpg" %}" alt="Product" />
-                                    <img class="hover-image"
-                                        src="{% static "assets/images/product-image/7_2.jpg" %}" alt="Product" />
-                                </a>
-                                <span class="percentage">20%</span>
-                                <span class="flags">
-                                    <span class="sale">Sale</span>
-                                </span>
-                                <a href="#" class="quickview" data-link-action="quickview"
-                                    title="Quick view" data-bs-toggle="modal"
-                                    data-bs-target="#ec_quickview_modal"><img
-                                        src="{% static "assets/images/icons/quickview.svg" %}" class="svg_img pro_svg"
-                                        alt="" /></a>
-                                <div class="ec-pro-actions">
-                                    <a href="compare.html" class="ec-btn-group compare"
-                                        title="Compare"><img src="{% static "assets/images/icons/compare.svg" %}"
-                                            class="svg_img pro_svg" alt="" /></a>
-                                    <button title="Add To Cart" class=" add-to-cart"><img
-                                            src="{% static "assets/images/icons/cart.svg" %}" class="svg_img pro_svg"
-                                            alt="" /> Add To Cart</button>
-                                    <a class="ec-btn-group wishlist" title="Wishlist"><img
-                                            src="{% static "assets/images/icons/wishlist.svg" %}"
-                                            class="svg_img pro_svg" alt="" /></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ec-pro-content">
-                            <h5 class="ec-pro-title"><a href="product-left-sidebar.html">Full Sleeve Shirt</a></h5>
-                            <div class="ec-pro-rating">
-                                <i class="ecicon eci-star fill"></i>
-                                <i class="ecicon eci-star fill"></i>
-                                <i class="ecicon eci-star fill"></i>
-                                <i class="ecicon eci-star fill"></i>
-                                <i class="ecicon eci-star"></i>
-                            </div>
-                            <div class="ec-pro-list-desc">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dutmmy text ever since the 1500s, when an unknown printer took a galley.</div>
-                            <span class="ec-price">
-                                <span class="old-price">$12.00</span>
-                                <span class="new-price">$10.00</span>
-                            </span>
-                            <div class="ec-pro-option">
-                                <div class="ec-pro-color">
-                                    <span class="ec-pro-opt-label">Color</span>
-                                    <ul class="ec-opt-swatch ec-change-img">
-                                        <li class="active"><a href="#" class="ec-opt-clr-img"
-                                                data-src="{% static "assets/images/product-image/7_1.jpg" %}"
-                                                data-src-hover="{% static "assets/images/product-image/7_1.jpg" %}"
-                                                data-tooltip="Gray"><span
-                                                    style="background-color:#01f1f1;"></span></a></li>
-                                        <li><a href="#" class="ec-opt-clr-img"
-                                                data-src="{% static "assets/images/product-image/7_2.jpg" %}"
-                                                data-src-hover="{% static "assets/images/product-image/7_2.jpg" %}"
-                                                data-tooltip="Orange"><span
-                                                    style="background-color:#b89df8;"></span></a></li>
-                                    </ul>
-                                </div>
-                                <div class="ec-pro-size">
-                                    <span class="ec-pro-opt-label">Size</span>
-                                    <ul class="ec-opt-size">
-                                        <li class="active"><a href="#" class="ec-opt-sz"
-                                                data-old="$12.00" data-new="$10.00"
-                                                data-tooltip="Small">S</a></li>
-                                        <li><a href="#" class="ec-opt-sz" data-old="$15.00"
-                                                data-new="$12.00" data-tooltip="Medium">M</a></li>
-                                        <li><a href="#" class="ec-opt-sz" data-old="$20.00"
-                                                data-new="$17.00" data-tooltip="Extra Large">XL</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6 pro-gl-content">
-                    <div class="ec-product-inner">
-                        <div class="ec-pro-image-outer">
-                            <div class="ec-pro-image">
-                                <a href="product-left-sidebar.html" class="image">
-                                    <img class="main-image"
-                                        src="{% static "assets/images/product-image/1_1.jpg" %}" alt="Product" />
-                                    <img class="hover-image"
-                                        src="{% static "assets/images/product-image/1_2.jpg" %}" alt="Product" />
-                                </a>
-                                <span class="percentage">20%</span>
-                                <span class="flags">
-                                    <span class="sale">Sale</span>
-                                </span>
-                                <a href="#" class="quickview" data-link-action="quickview"
-                                    title="Quick view" data-bs-toggle="modal"
-                                    data-bs-target="#ec_quickview_modal"><img
-                                        src="{% static "assets/images/icons/quickview.svg" %}" class="svg_img pro_svg"
-                                        alt="" /></a>
-                                <div class="ec-pro-actions">
-                                    <a href="compare.html" class="ec-btn-group compare"
-                                        title="Compare"><img src="{% static "assets/images/icons/compare.svg" %}"
-                                            class="svg_img pro_svg" alt="" /></a>
-                                    <button title="Add To Cart" class=" add-to-cart"><img
-                                            src="{% static "assets/images/icons/cart.svg" %}" class="svg_img pro_svg"
-                                            alt="" /> Add To Cart</button>
-                                    <a class="ec-btn-group wishlist" title="Wishlist"><img
-                                            src="{% static "assets/images/icons/wishlist.svg" %}"
-                                            class="svg_img pro_svg" alt="" /></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ec-pro-content">
-                            <h5 class="ec-pro-title"><a href="product-left-sidebar.html">Cute Baby Toy's</a></h5>
-                            <div class="ec-pro-rating">
-                                <i class="ecicon eci-star fill"></i>
-                                <i class="ecicon eci-star fill"></i>
-                                <i class="ecicon eci-star fill"></i>
-                                <i class="ecicon eci-star fill"></i>
-                                <i class="ecicon eci-star"></i>
-                            </div>
-                            <div class="ec-pro-list-desc">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dutmmy text ever since the 1500s, when an unknown printer took a galley.</div>
-                            <span class="ec-price">
-                                <span class="old-price">$40.00</span>
-                                <span class="new-price">$30.00</span>
-                            </span>
-                            <div class="ec-pro-option">
-                                <div class="ec-pro-color">
-                                    <span class="ec-pro-opt-label">Color</span>
-                                    <ul class="ec-opt-swatch ec-change-img">
-                                        <li class="active"><a href="#" class="ec-opt-clr-img"
-                                                data-src="{% static "assets/images/product-image/1_1.jpg" %}"
-                                                data-src-hover="{% static "assets/images/product-image/1_1.jpg" %}"
-                                                data-tooltip="Gray"><span
-                                                    style="background-color:#90cdf7;"></span></a></li>
-                                        <li><a href="#" class="ec-opt-clr-img"
-                                                data-src="{% static "assets/images/product-image/1_2.jpg" %}"
-                                                data-src-hover="{% static "assets/images/product-image/1_2.jpg" %}"
-                                                data-tooltip="Orange"><span
-                                                    style="background-color:#ff3b66;"></span></a></li>
-                                        <li><a href="#" class="ec-opt-clr-img"
-                                                data-src="{% static "assets/images/product-image/1_3.jpg" %}"
-                                                data-src-hover="{% static "assets/images/product-image/1_3.jpg" %}"
-                                                data-tooltip="Green"><span
-                                                    style="background-color:#ffc476;"></span></a></li>
-                                        <li><a href="#" class="ec-opt-clr-img"
-                                                data-src="{% static "assets/images/product-image/1_4.jpg"
-                                                data-src-hover="{% static "assets/images/product-image/1_4.jpg" %}" %}"
-                                                data-tooltip="Sky Blue"><span
-                                                    style="background-color:#1af0ba;"></span></a></li>
-                                    </ul>
-                                </div>
-                                <div class="ec-pro-size">
-                                    <span class="ec-pro-opt-label">Size</span>
-                                    <ul class="ec-opt-size">
-                                        <li class="active"><a href="#" class="ec-opt-sz"
-                                                data-old="$40.00" data-new="$30.00"
-                                                data-tooltip="Small">S</a></li>
-                                        <li><a href="#" class="ec-opt-sz" data-old="$50.00"
-                                                data-new="$40.00" data-tooltip="Medium">M</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6 pro-gl-content">
-                    <div class="ec-product-inner">
-                        <div class="ec-pro-image-outer">
-                            <div class="ec-pro-image">
-                                <a href="product-left-sidebar.html" class="image">
-                                    <img class="main-image"
-                                        src="{% static "assets/images/product-image/2_1.jpg" %}" alt="Product" />
-                                    <img class="hover-image"
-                                        src="{% static "assets/images/product-image/2_2.jpg" %}" alt="Product" />
-                                </a>
-                                <span class="percentage">20%</span>
-                                <span class="flags">
-                                    <span class="new">New</span>
-                                </span>
-                                <a href="#" class="quickview" data-link-action="quickview"
-                                    title="Quick view" data-bs-toggle="modal"
-                                    data-bs-target="#ec_quickview_modal"><img
-                                        src="{% static "assets/images/icons/quickview.svg" %}" class="svg_img pro_svg"
-                                        alt="" /></a>
-                                <div class="ec-pro-actions">
-                                    <a href="compare.html" class="ec-btn-group compare"
-                                        title="Compare"><img src="{% static "assets/images/icons/compare.svg" %}"
-                                            class="svg_img pro_svg" alt="" /></a>
-                                    <button title="Add To Cart" class=" add-to-cart"><img
-                                            src="{% static "assets/images/icons/cart.svg" %}" class="svg_img pro_svg"
-                                            alt="" /> Add To Cart</button>
-                                    <a class="ec-btn-group wishlist" title="Wishlist"><img
-                                            src="{% static "assets/images/icons/wishlist.svg" %}"
-                                            class="svg_img pro_svg" alt="" /></a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="ec-pro-content">
-                            <h5 class="ec-pro-title"><a href="product-left-sidebar.html">Jumbo Carry Bag</a></h5>
-                            <div class="ec-pro-rating">
-                                <i class="ecicon eci-star fill"></i>
-                                <i class="ecicon eci-star fill"></i>
-                                <i class="ecicon eci-star fill"></i>
-                                <i class="ecicon eci-star fill"></i>
-                                <i class="ecicon eci-star"></i>
-                            </div>
-                            <div class="ec-pro-list-desc">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dutmmy text ever since the 1500s, when an unknown printer took a galley.</div>
-                            <span class="ec-price">
-                                <span class="old-price">$50.00</span>
-                                <span class="new-price">$40.00</span>
-                            </span>                                                
-                            <div class="ec-pro-option">
-                                <div class="ec-pro-color">
-                                    <span class="ec-pro-opt-label">Color</span>
-                                    <ul class="ec-opt-swatch ec-change-img">
-                                        <li class="active"><a href="#" class="ec-opt-clr-img"
-                                                data-src="{% static "assets/images/product-image/2_1.jpg" %}"
-                                                data-src-hover="{% static "assets/images/product-image/2_2.jpg" %}"
-                                                data-tooltip="Gray"><span
-                                                    style="background-color:#fdbf04;"></span></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Related Product end -->
 
 {% endblock %}

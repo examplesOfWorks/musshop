@@ -15,3 +15,4 @@ def tag_all_categories():
         subcategory = Subcategories.objects.filter(category_id=category.id)
         all_categories.append({'category': category, 'subcategory': subcategory})
     return all_categories
+
