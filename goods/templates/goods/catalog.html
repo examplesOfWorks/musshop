@@ -12,6 +12,7 @@
     <!-- Ec Shop page -->   
     <div class="container">
         <div class="row">
+
             <div class="col-lg-3">
                  <!--  Category Section Start -->
                 <section class="section ec-category-section ec-category-wrapper-2 section-space-p">
@@ -100,13 +101,22 @@
                         </div>
                         <div class="col-md-6 ec-sort-select">
                             <span class="sort-by">Сортировка</span>
-                            <div class="ec-select-inner">
-                                <select name="ec-select" id="ec-select">
-                                    <option selected disabled>По умолчанию</option>
-                                    <option value="1">От дешевых к дорогим</option>
-                                    <option value="2">От дорогих к дешевым</option>
-                                </select>
-                            </div>
+                            <form action="{% if request.GET.q %}{% url 'goods:search' 'subcategory_slug' %}{% endif %}" method="get">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="ec-select-inner mt-1">
+                                            <select name="order_by" id="ec-select">
+                                                <option {% if not request.GET.order_by or request.GET.order_by == 'default' %} selected {% endif %} name="order_by" value="default">По умолчанию</option>
+                                                <option  {% if request.GET.order_by == 'price' %} selected {% endif %} name="order_by" value="price">От дешевых к дорогим</option>
+                                                <option {% if request.GET.order_by == '-price' %} selected {% endif %} name="order_by" value="-price">От дорогих к дешевым</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 text-end">
+                                        <button class="btn btn-primary" type="submit">ОК</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     <!-- Shop Top End -->
@@ -192,6 +202,7 @@
                     </div>
                 </div>
             </div>
+            
         </div>
     </div>
 

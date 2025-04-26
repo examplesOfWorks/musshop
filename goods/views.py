@@ -9,6 +9,7 @@ def catalog(request, subcategory_slug):
     subcategory_types = None
     on_sale = request.GET.get('discount', None)
     all_brands = request.GET.getlist('brand', None)
+    order_by = request.GET.get('order_by', None)
 
     if subcategory_slug == 'all':
         products = Products.objects.all()
@@ -24,6 +25,9 @@ def catalog(request, subcategory_slug):
 
     if all_brands:
         products = filter_by_brand(all_brands, products)
+
+    if order_by and order_by != "default":
+        products = products.order_by(order_by)
     
     context = {
     'title': 'Каталог',
