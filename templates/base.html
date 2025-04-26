@@ -250,22 +250,32 @@
                                  <li><a href="{% url "main:index" %}">Главная</a></li>
                                  <li><a href="{% url "main:about" %}">О магазине</a></li>
                                  <li><a href="{% url "main:project" %}">О проекте</a></li>
+                                 <li><a href="{% url "catalog:brands" %}">Бренды</a></li>
 
                                  <li class="dropdown"><a href="{% url "catalog:search" "all" %}">Каталог</a>
                                      <ul class="sub-menu">
                                         
                                      {% tag_all_categories as all_categories %}
-                                     {% for cat in all_categories %}
-                                        <li class="dropdown position-static"><a href="{% url "catalog:category" cat.category.slug %}">{{cat.category.name}}
-                                            <i class="ecicon eci-angle-right"></i></a>
-                                            <ul class="sub-menu sub-menu-child">
-                                                {% for subcat in cat.subcategory %}
-                                                <li><a href="{% url "catalog:search" subcat.slug %}">{{ subcat.name }}</a>
+                                     {% if all_categories %}
+                                        {% for cat in all_categories %}
+                                            {% comment %} {% if cat %} {% endcomment %}
+                                                <li class="dropdown position-static"><a href="{% url "catalog:category" cat.category.slug %}">
+                                                        {{cat.category.id}} - {{cat.category.name}}
+                                                    <i class="ecicon eci-angle-right"></i></a>
+                                                    
+                                                    <ul class="sub-menu sub-menu-child">
+                                                        {% for subcat in cat.subcategory %}
+                                                        <li><a href="{% url "catalog:search" subcat.slug %}">{{ subcat.name }}</a>
+                                                        </li>
+                                                        {% endfor %}
+                                                    </ul>
                                                 </li>
-                                                {% endfor %}
-                                            </ul>
+                                        {% endfor %}
+                                     {% else %}
+                                        <li class="dropdown position-static">
+                                            Категории не добавлены
                                         </li>
-                                     {% endfor %}
+                                     {% endif %}
 
                                      </ul>
                                   </li>

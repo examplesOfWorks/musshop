@@ -35,47 +35,54 @@
                         <div class="ec-sidebar-heading">
                             <h1>Фильтрация</h1>
                         </div>
-                        <div class="ec-sidebar-wrap">
-                            <!-- Sidebar Category Block -->
-                            <div class="ec-sidebar-block">
-                                <div class="ec-sb-title">
-                                    <h3 class="ec-sidebar-title">Бренды</h3>
-                                </div>
-                                <div class="ec-sb-block-content">
-                                    <ul>
-                                        {% if brands %}
-                                            {% for brand in brands %}
+                        <form action="{% if request.GET.q %}{% url 'goods:search' 'subcategory_slug' %}{% endif %}" method="get">
+                            
+                            <div class="ec-sidebar-wrap">
+                                <!-- Sidebar Category Block -->
+                                <div class="ec-sidebar-block">
+                                    <div class="ec-sb-title">
+                                        <h3 class="ec-sidebar-title">Бренды</h3>
+                                    </div>
+                                    <div class="ec-sb-block-content">
+                                        <ul>
+                                            {% if brands %}
+                                                {% for brand in brands %}
+                                                <li>
+                                                    <div class="ec-sidebar-block-item">
+                                                        <input type="checkbox" name="brand" value="{{ brand.slug }}"
+                                                            {% for b in all_brands %}{% if b == brand.slug %} checked {% endif %}{% endfor %}/>                                                        
+                                                            <p class="ms-4 mb-0">{{ brand.name }}</p><span
+                                                            class="checked"></span>
+                                                    </div>
+                                                </li>
+                                                {% endfor %}
+                                            {% else %}
+                                                <li>Бренды не добавлены</li>
+                                            {% endif %}                                        
+                                        </ul>
+                                    </div>
+                                </div>  
+                                <div class="ec-sidebar-block">
+                                    <div class="ec-sb-title">
+                                        <h3 class="ec-sidebar-title">Наличие скидок</h3>
+                                    </div>
+                                    <div class="ec-sb-block-content">
+                                        <ul>
                                             <li>
+                                            
                                                 <div class="ec-sidebar-block-item">
-                                                    <input type="checkbox" /> <a href="#">{{ brand.name }}</a><span
+                                                    <input type="checkbox" name="discount" value="on" {% if request.GET.discount == 'on' %} checked {% endif %}/><p class="ms-4 mb-0">Есть</p><span
                                                         class="checked"></span>
                                                 </div>
-                                            </li>
-                                            {% endfor %}
-                                        {% endif %}                                        
-                                    </ul>
-                                </div>
-                            </div>  
-                            <div class="ec-sidebar-block">
-                                <div class="ec-sb-title">
-                                    <h3 class="ec-sidebar-title">Наличие скидок</h3>
-                                </div>
-                                <div class="ec-sb-block-content">
-                                    <ul>
-                                        <li>
-                                            <div class="ec-sidebar-block-item">
-                                                <input type="checkbox" /> <a href="#">Нет</a><span
-                                                    class="checked"></span>
-                                            </div>
-                                            <div class="ec-sidebar-block-item">
-                                                <input type="checkbox" /> <a href="#">Есть</a><span
-                                                    class="checked"></span>
-                                            </div>
-                                        </li>                                       
-                                    </ul>
-                                </div>
-                            </div>                            
-                        </div>
+                                                
+                                            </li>                                       
+                                        </ul>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary mt-3">Применить</button>
+                                    <a class="btn btn-outline-secondary mt-3" type="button" href="{% url 'goods:search' subcategory_slug %}">Сбросить</a>
+                                </div>                            
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

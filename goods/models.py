@@ -16,10 +16,10 @@ class Categories(models.Model):
         return self.name
     
 class Subcategories(models.Model):
-    name = models.CharField(max_length=150, unique=True, verbose_name='Название')
-    slug = models.SlugField(max_length=200, unique=True, blank=True, null=True, verbose_name='URL')
+    name = models.CharField(max_length=255, verbose_name='Название')
+    slug = models.SlugField(max_length=255, blank=True, null=True, verbose_name='URL')
     category = models.ForeignKey(Categories, on_delete=models.CASCADE, verbose_name='Категория')
-    image = models.ImageField(upload_to='subcategories_images', blank=True, null=True, verbose_name='Изображение')
+    image = models.ImageField(max_length=255, upload_to='subcategories_images', blank=True, null=True, verbose_name='Изображение')
 
     class Meta:
         db_table = 'subcategory'
@@ -61,13 +61,13 @@ class Types(models.Model):
 class Products(models.Model):
     name = models.CharField(max_length=150, unique=True, verbose_name='Название')
     article = models.CharField(max_length=150, unique=True, verbose_name='Артикул')
-    slug = models.SlugField(max_length=200, unique=True, blank=True, null=True, verbose_name='URL')
+    slug = models.SlugField(max_length=200, unique=True, blank=True, null=True, verbose_name='URL') # убрать
     warranty = models.CharField(max_length=150, blank=True, null=True, verbose_name='Гарантия')
     description = models.TextField(blank=True, null=True, verbose_name='Описание')
     specifications = models.TextField(blank=True, null=True, verbose_name='Характеристики')
     instructions = models.FileField(upload_to='goods_instructions', blank=True, null=True, verbose_name='Инструкции')
     # image = models.ImageField(upload_to='goods_images', blank=True, null=True, verbose_name='Изображение')
-    price = models.DecimalField(default=0.00, max_digits=7, decimal_places=2, verbose_name='Цена')
+    price = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Цена')
     discount =  models.DecimalField(default=0.00, max_digits=4, decimal_places=2, verbose_name='Скидка в %')
     quantity = models.PositiveBigIntegerField(default=0.00, verbose_name='Количество')
     brand = models.ForeignKey(to=Brands, on_delete=models.CASCADE, verbose_name='Бренд')

@@ -1,0 +1,5 @@
+<ul>
+    {% for brand in brands %}
+        <li><a href="{% url 'catalog:brand' brand.slug %}">{{ brand.name }}</a></li>
+    {% endfor %}
+</ul>
