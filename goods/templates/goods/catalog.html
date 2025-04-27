@@ -36,7 +36,7 @@
                         <div class="ec-sidebar-heading">
                             <h1>Фильтрация</h1>
                         </div>
-                        <form action="{% if request.GET.q %}{% url 'goods:search' 'subcategory_slug' %}{% endif %}" method="get">
+                        <form action="{% if request.GET.q %}{% url 'goods:search' subcategory_slug %}{% endif %}" method="get">
                             
                             <div class="ec-sidebar-wrap">
                                 <!-- Sidebar Category Block -->
@@ -101,7 +101,7 @@
                         </div>
                         <div class="col-md-6 ec-sort-select">
                             <span class="sort-by">Сортировка</span>
-                            <form action="{% if request.GET.q %}{% url 'goods:search' 'subcategory_slug' %}{% endif %}" method="get">
+                            <form action="{% if request.GET.q %}{% url 'goods:search' subcategory_slug %}{% endif %}" method="get">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="ec-select-inner mt-1">
@@ -172,7 +172,24 @@
                                         </div>
         
                                         <div class="ec-pro-content">
-                                            <h5 class="ec-pro-title"><a href="{% url "catalog:product" product.article %}">{{ product.name }}</a></h5>
+                                            <h5 class="ec-pro-title"><a href="{% url "catalog:product" product.article %}">
+                                                {% autoescape off %}
+                                                    {% if product.headline %}
+                                                    {{ product.headline }}
+                                                    {% else %}
+                                                    {{ product.name }}
+                                                    {% endif %}
+                                                {% endautoescape %}
+                                            </a></h5>
+                                            <span class="ec-single-sku">
+                                                {% autoescape off %}
+                                                    {% if product.skuline %}
+                                                    {{ product.skuline }}
+                                                    {% else %}
+                                                    {{ product.article }}
+                                                    {% endif %}
+                                                {% endautoescape %}
+                                            </span>
                                             <div class="ec-pro-rating">
                                                 <i class="ecicon eci-star fill"></i>
                                                 <i class="ecicon eci-star fill"></i>
@@ -180,7 +197,15 @@
                                                 <i class="ecicon eci-star fill"></i>
                                                 <i class="ecicon eci-star"></i>
                                             </div>
-                                            <div class="ec-pro-list-desc">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum is simply dutmmy text ever since the 1500s, when an unknown printer took a galley.</div>
+                                            <div class="ec-pro-list-desc">
+                                                {% autoescape off %}
+                                                    {% if product.bodyline %}
+                                                    {{ product.bodyline|truncatechars:300 }}
+                                                    {% else %}
+                                                    {{ product.description|truncatechars:300 }}
+                                                    {% endif %}
+                                                {% endautoescape %}
+                                            </div>
                                             <span class="ec-price">
                                                 {% if product.discount %}
                                                     <span class="old-price">{{ product.price }} ₽</span>

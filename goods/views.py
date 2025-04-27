@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from goods.models import Brands, Categories, Subcategories, Products, Types, Gallery
-from goods.search_utils import filter_by_brand
+from goods.search_utils import filter_by_brand, q_search 
 
 def catalog(request, subcategory_slug):
     subcategory = None
@@ -10,10 +10,14 @@ def catalog(request, subcategory_slug):
     on_sale = request.GET.get('discount', None)
     all_brands = request.GET.getlist('brand', None)
     order_by = request.GET.get('order_by', None)
+    query = request.GET.get('q', None)
 
     if subcategory_slug == 'all':
         products = Products.objects.all()
         brands = Brands.objects.all()
+    # elif query:
+    #     products = q_search(query)
+    #     brands = Brands.objects.all()
     else:
         products = Products.objects.filter(subcategory__slug=subcategory_slug)
         subcategory = Subcategories.objects.filter(slug=subcategory_slug)[0]
@@ -28,6 +32,10 @@ def catalog(request, subcategory_slug):
 
     if order_by and order_by != "default":
         products = products.order_by(order_by)
+    
+    if query:
+        products = q_search(query)
+        brands = Brands.objects.all()
     
     context = {
     'title': 'Каталог',
