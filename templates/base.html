@@ -110,10 +110,14 @@
                                  <button class="dropdown-toggle" data-bs-toggle="dropdown"><img
                                          src="{% static "assets/images/icons/user.svg" %}" class="svg_img header_svg" alt="" /></button>
                                  <ul class="dropdown-menu dropdown-menu-right">
+                                    {% if not user.is_authenticated %}
                                      <li><a class="dropdown-item" href="{% url "users:registration" %}">Регистрация</a></li>
+                                     <li><a class="dropdown-item" href="{% url "users:login" %}">Вход</a></li>
+                                    {% else %}
                                      <li><a class="dropdown-item" href="{% url "users:profile" %}">Профиль</a></li>
-                                     <li><a class="dropdown-item" href="login.html">Вход</a></li>
-                                 </ul>
+                                     <li><a class="dropdown-item" href="{% url "users:logout" %}">Выход</a></li>
+                                    {% endif %}
+                                </ul>
                              </div>
                              <!-- Header User End -->
                              <!-- Header Cart Start -->
@@ -181,9 +185,14 @@
                                      <button class="dropdown-toggle" data-bs-toggle="dropdown"><img
                                              src="{% static "assets/images/icons/user.svg" %}" class="svg_img header_svg" alt="" /></button>
                                      <ul class="dropdown-menu dropdown-menu-right">
-                                         <li><a class="dropdown-item" href="{% url "users:registration" %}">Регистрация</a></li>
-                                         <li><a class="dropdown-item" href="{% url "users:profile" %}">Профиль</a></li>
-                                         <li><a class="dropdown-item" href="{% url "users:login" %}">Вход</a></li>
+
+                                        {% if not user.is_authenticated or user.is_superuser %}
+                                            <li><a class="dropdown-item" href="{% url "users:registration" %}">Регистрация</a></li>
+                                            <li><a class="dropdown-item" href="{% url "users:login" %}">Вход</a></li>
+                                        {% else %}
+                                            <li><a class="dropdown-item" href="{% url "users:profile" %}">Профиль</a></li>
+                                            <li><a class="dropdown-item" href="{% url "users:logout" %}">Выход</a></li>
+                                       {% endif %}
                                      </ul>
                                  </div>
                                  <!-- Header User End -->
@@ -962,6 +971,7 @@
              </div>
      </div>
 
+     {% include "includes/notifications.html" %}
      {% block content %}
      {% endblock %}
 
@@ -1274,7 +1284,7 @@
      <script src="{% static "assets/js/vendor/google-translate.js" %}"></script>
      <script>
          function googleTranslateElementInit() {
-             new google.translate.TranslateElement({ pageLanguage: 'en' }, 'google_translate_element');
+             new google.translate.TranslateElement({ pageLanguage: 'ru' }, 'google_translate_element');
          }
      </script>
      <!-- Main Js -->
