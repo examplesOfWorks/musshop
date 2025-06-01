@@ -1,14 +1,8 @@
 {% load static %}
 
-{% if messages %}
-    {% for message in messages %}
-    {% if message.tags == 'success' %}
-        <div class="recent-purchase">
-            <div class="detail">
-                <h6>{{ message }}</h6>
-            </div>
-            <a href="javascript:void(0)" class="icon-btn recent-close">×</a>
-        </div>
-    {% endif %}
-    {% endfor %}
-{% endif %}
+<div class="recent-purchase invisible">
+    <div class="detail">
+        <h6 id="recent-notification">{{ message }}</h6>
+    </div>
+    <a href="javascript:void(0)" class="icon-btn recent-close">×</a>
+</div>

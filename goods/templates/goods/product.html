@@ -92,10 +92,16 @@
                                         </div>
                                         <div class="ec-single-qty">
                                             <div class="qty-plus-minus">
-                                                <input class="qty-input" type="text" name="ec_qtybtn" value="1" />
+                                                <div class="dec ec_qtybtn">-</div>
+                                                <input class="qty-input" type="text" name="ec_qtybtn" 
+                                                data-product-id="{{ product.id }}" 
+                                                value="1" 
+                                                readonly/>
+                                                <div class="inc ec_qtybtn">+</div>
                                             </div>
-                                            <div class="ec-single-cart ">
-                                                <button class="btn btn-primary">Добавить в корзину</button>
+                                            <div class="ec-single-cart">
+                                                <a href="{% url "cart:cart_add" %}" 
+                                                class="btn btn-primary add-to-cart">{% csrf_token %} Добавить в корзину</a>
                                             </div>
                                             <div class="ec-single-wishlist">
                                                 <a class="ec-btn-group wishlist" title="Wishlist"><img
@@ -156,7 +162,7 @@
                                         <div class="ec-t-review-wrapper">
                                             <div class="ec-t-review-item">
                                                 <div class="ec-t-review-avtar">
-                                                    <img src="assets/images/review-image/1.jpg" alt="" />
+                                                    <img src="{% static "assets/images/review-image/1.jpg" %}" alt="" />
                                                 </div>
                                                 <div class="ec-t-review-content">
                                                     <div class="ec-t-review-top">
@@ -181,7 +187,7 @@
                                             </div>
                                             <div class="ec-t-review-item">
                                                 <div class="ec-t-review-avtar">
-                                                    <img src="assets/images/review-image/2.jpg" alt="" />
+                                                    <img src= "{% static "assets/images/review-image/2.jpg" %}" alt="" />
                                                 </div>
                                                 <div class="ec-t-review-content">
                                                     <div class="ec-t-review-top">

@@ -1,0 +1,73 @@
+{% load static %}
+
+<div class="ec-cart-inner">
+    <div class="ec-cart-top">
+        <div class="ec-cart-title">
+            <span class="cart_title">Корзина</span>
+            <button class="ec-close">×</button>
+        </div>
+        {% if carts %}
+        <ul class="eccart-pro-items">
+            {% for cart in carts %}
+            <li>
+                <a href="product-left-sidebar.html" class="sidekka_pro_img"><img
+                        src="{% static "assets/images/product-image/6_1.jpg" %}" alt="product"></a>
+                <div class="ec-pro-content">
+                    <a href="{% url "catalog:product" cart.product.article %}" class="cart_pro_title">{{ cart.product.name }}</a>
+                    <span class="cart-price">
+                    {% if cart.product.discount %}
+                        <s>{{ cart.product.price }} ₽</s><br>
+                        <span>{{ cart.product.sell_price }}</span>
+                    {% else %}
+                        <span>{{ cart.product.price }} ₽</span>
+                    {% endif %} 
+                    x {{ cart.quantity }}</span>
+                    <div class="qty-plus-minus">
+                        <div class="dec ec_qtybtn">-</div>
+                        <input class="qty-input" type="text" 
+                        name="ec_qtybtn" 
+                        data-cart-id="{{ cart.id }}" 
+                        data-cart-change-url="{% url 'cart:cart_change' %}" 
+                        value="{{ cart.quantity }}" 
+                        readonly/>
+                        {% csrf_token %}
+                        <div class="inc ec_qtybtn">+</div>
+                    </div>
+                    <a href="{% url "cart:cart_remove" %}" class="remove remove-from-cart"
+                    data-cart-id="{{ cart.id }}"
+                    data-qty="{{ cart.quantity }}">
+                    {% csrf_token %}×</a>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            <p class="emp-cart-msg">Ваша корзина пуста</p>
+            <a class="btn btn-primary" href="{% url "catalog:search" "all" %}">Начать покупки</a>
+        {% endif %}
+    </div>
+    <div class="ec-cart-bottom">
+        <div class="cart-sub-total">
+            <table class="table cart-table">
+                <tbody>
+                    <tr>
+                        <td class="text-left">Цена без учёта скидки:</td>
+                        <td class="text-right">{{ carts.total_base_price }} ₽</td>
+                    </tr>
+                    <tr>
+                        <td class="text-left">Скидка:</td>
+                        <td class="text-right">-{{ carts.discount_amount }} ₽</td>
+                    </tr>
+                    <tr>
+                        <td class="text-left">Итог:</td>
+                        <td class="text-right primary-color">{{ carts.total_price }} ₽</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="cart_btn">
+            <a href="{% url "users:users_cart" %}" class="btn btn-primary">Подробнее</a>
+            <a href="checkout.html" class="btn btn-secondary">Оформить заказ</a>
+        </div>
+    </div>
+</div>

@@ -447,12 +447,12 @@ function ecCheckCookie()
     /*----------------------------- Sidekka And SideMenu -----------------------------------*/
     $("body").on("click", ".add-to-cart", function(){
 
-        $(".ec-cart-float").fadeIn();
+        // $(".ec-cart-float").fadeIn();
 
-        var count = $(".cart-count-lable").html();        
-        count++;
+        // var count = $(".cart-count-lable").html();        
+        // count++;
 
-        $(".cart-count-lable").html(count);
+        // $(".cart-count-lable").html(count);
 
         // Remove Empty message    
         $(".emp-cart-msg").parent().remove();        
@@ -462,23 +462,23 @@ function ecCheckCookie()
         }, 5000);
         
         // get an image url
-        var img_url = $(this).parents().parents().children(".image").find(".main-image").attr("src");
-        var p_name = $(this).parents().parents().parents().children(".ec-pro-content").children("h5").children("a").html();        
-        var p_price = $(this).parents().parents().parents().children(".ec-pro-content").children(".ec-price").children(".new-price").html();
+        // var img_url = $(this).parents().parents().children(".image").find(".main-image").attr("src");
+        // var p_name = $(this).parents().parents().parents().children(".ec-pro-content").children("h5").children("a").html();        
+        // var p_price = $(this).parents().parents().parents().children(".ec-pro-content").children(".ec-price").children(".new-price").html();
         
-        var p_html = '<li>'+
-                        '<a href="product-left-sidebar.html" class="sidekka_pro_img"><img src="'+ img_url +'" alt="product"></a>'+
-                        '<div class="ec-pro-content">'+
-                            '<a href="product-left-sidebar.html" class="cart_pro_title">'+ p_name +'</a>'+
-                        '<span class="cart-price"><span>'+ p_price +'</span> x 1</span>'+
-                            '<div class="qty-plus-minus"><div class="dec ec_qtybtn">-</div>'+
-                                '<input class="qty-input" type="text" name="ec_qtybtn" value="1">'+
-                            '<div class="inc ec_qtybtn">+</div></div>'+
-                            '<a href="javascript:void(0)" class="remove">×</a>'+
-                        '</div>'+
-                    '</li>';
+        // var p_html = '<li>'+
+        //                 '<a href="product-left-sidebar.html" class="sidekka_pro_img"><img src="'+ img_url +'" alt="product"></a>'+
+        //                 '<div class="ec-pro-content">'+
+        //                     '<a href="product-left-sidebar.html" class="cart_pro_title">'+ p_name +'</a>'+
+        //                 '<span class="cart-price"><span>'+ p_price +'</span> x 1</span>'+
+        //                     '<div class="qty-plus-minus"><div class="dec ec_qtybtn">-</div>'+
+        //                         '<input class="qty-input" type="text" name="ec_qtybtn" value="1">'+
+        //                     '<div class="inc ec_qtybtn">+</div></div>'+
+        //                     '<a href="javascript:void(0)" class="remove">×</a>'+
+        //                 '</div>'+
+        //             '</li>';
 
-        $('.eccart-pro-items').append(p_html);    
+        // $('.eccart-pro-items').append(p_html);    
         
     });
 
@@ -513,23 +513,23 @@ function ecCheckCookie()
             $ecMenuToggle.find("a").removeClass("close");
         });
 
-        $("body").on("click", ".ec-pro-content .remove", function(){
+        // $("body").on("click", ".ec-pro-content .remove", function(){
 
-        // $(".ec-pro-content .remove").on("click", function () {
+        // // $(".ec-pro-content .remove").on("click", function () {
             
-            var cart_product_count = $(".eccart-pro-items li").length;
+        //     var cart_product_count = $(".eccart-pro-items li").length;
             
-            $(this).closest("li").remove();
-            if (cart_product_count == 1) {
-                $('.eccart-pro-items').html('<li><p class="emp-cart-msg">Your cart is empty!</p></li>');
-            }
+        //     $(this).closest("li").remove();
+        //     if (cart_product_count == 1) {
+        //         $('.eccart-pro-items').html('<li><p class="emp-cart-msg">Your cart is empty!</p></li>');
+        //     }
 
-            var count = $(".cart-count-lable").html();            
-            count--;
-            $(".cart-count-lable").html(count);
+        //     var count = $(".cart-count-lable").html();            
+        //     count--;
+        //     $(".cart-count-lable").html(count);
 
-            cart_product_count--;
-        });    
+        //     cart_product_count--;
+        // });    
         
     })();
 
@@ -611,27 +611,27 @@ function ecCheckCookie()
     $('.zoom-image-hover').zoom();
 
     /*----------------------------- Qty Plus Minus Button  ------------------------------ */
-    var QtyPlusMinus = $(".qty-plus-minus");
-    QtyPlusMinus.prepend('<div class="dec ec_qtybtn">-</div>');
-    QtyPlusMinus.append('<div class="inc ec_qtybtn">+</div>');
+    // var QtyPlusMinus = $(".qty-plus-minus");
+    // QtyPlusMinus.prepend('<div class="dec ec_qtybtn">-</div>');
+    // QtyPlusMinus.append('<div class="inc ec_qtybtn">+</div>');
 
-    $("body").on("click", ".ec_qtybtn", function(){
+    // $("body").on("click", ".ec_qtybtn", function(){
 
-        // $(".ec_qtybtn").on("click", function() {
-        var $qtybutton = $(this);
-        var QtyoldValue = $qtybutton.parent().find("input").val();
-        if ($qtybutton.text() === "+") {
-            var QtynewVal = parseFloat(QtyoldValue) + 1;
-        } else {
+    //     // $(".ec_qtybtn").on("click", function() {
+    //     var $qtybutton = $(this);
+    //     var QtyoldValue = $qtybutton.parent().find("input").val();
+    //     if ($qtybutton.text() === "+") {
+    //         var QtynewVal = parseFloat(QtyoldValue) + 1;
+    //     } else {
 
-            if (QtyoldValue > 1) {
-                var QtynewVal = parseFloat(QtyoldValue) - 1;
-            } else {
-                QtynewVal = 1;
-            }
-        }
-        $qtybutton.parent().find("input").val(QtynewVal);
-    });
+    //         if (QtyoldValue > 1) {
+    //             var QtynewVal = parseFloat(QtyoldValue) - 1;
+    //         } else {
+    //             QtynewVal = 1;
+    //         }
+    //     }
+    //     $qtybutton.parent().find("input").val(QtynewVal);
+    // });
 
     /*----------------------------- Single Product Slider ---------------------------------*/
     var swiper = new Swiper(".single-product-slider", {
@@ -1347,23 +1347,23 @@ function ecCheckCookie()
     }
     
     /*----------------------------- Cart Page Qty Plus Minus Button  ------------------------------ */
-    var CartQtyPlusMinus = $(".cart-qty-plus-minus");
-    CartQtyPlusMinus.append('<div class="ec_cart_qtybtn"><div class="inc ec_qtybtn">+</div><div class="dec ec_qtybtn">-</div></div>');
-    $(".cart-qty-plus-minus .ec_cart_qtybtn .ec_qtybtn").on("click", function() {
-        var $cartqtybutton = $(this);
-        var CartQtyoldValue = $cartqtybutton.parent().parent().find("input").val();
-        if ($cartqtybutton.text() === "+") {
-            var CartQtynewVal = parseFloat(CartQtyoldValue) + 1;
-        } else {
+    // var CartQtyPlusMinus = $(".cart-qty-plus-minus");
+    // CartQtyPlusMinus.append('<div class="ec_cart_qtybtn"><div class="inc ec_qtybtn">+</div><div class="dec ec_qtybtn">-</div></div>');
+    // $(".cart-qty-plus-minus .ec_cart_qtybtn .ec_qtybtn").on("click", function() {
+    //     var $cartqtybutton = $(this);
+    //     var CartQtyoldValue = $cartqtybutton.parent().parent().find("input").val();
+    //     if ($cartqtybutton.text() === "+") {
+    //         var CartQtynewVal = parseFloat(CartQtyoldValue) + 1;
+    //     } else {
 
-            if (CartQtyoldValue > 1) {
-                var CartQtynewVal = parseFloat(CartQtyoldValue) - 1;
-            } else {
-                CartQtynewVal = 1;
-            }
-        }
-        $cartqtybutton.parent().parent().find("input").val(CartQtynewVal);
-    });
+    //         if (CartQtyoldValue > 1) {
+    //             var CartQtynewVal = parseFloat(CartQtyoldValue) - 1;
+    //         } else {
+    //             CartQtynewVal = 1;
+    //         }
+    //     }
+    //     $cartqtybutton.parent().parent().find("input").val(CartQtynewVal);
+    // });
 
     /*----------------------------- Cart  Shipping Toggle -------------------------------- */    
     $(document).ready(function(){

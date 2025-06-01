@@ -1,0 +1,14 @@
+<div class="ec-cart-summary">
+    <div>
+        <span class="text-left">Цена без учёта скидки:</span>
+        <span class="text-right">{{ carts.total_base_price }} ₽</span>
+    </div>
+    <div>
+        <span class="text-left">Скидка:</span>
+        <span class="text-right">-{{ carts.discount_amount }} ₽</span>
+    </div>
+    <div class="ec-cart-summary-total">
+        <span class="text-left">Итог:</span>
+        <span class="text-right">{{ carts.total_price }} ₽</span>
+    </div>
+</div>

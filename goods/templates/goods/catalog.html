@@ -161,9 +161,14 @@
                                                     <a href="compare.html" class="ec-btn-group compare"
                                                         title="Compare"><img src="{% static "assets/images/icons/compare.svg" %}"
                                                             class="svg_img pro_svg" alt="" /></a>
-                                                    <button title="Add To Cart" class=" add-to-cart"><img
-                                                            src="{% static "assets/images/icons/cart.svg" %}" class="svg_img pro_svg"
-                                                            alt="" /> Add To Cart</button>
+                                                    <a href="{% url "cart:cart_add" %}" 
+                                                        title="Add To Cart"
+                                                        class="btn add-to-cart"
+                                                        data-product-id="{{ product.id }}">
+                                                        {% csrf_token %}
+                                                        <img src="{% static "assets/images/icons/cart.svg" %}" 
+                                                            class="svg_img pro_svg" alt="" />
+                                                    </a>
                                                     <a class="ec-btn-group wishlist" title="Wishlist"><img
                                                             src="{% static "assets/images/icons/wishlist.svg" %}"
                                                             class="svg_img pro_svg" alt="" /></a>
@@ -230,7 +235,5 @@
             
         </div>
     </div>
-
-
         
 {% endblock %}
