@@ -1,8 +1,10 @@
+from django.db.models import Sum
 from django.http import HttpResponseRedirect
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib import auth, messages
 
+from carts.models import Cart
 from users.forms import UserLoginForm, UserRegistrationForm
 
 def login(request):
@@ -13,9 +15,38 @@ def login(request):
             password =  request.POST['password']
             user = auth.authenticate(username=username, password=password)
 
+            session_key=request.session.session_key
+
             if user:
                 auth.login(request, user)
                 messages.success(request, f"{username}, Вы вошли в аккаунт")
+
+                if session_key:
+                    new_carts = Cart.objects.filter(session_key=session_key)
+                    old_carts = Cart.objects.filter(user=user)
+                    products_from_new_carts = new_carts.values_list('product_id', flat=True)
+
+                    for product_id in products_from_new_carts:
+                        new_cart = new_carts.filter(product_id=product_id)
+                        forgot_cart =  old_carts.filter(product_id=product_id)
+
+                        new_quantity = new_cart.aggregate(Sum('quantity'))
+                        old_quantity = forgot_cart.aggregate(Sum('quantity'))
+
+                        if not old_quantity['quantity__sum']:
+                            old_quantity['quantity__sum'] = 0
+                        if not new_quantity['quantity__sum']:
+                            new_quantity['quantity__sum'] = 0
+
+                        quantity = new_quantity['quantity__sum'] + old_quantity['quantity__sum']
+
+                        if new_cart.exists() and forgot_cart.exists():
+                            forgot_cart.delete()
+
+                        neww = new_cart.update(user=user, session_key=None, quantity=quantity)
+                        print("старое количество", old_quantity['quantity__sum'], "новое количество", new_quantity['quantity__sum'], "общее количество", quantity)
+                        print("новая корзина", neww)
+
 
                 redirect_page = request.POST.get('next', None)
 
@@ -38,8 +69,13 @@ def registration(request):
         if form.is_valid():
             form.save()
 
+            session_key=request.session.session_key
+
             user = form.instance
             auth.login(request, user)
+
+            if session_key:
+                Cart.objects.filter(session_key=session_key).update(user=user)
 
             messages.success(request, f"{user.username}, Вы успешно зарегистрировались и вошли в аккаунт")
             return HttpResponseRedirect(reverse('user:profile'))
