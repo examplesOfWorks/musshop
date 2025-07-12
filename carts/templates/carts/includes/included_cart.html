@@ -31,6 +31,7 @@
                                         <span class="amount">{{ cart.product.price }} ₽</span>
                                     {% endif %}
                                 </td>
+                                {% if show_btn %}
                                 <td data-label="Quantity" class="ec-cart-pro-qty"
                                     style="text-align: center;">
                                     <div class="cart-qty-plus-minus">
@@ -47,13 +48,20 @@
                                         </div>
                                     </div>
                                 </td>
+                                {% else %}
+                                 <td data-label="Quantity" class="ec-cart-pro-subtotal" style="text-align: center;">
+                                    {{ cart.quantity }} шт.
+                                </td>
+                                {% endif %}
                                 <td data-label="Total" class="ec-cart-pro-subtotal">{{ cart.products_price }} ₽</td>
+                                {% if show_btn %}
                                 <td data-label="Remove" class="ec-cart-pro-remove">
                                     <a href="{% url "cart:cart_remove" %}" class="remove-from-cart" 
                                     data-cart-id="{{ cart.id }}">
                                     {% csrf_token %}
                                     <i class="ecicon eci-trash-o"></i></a>
                                 </td>
+                                {% endif %}
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -63,7 +71,9 @@
                     <div class="col-lg-12">
                         <div class="ec-cart-update-bottom">
                             <a href="{% url "catalog:search" "all" %}">Продолжить покупки</a>
-                            <button class="btn btn-primary">Оформить заказ</button>
+                            {% if show_btn %}
+                            <a href="{% url "orders:create_order" %}" class="btn btn-primary text-white text-decoration-none">Оформить заказ</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

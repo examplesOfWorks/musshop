@@ -50,7 +50,7 @@
      <link rel="stylesheet" id="bg-switcher-css" href="{% static "assets/css/custom/custom.css" %}">
      
  </head>
- <body>
+ <body {% if body_class %} class="{{ body_class }}"{% endif %}>
      <div id="ec-overlay"><span class="loader_img"></span></div>
  
      <!-- Header start  -->

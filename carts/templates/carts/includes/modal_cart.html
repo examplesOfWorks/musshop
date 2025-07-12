@@ -46,6 +46,7 @@
             <a class="btn btn-primary" href="{% url "catalog:search" "all" %}">Начать покупки</a>
         {% endif %}
     </div>
+    {% if carts %}
     <div class="ec-cart-bottom">
         <div class="cart-sub-total">
             <table class="table cart-table">
@@ -54,10 +55,12 @@
                         <td class="text-left">Цена без учёта скидки:</td>
                         <td class="text-right">{{ carts.total_base_price }} ₽</td>
                     </tr>
+                    {% if  carts.discount_amount %}
                     <tr>
                         <td class="text-left">Скидка:</td>
                         <td class="text-right">-{{ carts.discount_amount }} ₽</td>
                     </tr>
+                    {% endif %}
                     <tr>
                         <td class="text-left">Итог:</td>
                         <td class="text-right primary-color">{{ carts.total_price }} ₽</td>
@@ -67,7 +70,8 @@
         </div>
         <div class="cart_btn">
             <a href="{% url "users:users_cart" %}" class="btn btn-primary">Подробнее</a>
-            <a href="checkout.html" class="btn btn-secondary">Оформить заказ</a>
+            <a href="{% url "orders:create_order" %}" class="btn btn-secondary">Оформить заказ</a>
         </div>
     </div>
+    {% endif %}
 </div>

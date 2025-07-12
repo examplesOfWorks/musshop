@@ -1,5 +1,6 @@
 $(document).ready(function () {
     var infoMessage = $(".recent-purchase");
+    const phoneInput = document.getElementById('id_phone_number');
     
     /*----------------------------- Добавление товара в корзину со страницы каталога ------------------------------ */
     $(document).on("click", ".ec-pro-actions .add-to-cart", function (e) {
@@ -244,4 +245,125 @@ $(document).ready(function () {
             },
         });
     });
+
+    /*----------------------------- Форматирование номера телефона  ------------------------------ */
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function (e) {
+            var digits = e.target.value.replace(/\D/g, '').replace(/^7/, '');
+
+            if (digits.startsWith('7') || digits.startsWith('8')) {
+                digits = digits.slice(1);
+            }
+        
+            var x = digits.match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+
+            e.target.value = '+7(' + (
+                !x[2] 
+                    ? x[1]
+                    : x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '')
+            );
+        });
+    }
+
+      /*----------------------------- Показ и скрытие поля для адреса доставки  ------------------------------ */
+    $("#id_delivery_address_field").hide();
+    $("#id_plus_delivery").hide();
+
+    $("input[name='delivery_method']").change(function () {
+        var selectedValue = $(this)
+
+        var baseTotal = parseFloat($("#id_total_price").data("price").replace(",", "."));
+        var totalprice = parseFloat($("#id_total_price").text().replace(",", "."));
+        
+        if (selectedValue.data("option") === "False") {
+            $("#id_delivery_address_field").hide();
+            $("#id_plus_delivery").hide();
+            
+            if (totalprice > baseTotal) {
+                totalprice = baseTotal
+            }
+            
+        } else {
+            $("#id_delivery_address_field").show();
+            $("#id_plus_delivery").show();
+            
+            var deliveryPrice = parseFloat($("#id_plus_delivery").data("delivery").replace(",", "."));
+            totalprice = baseTotal + deliveryPrice;
+        }
+        $("#id_total_price").text(totalprice.toFixed(2).replace(".", ",") + " ₽");
+    
+    });
+
+    /*----------------------------- Создание заказа  ------------------------------ */
+    $(document).on("click", "#id_create_order_button", function (e) {
+
+        var phoneNumber = $('#id_phone_number').val();
+        var regex = /^\+7\(\d{3}\) \d{3}-\d{4}$/;
+    
+        if (!regex.test(phoneNumber)) {
+
+            $('#phone_number_error').show();
+            e.preventDefault();
+
+        } else {
+
+            $('#phone_number_error').hide();
+
+            let allData = [];
+
+            allData = allData.concat($("#id_user_info_form").serializeArray());
+            allData = allData.concat($("#id_delivery_form").serializeArray());
+            allData = allData.concat($("#id_payment_form").serializeArray());
+
+            var url = $('#create_order_form').attr('action');
+
+            createOrder(allData, url);
+        }
+    });
+
+    function createOrder(allData, url) {
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: $.param(allData),
+            
+            success: function (data) {
+                if (data.redirect_url) {
+                    window.location.href = data.redirect_url;
+                }
+            },
+            error: function (xhr) {
+
+            $('.form-error').remove();
+
+                if (xhr.responseJSON) {
+                    const allErrors = {
+                        ...xhr.responseJSON.user_errors,
+                        ...xhr.responseJSON.delivery_errors,
+                        ...xhr.responseJSON.payment_errors,
+                    };
+
+                    for (const [field, msgs] of Object.entries(allErrors)) {
+                        const $input = $(`[name="${field}"]`);
+                        if ($input.length) {
+                            $('<div class="form-error alert alert-danger">')
+                                .text(msgs.join(', '))
+                                .insertAfter($input);
+                        }
+                    }
+                }
+
+                if (xhr.responseJSON.message) {
+                    $("#recent-notification").html(xhr.responseJSON.message);
+                    infoMessage.removeClass("invisible")
+    
+                    setTimeout(function () {
+                        infoMessage.addClass("invisible");
+                    }, 4000);
+    
+                }
+            },
+        });
+    }
+        
 });

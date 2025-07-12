@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+{% load static %}
+{% load carts_tags %}
+
+{% block content %}
+
+    <!-- Ec breadcrumb start -->
+    {% block breadcrumb %}
+        {% include "includes/breadcrumb.html" %}
+    {% endblock  %}
+    <!-- Ec breadcrumb end -->
+ 
+    <!-- Ec checkout page -->
+    <section class="ec-page-content section-space-p">
+        <div class="container">
+            <div class="row">
+                <div class="ec-checkout-leftside col-lg-8 col-md-12 ">
+                    <!-- checkout content Start -->
+                    <div class="ec-checkout-content">
+                        <div class="ec-checkout-inner">
+                            <div class="ec-checkout-wrap margin-bottom-30">
+                                {% user_carts request as carts %}
+                                {% include "carts/includes/included_cart.html" %}
+                            </div>
+                            <div class="ec-checkout-wrap margin-bottom-30 padding-bottom-3">
+                                <div class="ec-checkout-block ec-check-bill">
+                                    <h3 class="ec-checkout-title">Детали заказа</h3>
+                                    <div class="ec-bl-block-content">
+                                    
+                                        <div class="ec-check-bill-form">
+                                            <form action="{% url 'orders:create_order' %}" method="post" id="id_user_info_form">
+                                                {% csrf_token %}
+                                                <span class="ec-bill-wrap ec-bill-half">
+                                                    <label for="id_first_name">{{ user_info.first_name.label }}</label>
+                                                    <input type="text" 
+                                                        id="id_first_name"
+                                                        value="{% if user_info.first_name.value %}{{ user_info.first_name.value }}{% endif %}"
+                                                        name="first_name"
+                                                        placeholder="Введите имя..." required />
+                                                </span>
+                                                <span class="ec-bill-wrap ec-bill-half">
+                                                    <label for="id_last_name">{{ user_info.last_name.label }}</label>
+                                                    <input type="text" name="last_name"  id="id_last_name" 
+                                                        value="{% if user_info.last_name.value %}{{ user_info.last_name.value }}{% endif %}"  
+                                                        placeholder="Введите фамилию..." required />
+                                                </span>
+                                                <span class="ec-bill-wrap" id="id_delivery_address_field">
+                                                    <label>{{ delivery_info.delivery_address.label }}</label>
+                                                    <input type="text" name="delivery_address" id="id_delivery_address"
+                                                    value="{% if delivery_info.delivery_address.value %}{{ delivery_info.delivery_address.value }}{% endif %}"    
+                                                    placeholder="Введите адрес..." required />
+                                                    <div class="alert alert-danger alert-dismissible fade show" style="display: none" id="delivery_address_error">Введите адрес доставки</div>
+                                                </span>
+                                                <span class="ec-bill-wrap ec-bill-half">
+                                                    <label for="id_email">{{ user_info.email.label }}</label>
+                                                    <input type="email" id="id_email"
+                                                    name="email"
+                                                    value="{% if user_info.email.value %}{{ user_info.email.value }}{% endif %}"
+                                                    placeholder="Введите email..." />
+                                                </span>
+                                                <span class="ec-bill-wrap ec-bill-half">
+                                                    <label for="id_phone_number">{{ user_info.phone_number.label }}</label>
+                                                    <input type="text" id="id_phone_number"
+                                                    name="phone_number"
+                                                    value="{% if user_info.phone_number.value %}{{ user_info.phone_number.value }}{% else %}+7({% endif %}"
+                                                    required />
+                                                    <div class="alert alert-danger alert-dismissible fade show" style="display: none" id="phone_number_error">Неверный формат номера</div>
+                                                </span>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="ec-check-order-btn">
+                                <button type="submit" class="btn btn-primary" id="id_create_order_button">Оформить заказ</button>
+                            </span>
+                        </div>
+                    </div>
+                    <!--cart content End -->
+                </div>
+                <!-- Sidebar Area Start -->
+                <div class="ec-checkout-rightside col-lg-4 col-md-12">
+                    <div class="ec-sidebar-wrap">
+                        <!-- Sidebar Summary Block -->
+                        <div class="ec-sidebar-block">
+                            <div class="ec-sb-title">
+                                <h3 class="ec-sidebar-title">Итог</h3>
+                            </div>
+                            <div class="ec-sb-block-content">
+                                <div class="ec-checkout-summary">
+                                    {% include "carts/includes/total.html" %}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Sidebar Summary Block -->
+                    </div>
+                    <div class="ec-sidebar-wrap ec-checkout-del-wrap">
+                        <!-- Sidebar Summary Block -->
+                        <div class="ec-sidebar-block">
+                            <div class="ec-sb-title">
+                                <h3 class="ec-sidebar-title">Способ получения</h3>
+                            </div>
+                            <div class="ec-sb-block-content">
+                                <div class="ec-checkout-del">
+                                    <div class="ec-del-desc">Пожалуйста, выберите способ получения.</div>
+                                    <form action="{% url 'orders:create_order' %}" method="post" id="id_delivery_form">
+                                        {% csrf_token %}
+                                        <span class="ec-del-option">
+                                            {% for delivery_option in delivery_options %}
+                                            <span>
+                                                {% if delivery_option.is_active == False %}
+
+                                                    <span class="ec-del-opt-head" style="opacity: 0.5;">{{ delivery_option.name }}</span>
+                                                    <span style="opacity: 0.5;">(недоступно)</span>
+                                                    <input style="opacity: 0.5;" type="radio" id="{{ delivery_option.id }}" data-option="{{ delivery_option.required_address }}"
+                                                        value="{{ delivery_option.id }}"
+                                                        name="delivery_method"
+                                                        disabled>
+                                                    <label style="opacity: 0.5;" for="{{ delivery_option.id }}">{{ delivery_option.price }} ₽</label>
+                                                
+                                                {% else %}
+                                                
+                                                    <span class="ec-del-opt-head">{{ delivery_option.name }}</span>
+                                                    <input type="radio" id="{{ delivery_option.id }}" data-option="{{ delivery_option.required_address }}"
+                                                        value="{{ delivery_option.id }}"
+                                                        name="delivery_method"
+                                                        {% if delivery_option.id == default_delivery_id %}checked{% endif %}>
+                                                    <label for="{{ delivery_option.id }}">{{ delivery_option.price }} ₽</label>
+
+                                                {% endif %}
+                                            </span>
+                                            {% endfor %}
+                                        </span>
+                                        <span class="ec-del-commemt">
+                                            <span class="ec-del-opt-head">{{ delivery_info.delivery_comment.label }}</span>
+                                            <textarea name="delivery_comment" id="id_delivery_comment"
+                                            value="{% if delivery_info.delivery_comment.value %}{{ delivery_info.delivery_comment.value }}{% endif %}"
+                                            placeholder="Комментарий..."></textarea>
+                                        </span>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Sidebar Summary Block -->
+                    </div>
+                    <div class="ec-sidebar-wrap ec-checkout-pay-wrap">
+                        <!-- Sidebar Payment Block -->
+                        <div class="ec-sidebar-block">
+                            <div class="ec-sb-title">
+                                <h3 class="ec-sidebar-title">Способ оплаты</h3>
+                            </div>
+                            <div class="ec-sb-block-content">
+                                <div class="ec-checkout-pay">
+                                    <div class="ec-pay-desc">Пожалуйста, выберите способ оплаты.</div>
+                                    <form action="{% url 'orders:create_order' %}" method="post" id="id_payment_form">
+                                        <span class="ec-pay-option">
+                                            <span>
+                                                <input type="radio" id="id_payment_on_get" name="payment_on_get" value="0" checked>
+                                                <label for="id_payment_on_get">Оплата при получении</label>
+                                            </span>
+                                            <span>
+                                                <input type="radio" id="id_payment_on_cart" name="payment_on_get" value="1">
+                                                <label for="id_payment_on_cart">Оплата картой</label>
+                                            </span>
+                                        </span>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

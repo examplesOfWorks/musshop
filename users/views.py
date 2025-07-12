@@ -43,10 +43,7 @@ def login(request):
                         if new_cart.exists() and forgot_cart.exists():
                             forgot_cart.delete()
 
-                        neww = new_cart.update(user=user, session_key=None, quantity=quantity)
-                        print("старое количество", old_quantity['quantity__sum'], "новое количество", new_quantity['quantity__sum'], "общее количество", quantity)
-                        print("новая корзина", neww)
-
+                        new_cart.update(user=user, session_key=None, quantity=quantity)
 
                 redirect_page = request.POST.get('next', None)
 
@@ -98,6 +95,7 @@ def profile(request):
 def users_cart(request):
     context = {
         'title': 'Корзина',
+        'show_btn': True,
     }
     return render(request, 'users/users_cart.html', context)
 

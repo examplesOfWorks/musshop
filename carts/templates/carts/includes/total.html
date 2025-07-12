@@ -1,14 +1,21 @@
-<div class="ec-cart-summary">
-    <div>
-        <span class="text-left">Цена без учёта скидки:</span>
-        <span class="text-right">{{ carts.total_base_price }} ₽</span>
+<div>
+    <span class="text-left">Цена без учёта скидки:</span>
+    <span class="text-right">{{ carts.total_base_price }} ₽</span>
+</div>
+{% if  carts.discount_amount %}
+<div>
+    <span class="text-left">Скидка:</span>
+    <span class="text-right">-{{ carts.discount_amount }} ₽</span>
+</div>
+{% endif %}
+{% if not show_btn %}
+    <div id="id_plus_delivery" data-delivery="{{ del_price }}">
+        <span class="text-left">Доставка:</span>
+        <span class="text-right">{{ del_price }} ₽</span>
     </div>
-    <div>
-        <span class="text-left">Скидка:</span>
-        <span class="text-right">-{{ carts.discount_amount }} ₽</span>
-    </div>
-    <div class="ec-cart-summary-total">
-        <span class="text-left">Итог:</span>
-        <span class="text-right">{{ carts.total_price }} ₽</span>
-    </div>
+{% endif %}
+
+<div class="ec-cart-summary-total">
+    <span class="text-left">Итог:</span>
+    <span class="text-right" id="id_total_price" data-price="{{ carts.total_price }}">{{ carts.total_price }} ₽</span>
 </div>

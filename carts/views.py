@@ -83,7 +83,7 @@ def cart_change(request):
 
     finally:
 
-        context = {"carts": user_cart}
+        context = {"carts": user_cart, 'show_btn': True, 'title': 'Корзина'}
 
         cart_items_html = render_to_string(
             "carts/includes/included_cart.html", context, request=request)
@@ -125,7 +125,7 @@ def cart_remove(request):
         message = "Позиция ранее уже была удалена"
 
     finally:
-        context = {"carts": user_cart}
+        context = {"carts": user_cart, 'show_btn': True, 'title': 'Корзина'}
 
         cart_items_html = render_to_string(
             "carts/includes/included_cart.html", context, request=request)
@@ -143,7 +143,8 @@ def cart_remove(request):
             "total": total,
             "quantity_deleted": quantity,
             "message": message,
-            "qty": qty
+            "qty": qty,
+            "show_btn": True,
         }
 
     return JsonResponse(response_data)
