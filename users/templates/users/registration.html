@@ -58,7 +58,7 @@
                                 <span class="ec-register-wrap ec-register-half">
                                     <label for="id_phone_number">Номер телефона*</label>
                                     <input type="text" id="id_phone_number"
-                                    value="{% if form.phone_number.value %}{{ form.phone_number.value }}{% else %}+7{% endif %}"
+                                    value="{% if form.phone_number.value %}{{ form.phone_number.value }}{% else %}+7({% endif %}"
                                     name="phone_number" placeholder="Введите номер телефона..."
                                     required />
                                     {% if form.phone_number.errors %}

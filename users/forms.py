@@ -29,3 +29,10 @@ class UserRegistrationForm(UserCreationForm):
     phone_number = forms.CharField()
     password1 = forms.CharField()
     password2 = forms.CharField()
+
+    def clean_phone_number(self):
+        phone = self.cleaned_data.get('phone_number')
+        digits = ''.join(filter(str.isdigit, phone))
+        if digits.startswith(('7', '8')):
+            digits = digits[1:]
+        return f'+7{digits}'
