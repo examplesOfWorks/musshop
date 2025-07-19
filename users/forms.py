@@ -36,3 +36,20 @@ class UserRegistrationForm(UserCreationForm):
         if digits.startswith(('7', '8')):
             digits = digits[1:]
         return f'+7{digits}'
+    
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = (
+            "first_name",
+            "last_name",
+            "username",
+            "email",
+            "phone_number",
+        )
+
+    first_name = forms.CharField(label="Имя")
+    last_name = forms.CharField(label="Фамилия")
+    username = forms.CharField(label="Логин")
+    email = forms.CharField(label="Email")
+    phone_number = forms.CharField(label="Номер телефона")

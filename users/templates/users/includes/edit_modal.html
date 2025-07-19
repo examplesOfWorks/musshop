@@ -1,0 +1,67 @@
+{% load static %}
+<!-- Modal -->
+<div class="modal fade" id="edit_modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="ec-vendor-block-img space-bottom-30">
+                        <div class="ec-vendor-block-detail">
+                            <div class="thumb-upload">
+                                <div class="thumb-edit">
+                                    <input type='file' id="thumbUpload02" class="ec-image-upload"
+                                        accept=".png, .jpg, .jpeg" />
+                                    <label><img src= "{% static "assets/images/icons/edit.svg" %}"
+                                            class="svg_img header_svg" alt="edit" /></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ec-vendor-upload-detail">
+                            <form id="updateForm" class="row g-3" method="post">
+                                {% csrf_token %}
+                                <div class="col-md-12 space-t-15">
+                                    <label class="form-label">{{ form.username.label }}</label>
+                                    <input type="text" name="username" id="id_username"
+                                    value="{% if form.username.value %}{{ form.username.value }}{% endif %}" 
+                                    class="form-control">
+                                </div>
+                                <div class="col-md-6 space-t-15">
+                                    <label class="form-label">{{ form.first_name.label }}</label>
+                                    <input type="text" name="first_name" id="id_first_name"
+                                    value="{% if form.first_name.value %}{{ form.first_name.value }}{% endif %}"
+                                    class="form-control">
+                                </div>
+                                <div class="col-md-6 space-t-15">
+                                    <label class="form-label">{{ form.last_name.label }}</label>
+                                    <input type="text" name="last_name" id="id_last_name"
+                                    value="{% if form.last_name.value %}{{ form.last_name.value }}{% endif %}" 
+                                    class="form-control">
+                                </div>
+                                <div class="col-md-6 space-t-15">
+                                    <label class="form-label">{{ form.email.label }}</label>
+                                    <input type="text" name="email" id="id_email"
+                                        value="{% if form.email.value %}{{ form.email.value }}{% endif %}" 
+                                        class="form-control">
+                                </div>
+                                <div class="col-md-6 space-t-15">
+                                    <label class="form-label">{{ form.phone_number.label }}</label>
+                                    <input type="text" name="phone_number" id="id_phone_number"
+                                        value="{% if form.phone_number.value %}{{ form.phone_number.value }}{% endif %}" 
+                                        class="form-control">
+                                </div>
+                                <div class="col-md-12 space-t-15">
+                                    <button type="submit" class="btn btn-primary">Обновить</button>
+                                    <a href="#" class="btn btn-lg btn-secondary
+                                        qty_close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close">Закрыть</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal end -->

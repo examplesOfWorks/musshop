@@ -365,5 +365,47 @@ $(document).ready(function () {
             },
         });
     }
+
+    /*----------------------------- Редактирование профиля  ------------------------------ */
+    $('#updateForm').on('submit', function (e) {
+        e.preventDefault();
+    
+        var formData = new FormData(this);
+
+        $.ajax({
+            url: "/user/update-profile/",
+            type: "POST",
+            data: formData,
+            headers: {
+                "X-Requested-With": "XMLHttpRequest"
+              },
+            contentType: false,
+            processData: false,
+            success: function (data) {
+
+                if (data.success) {
+                    setTimeout(() => {
+                        $('#edit_modal').modal('hide');
+                        location.reload();
+                      }, 100);
+                }
+            },
+            error: function (data) {
+
+                const errors = data.responseJSON.errors;
+                $('.form-error').remove();
+
+                for (let field in errors) {
+                    const messages = errors[field];
+                    const $input = $(`[name="${field}"]`);
+                    if ($input.length) {
+                        $('<div class="form-error alert alert-danger mt-1">')
+                        .html(messages.map(msg => `<div>${msg}</div>`).join(''))
+                        .insertAfter($input);
+                    }
+                }
+            },
+        });
+    });
         
 });
