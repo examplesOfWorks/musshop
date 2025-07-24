@@ -1,8 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
 from django.core.exceptions import ValidationError
+from django.core.paginator import Paginator
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
 from carts.models import Cart
@@ -77,7 +78,7 @@ def create_order(request):
 
                     cart_items.delete()
 
-                    return JsonResponse({'redirect_url': reverse('user:profile')})
+                    return JsonResponse({'redirect_url': reverse('user:order_history')})
             except ValidationError as e:
                 return JsonResponse({'success': False, 'message': e.message}, status=400)
         
@@ -112,3 +113,39 @@ def create_order(request):
         'payment_info': payment_info,
     }
     return render(request, 'orders/create_order.html', context)
+
+def order_history(request):
+    page = request.GET.get('page', 1)
+
+    user = request.user
+    orders = Order.objects.filter(user=user).order_by('-created_timestamp')
+    
+    paginator = Paginator(orders, 3)
+    current_page = paginator.page(int(page))
+
+    context = {
+        'title': 'История заказов',
+        'body_class': 'shop_page',
+        'orders': current_page,
+        'all_orders': orders,
+    }
+    return render(request, 'orders/order_history.html', context)
+
+def order_detail(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    order_items = OrderItem.objects.filter(order=order)
+    items_sum = sum(order_item.price * order_item.quantity for order_item in order_items)
+    context = {
+        'title': 'Состав заказа',
+        'body_class': 'shop_page',
+        'order': order,
+        'order_items': order_items,
+        'items_sum': items_sum,
+    }
+    return render(request, 'orders/order_detail.html', context)
+
+def order_delete(request):
+    order_id = request.POST.get('order_id')
+    order = get_object_or_404(Order, id=order_id, user=request.user, status='processing')
+    order.delete()
+    return redirect('orders:order_history')

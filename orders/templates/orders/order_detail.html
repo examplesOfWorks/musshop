@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% load static %}
+{% load order_tags %}
+
+{% block content %}
+<!-- Ec breadcrumb start -->
+{% block breadcrumb %}
+{% include "includes/breadcrumb.html" %}
+{% endblock  %}
+<!-- Ec breadcrumb end -->
+
+<!-- Order detail section Start -->
+<section class="ec-page-content ec-vendor-uploads ec-user-account section-space-p">
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar Area Start -->
+            {% include "users/includes/sidebar.html" %}
+            <!-- Sidebar Area End -->
+            <div class="ec-shop-rightside col-lg-9 col-md-12">
+                <div class="ec-vendor-dashboard-card">
+                    <div class="ec-vendor-card-header">
+                        <h5>Заказ № {{ order.id }}</h5>
+                        <div class="ec-header-btn">
+                            <a class="btn btn-lg btn-primary" onclick="window.history.back();">Назад</a>
+                        </div>
+                    </div>
+                    <div class="ec-vendor-card-body padding-b-0">
+                        <div class="page-content">
+                            <div class="container px-0">
+                                <div class="row mt-4">
+                                    <div class="col-lg-12">
+                                        <hr class="row brc-default-l1 mx-n1 mb-4" />
+
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="my-2">
+                                                    <span class="text-sm text-grey-m2 align-middle">Дата создания: </span>
+                                                    <span class="text-600 text-110 text-blue align-middle">{{ order.created_timestamp }}</span>
+                                                </div>
+                                                <div class="text-grey-m2">
+                                                    <div class="my-2">
+                                                        <b>{{ order.delivery_method.name }}</b>
+                                                    </div>
+                                                    {% if order.delivery_address %}
+                                                    <div class="my-2">
+                                                        <b class="text-600">Адрес: </b>{{ order.delivery_address }}
+                                                    </div>
+                                                    {% endif %}
+                                                    <div class="my-2"><b class="text-600">Телефон: </b>{{ order.phone_number }}
+                                                    </div>
+                                                    <div class="my-2"><b class="text-600">Email: </b>{{ order.email }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- /.col -->
+
+                                            <div
+                                                class="text-95 col-sm-6 align-self-start d-sm-flex justify-content-end">
+                                                <hr class="d-sm-none" />
+                                                <div class="text-grey-m2">
+                                                    <div class="my-2"><b>{{order.get_status_display}}</b></div>
+                                                    <div class="my-2">
+                                                        <b>{% if order.is_paid %}Оплачено{% else %}Неоплачено{% endif %}</b>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- /.col -->
+                                        </div>
+
+                                        <div class="mt-4">
+
+                                            <div class="text-95 text-secondary-d3">
+                                                <div class="ec-vendor-card-table">
+                                                    <table class="table ec-table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col"></th>
+                                                                <th scope="col">Наименование</th>
+                                                                <th scope="col">Количество</th>
+                                                                <th scope="col">Цена</th>
+                                                                <th scope="col">Сумма</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for item in order_items %}
+                                                            <tr>
+                                                                <th><span>{{ forloop.counter }}</span></th>
+                                                                <td><span>{{ item.product.name }}</span></td>
+                                                                <td><span>{{ item.quantity }} шт.</span></td>
+                                                                <td><span>{{ item.price }} ₽</span></td>
+                                                                <td><span>{{ item.price|item_total:item.quantity|floatformat:2  }} ₽</span></td>
+                                                            </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td class="border-none" colspan="3">
+                                                                    <span></span></td>
+                                                                <td class="border-color" colspan="1">
+                                                                    <span><strong>Сумма:</strong></span></td>
+                                                                <td class="border-color">
+                                                                    <span>{{ items_sum }} ₽</span></td>
+                                                            </tr>
+                                                            {% if order.delivery_method.price > 0 %}
+                                                            <tr>
+                                                                <td class="border-none" colspan="3">
+                                                                    <span></span></td>
+                                                                <td class="border-color" colspan="1">
+                                                                    <span><strong>Доставка:</strong></span></td>
+                                                                <td class="border-color">
+                                                                    <span>{{ order.delivery_method.price }}</span></td>
+                                                            </tr>
+                                                            {% endif %}
+                                                            <tr>
+                                                                <td class="border-none" colspan="3">
+                                                                    <span></span></td>
+                                                                <td class="border-color m-m15"
+                                                                    colspan="1"><span><strong>Итог:</strong></span>
+                                                                </td>
+                                                                <td class="border-color m-m15">
+                                                                    <span>{{ items_sum|order_total:order.delivery_method.price|floatformat:2  }} ₽</span></td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Order detail section End -->
+
+
+{% endblock %}
+

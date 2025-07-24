@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% load static %}
+{% load order_tags %}
+
+{% block content %}
+<!-- Ec breadcrumb start -->
+{% block breadcrumb %}
+{% include "includes/breadcrumb.html" %}
+{% endblock  %}
+<!-- Ec breadcrumb end -->
+
+<section class="ec-page-content ec-vendor-uploads ec-user-account section-space-p">
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar Area Start -->
+            {% include "users/includes/sidebar.html" %}
+            <!-- Sidebar Area End -->
+            <!-- Order history Area Start -->
+            <div class="ec-shop-rightside col-lg-9 col-md-12">
+                <div class="ec-vendor-dashboard-card">
+                    <div class="ec-vendor-card-header">
+                        <h5>История заказов</h5>
+                        <div class="ec-header-btn">
+                            <a class="btn btn-lg btn-primary" href="{% url "catalog:search" "all" %}">Перейти к покупкам</a>
+                        </div>
+                    </div>
+                    {% if orders %}
+                    <div class="ec-vendor-card-body">
+                        <div class="ec-vendor-card-table">
+                            <table class="table ec-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">№ заказа</th>
+                                        <th scope="col">Дата</th>
+                                        <th scope="col">Стоимость позиций</th>
+                                        <th scope="col">Способ доставки</th>
+                                        <th scope="col">Итоговая стоимость</th>
+                                        <th scope="col">Статус</th>
+                                        <th scope="col">Оплата</th>
+                                        <th scope="col">Действия</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for order in orders %}
+                                    <tr>
+                                        <th scope="row"><span>{{ order.id }}</span></th>
+                                        <td><span>{{ order.created_timestamp }}</span></td>
+                                        <td><span>{{ order|items_sum }} ₽</span></td>
+                                        <td><span>{{ order.delivery_method.name }}</span></td>
+                                        <td><span>{{ order|items_sum|add_delivery:order.delivery_method.price|floatformat:"2" }} ₽</span></td>
+                                        <td><span>{{ order.get_status_display }}</span></td>
+                                        <td><span>{% if order.is_paid %}Оплачено{% else %}Неоплачено{% endif %}</span></td>
+                                        <td><span class="tbl-btn"><a class="btn btn-lg btn-primary"
+                                                    href="{% url 'orders:order_detail' order.id %}">Просмотр</a></span>
+                                            {% if order.status == 'processing' %}
+                                            <span class="tbl-btn">
+                                                <button type="button" class="btn btn-lg btn-danger" data-bs-toggle="modal" 
+                                                    data-bs-target="#confirmDeleteModal" data-order-id="{{ order.id }}">
+                                                    Отмена
+                                                </button>
+                                            </span> 
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="ec-vendor-card-body">
+                        <p>Здесь пока нет заказов</p>
+                    </div>
+                    {% endif %}
+                </div>
+                {% if orders %}
+                <!-- Ec Pagination Start -->
+                <div class="ec-pro-pagination justify-content-end">
+                    <ul class="ec-pro-pagination-inner">
+                        <li><a class="next {% if not orders.has_previous %} disabled {% endif %}"
+                            href="{% if orders.has_previous %}?{% change_params page=orders.previous_page_number %}
+                            {% else %}
+                            #
+                            {% endif %}"><i class="ecicon eci-angle-left"></i>&nbspНазад</a></li>
+                            {% for page in orders.paginator.page_range %}
+                                {% if page >= orders.number|add:-2 and page <= orders.number|add:2 %}
+                                <li><a class="{% if orders.number == page %} active {% endif %}" href="?{% change_params page=page %}">
+                                    {{ page }}</a>
+                                </li>
+                                {% endif %}
+                            {% endfor %}
+
+                        <li><a class="next {% if not orders.has_next %} disabled {% endif %}" 
+                            href="{% if orders.has_next %}?{% change_params page=orders.next_page_number %}
+                            {% else %}
+                            #
+                            {% endif %}">Далее <i class="ecicon eci-angle-right"></i></a></li>
+                    </ul>
+                </div>
+                <!-- Ec Pagination End -->
+                {% endif %}
+            </div>
+            <!-- Order history Area End -->
+        </div>
+    </div>
+</section>
+
+<!-- Modal start -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{% url 'orders:order_delete' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="order_id" id="modalOrderId">
+                <div class="modal-header">
+                <h5 class="modal-title">Подтверждение удаления</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <p id="modalOrderText">Вы уверены, что хотите отменить заказ?</p>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <button type="submit" class="btn btn-danger">Отменить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal end -->
+
+{% endblock %}

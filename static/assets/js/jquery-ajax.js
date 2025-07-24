@@ -407,5 +407,15 @@ $(document).ready(function () {
             },
         });
     });
+
+    /*----------------------------- Подтверждение удаления заказа  ------------------------------ */
+    $('#confirmDeleteModal').on('show.bs.modal', function (event) {
+        const button = $(event.relatedTarget);
+        const orderId = button.data('order-id');
+
+        $('#modalOrderId').val(orderId);
+ 
+        $('#modalOrderText').text(`Вы уверены, что хотите отменить заказ №${orderId}?`);
+    });
         
 });
