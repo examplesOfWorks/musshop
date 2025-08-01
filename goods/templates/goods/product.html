@@ -104,9 +104,13 @@
                                                 class="btn btn-primary add-to-cart">{% csrf_token %} Добавить в корзину</a>
                                             </div>
                                             <div class="ec-single-wishlist">
-                                                <a class="ec-btn-group wishlist" title="Wishlist"><img
-                                                        src="{% static "assets/images/icons/wishlist.svg" %}" class="svg_img pro_svg"
-                                                        alt="" /></a>
+                                                <a href="{% url "user:wishlist_add" %}"
+                                                    data-product-id="{{ product.id }}"
+                                                    data-in-wishlist="{{ in_wishlist }}"
+                                                    class="ec-btn-group wishlist {% if in_wishlist %} active {% endif %}" 
+                                                    title="Избранное">
+                                                    <img src="{% static "assets/images/icons/wishlist.svg" %}" class="svg_img pro_svg"
+                                                    alt="" /></a>
                                             </div>
                                         </div>
                                     </div>

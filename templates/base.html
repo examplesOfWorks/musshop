@@ -1,9 +1,10 @@
 {% load static %}
 {% load goods_tags %}
-
 {% load carts_tags %}
+{% load wishlist_tags %}
 
 {% user_carts request as carts %}
+{% user_wishlist request as wishlist %}
 
  <!DOCTYPE html>
  <html lang="ru">
@@ -125,11 +126,13 @@
                              </div>
                              <!-- Header User End -->
                              <!-- Header Cart Start -->
+                             {% if user.is_authenticated %}
                              <a href="{% url "users:wishlist" %}" class="ec-header-btn ec-header-wishlist">
                                  <div class="header-icon"><img src="{% static "assets/images/icons/wishlist.svg" %}"
                                          class="svg_img header_svg" alt="" /></div>
-                                 <span class="ec-header-count">4</span>
+                                 <span class="ec-header-count wishlist-count-lable">{{ wishlist }}</span>
                              </a>
+                             {% endif %}
                              <!-- Header Cart End -->
                              <!-- Header Cart Start -->
                              <a href="#ec-side-cart" class="ec-header-btn ec-side-toggle">
@@ -200,12 +203,14 @@
                                      </ul>
                                  </div>
                                  <!-- Header User End -->
+                                 {% if user.is_authenticated %}
                                  <!-- Header wishlist Start -->
                                  <a href="{% url "users:wishlist" %}" class="ec-header-btn ec-header-wishlist">
                                      <div class="header-icon"><img src="{% static "assets/images/icons/wishlist.svg" %}"
                                              class="svg_img header_svg" alt="" /></div>
-                                     <span class="ec-header-count">4</span>
+                                     <span class="ec-header-count wishlist-count-lable">{{ wishlist }}</span>
                                  </a>
+                                 {% endif %}
                                  <!-- Header wishlist End -->
                                  <!-- Header Cart Start -->
                                  <a href="#ec-side-cart" class="ec-header-btn ec-side-toggle">

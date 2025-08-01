@@ -417,5 +417,108 @@ $(document).ready(function () {
  
         $('#modalOrderText').text(`Вы уверены, что хотите отменить заказ №${orderId}?`);
     });
+
+    /*----------------------------- Удаление из избранного на странице избранных товаров ------------------------------ */
+    $(".ec-remove-wish").on("click", function (e) {
+        e.preventDefault();
+            
+        var $btn = $(this)
+        var prod_id = $btn.data("product-id");
+        var add_to_wishlist_url = $btn.attr("href");
+        var in_wishlist = $btn.data("in-wishlist");
+
+        $.ajax({
+            type: "POST",
+            url: add_to_wishlist_url,
+            data: {
+                product_id: prod_id,
+                in_wishlist: in_wishlist,
+                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+            },
+
+            success: function (data) {
+                $(".wishlist-count-lable").html(data.wishlist_count);
+
+                if (data.message) {
+                    $("#recent-notification").html(data.message);
+                    infoMessage.removeClass("invisible")
+
+                    location.reload();
+                    
+                    setTimeout(function () {
+                        infoMessage.addClass("invisible");
+                    }, 2000);
+
+        
+                }
+            },
+            error: function (data) {
+                if (data.message) {
+                    $("#recent-notification").html(data.message);
+                    infoMessage.removeClass("invisible")
+
+                    setTimeout(function () {
+                        infoMessage.addClass("invisible");
+                    }, 4000);
+        
+                }
+            },
+        });
+	});
+    
+    /*----------------------------- Добавление и удаление в избранных товаров со страницы каталога и страницы товара  ------------------------------ */
+    $(".ec-btn-group.wishlist").click(function(e) {
+        e.preventDefault();
+            
+        var $btn = $(this)
+        var isWishlist = $btn.hasClass("active");
+        var prod_id = $btn.data("product-id");
+        var add_to_wishlist_url = $btn.attr("href");
+
+        $.ajax({
+            type: "POST",
+            url: add_to_wishlist_url,
+            data: {
+                product_id: prod_id,
+                in_wishlist: isWishlist,
+                csrfmiddlewaretoken: $("[name=csrfmiddlewaretoken]").val(),
+            },
+
+            success: function (data) {
+
+                if (!isWishlist) {
+                    $btn.addClass("active");
+                } else {
+                    $btn.removeClass("active");
+                }
+  
+                $(".wishlist-count-lable").html(data.wishlist_count);
+
+                if (data.message) {
+                    $("#recent-notification").html(data.message);
+                    infoMessage.removeClass("invisible")
+
+                    setTimeout(function () {
+                        infoMessage.addClass("invisible");
+                    }, 4000);
+        
+                }
+            }, 
+            error: function (data) {
+
+                if (data.message) {
+                    $("#recent-notification").html(data.message);
+                    infoMessage.removeClass("invisible")
+
+                    setTimeout(function () {
+                        infoMessage.addClass("invisible");
+                    }, 4000);
+        
+                }
+            }, 
+            
+        });
+    });
+
         
 });

@@ -428,13 +428,13 @@ function ecCheckCookie()
 	});
 
     /*----------------------------- Remove product on compare and wishlish page -----------------------------------*/ 
-    $(".ec-remove-wish").on("click", function () {
-        $(this).parents(".pro-gl-content").remove();
-        var wish_product_count = $(".pro-gl-content").length;
-        if (wish_product_count == 0) {
-            $('.ec-wish-rightside, .wish-empt').html('<p class="emp-wishlist-msg">Your wishlist is empty!</p>');
-        }
-	});
+    // $(".ec-remove-wish").on("click", function () {
+    //     $(this).parents(".pro-gl-content").remove();
+    //     var wish_product_count = $(".pro-gl-content").length;
+    //     if (wish_product_count == 0) {
+    //         $('.ec-wish-rightside, .wish-empt').html('<p class="emp-wishlist-msg">Your wishlist is empty!</p>');
+    //     }
+	// });
     
     $(".ec-remove-compare").on("click", function () {
 		$(this).parents(".pro-gl-content").remove();        
@@ -1377,18 +1377,18 @@ function ecCheckCookie()
             //$("#addtocart_toast").addClass("show");
             // setTimeout(function(){ $("#addtocart_toast").removeClass("show") }, 3000);
         });
-        $(".ec-btn-group.wishlist").click(function() {
-        var isWishlist = $(this).hasClass("active");
-        if(isWishlist){
-            $(this).removeClass("active");
-        } else {            
-            $(this).addClass("active");
-        }
+    //     $(".ec-btn-group.wishlist").click(function() {
+    //     var isWishlist = $(this).hasClass("active");
+    //     if(isWishlist){
+    //         $(this).removeClass("active");
+    //     } else {            
+    //         $(this).addClass("active");
+    //     }
 
 
-        $("#wishlist_toast").addClass("show");
-        setTimeout(function(){ $("#wishlist_toast").removeClass("show") }, 3000);
-    });
+    //     // $("#wishlist_toast").addClass("show");
+    //     // setTimeout(function(){ $("#wishlist_toast").removeClass("show") }, 3000);
+    // });
     });
 
     $(document).ready(function(){

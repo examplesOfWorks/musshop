@@ -11,5 +11,6 @@ urlpatterns = [
     path('update-profile/', views.update_profile, name='update_profile'),
     path('users-cart/', views.users_cart, name='users_cart'),
     path('wishlist/', views.wishlist, name='wishlist'),
+    path('wishlist-add/', views.wishlist_add, name='wishlist_add'),
     path('logout/', views.logout, name='logout'),
 ]

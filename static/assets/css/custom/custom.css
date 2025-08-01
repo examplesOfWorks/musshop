@@ -2,4 +2,12 @@
     height: 100px;
     object-fit: cover;
   }
-  
+
+.single-pro-content .ec-single-qty .ec-btn-group.active {
+  color: rgba(68, 68, 68, 0.7);
+  background-color: #3474d4;
+}
+
+.single-pro-content .ec-single-qty .ec-btn-group.active .svg_img.pro_svg {
+  fill: #fff;
+}

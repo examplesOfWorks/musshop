@@ -1,0 +1,45 @@
+{% load static %}
+
+<table class="table ec-table">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Изображение</th>
+            <th scope="col">Наименование</th>
+            <th scope="col">Стоимость</th>
+            <th scope="col">Наличие</th>
+            <th scope="col">Действия</th>
+        </tr>
+    </thead>
+    <tbody class="wish-empt">
+        {% if wishlist_products %}
+            {% for wishlist_product in wishlist_products %}
+            <tr class="pro-gl-content">
+                <th scope="row"><span>{{ forloop.counter }}</span></th>
+                <td><img class=img class="prod-img" src="{% if wishlist_product.product.images.first.image.url %}{{wishlist_product.product.images.first.image.url}}{% else %}{% static "assets/images/product-image/1.jpg" %}{% endif %}"
+                        alt="{{ wishlist_product.product.name }}"></td>
+                <td><span>{{ wishlist_product.product.name }}</span></td>
+                <td><span>{{ wishlist_product.price }}</span></td>
+                <td><span class="avl">{% if wishlist_product.product.quantity > 0 %}В наличии {% else %} Нет в наличии {% endif %}</span></td>
+                <td><span class="tbl-btn">
+                    <div class="ec-pro-actions">
+                        <a class="btn btn-lg btn-primary add-to-cart" data-product-id="{{ wishlist_product.product.id }}" 
+                            href="{% url "cart:cart_add" %}" title="Добавить в корзину">
+                            <img src="{% static "assets/images/icons/pro_cart.svg" %}" class="svg_img pro_svg" alt="" />
+                        </a>
+                    </div>
+                    <a class="btn btn-lg btn-primary ec-com-remove ec-remove-wish" 
+                        data-product-id="{{ wishlist_product.product.id }}" 
+                        data-in-wishlist="true"
+                        href="{% url "user:wishlist_add" %}" 
+                        title="Удалить из избранного">×</a></span>
+                </td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="6">В избранном нет товаров</td>
+            </tr>
+        {% endif %}
+    </tbody>
+</table>

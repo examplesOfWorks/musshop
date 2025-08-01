@@ -12,6 +12,13 @@ def catalog(request, subcategory_slug):
     order_by = request.GET.get('order_by', None)
     query = request.GET.get('q', None)
 
+    if request.user.is_authenticated:
+        wishlist_product_ids = set(
+            request.user.wishlist_items.values_list("product_id", flat=True)
+        )
+    else:
+        wishlist_product_ids = set()
+
     if subcategory_slug == 'all':
         products = Products.objects.all()
         brands = Brands.objects.all()
@@ -44,7 +51,8 @@ def catalog(request, subcategory_slug):
     'subcategory_types': subcategory_types,
     'brands': brands,
     'all_brands': all_brands,
-    'subcategory_slug': subcategory_slug
+    'subcategory_slug': subcategory_slug,
+    'wishlist_product_ids': wishlist_product_ids
     }
     return render(request, 'goods/catalog.html', context)
 
@@ -52,6 +60,8 @@ def product(request, product_article):
     product = Products.objects.get(article=product_article)
     specifications = product.specifications.split(';')
     images = product.images.all()[1:]
+
+    in_wishlist = request.user.wishlist_items.filter(product_id=product.id).exists()
 
     # sp = []
     # for spec in specifications:
@@ -67,6 +77,7 @@ def product(request, product_article):
         'product': product,
         'specifications': specifications,
         'images': images,
+        'in_wishlist': in_wishlist
     }
     return render(request, 'goods/product.html', context)
 

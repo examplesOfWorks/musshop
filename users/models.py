@@ -15,3 +15,18 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
+    
+class Wishlist(models.Model):
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name="wishlist_items", verbose_name='Пользователь')
+    product = models.ForeignKey(to='goods.Products', on_delete=models.CASCADE, verbose_name='Товар')
+    created_timestamp = models.DateTimeField(auto_now_add=True, verbose_name='Дата добавления')
+
+    class Meta:
+        db_table = 'wishlist'
+        verbose_name = "Избранное"
+        verbose_name_plural = "Избранное"
+        ordering = ("id",)
+        
+        constraints = [
+            models.UniqueConstraint(fields=['user', 'product'], name='unique_user_product')
+        ]

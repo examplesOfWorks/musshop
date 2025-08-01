@@ -162,15 +162,20 @@
                                                         title="Compare"><img src="{% static "assets/images/icons/compare.svg" %}"
                                                             class="svg_img pro_svg" alt="" /></a>
                                                     <a href="{% url "cart:cart_add" %}" 
-                                                        title="Add To Cart"
+                                                        title="Добавить в корзину"
                                                         class="btn add-to-cart"
                                                         data-product-id="{{ product.id }}">
                                                         {% csrf_token %}
                                                         <img src="{% static "assets/images/icons/cart.svg" %}" 
                                                             class="svg_img pro_svg" alt="" />
                                                     </a>
-                                                    <a class="ec-btn-group wishlist" title="Wishlist"><img
-                                                            src="{% static "assets/images/icons/wishlist.svg" %}"
+                                                    <a href="{% url "user:wishlist_add" %}"
+                                                        title="Избранное"
+                                                        class="ec-btn-group wishlist {% if product.id in wishlist_product_ids %}active{% endif %}"
+                                                        data-product-id="{{ product.id }}"
+                                                        data-in-wishlist="{% if product.id in wishlist_product_ids %}true{% else %}false{% endif %}">
+                                                        {% csrf_token %}
+                                                        <img src="{% static "assets/images/icons/wishlist.svg" %}"
                                                             class="svg_img pro_svg" alt="" /></a>
                                                 </div>
                                             </div>

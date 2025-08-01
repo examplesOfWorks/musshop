@@ -1,14 +1,22 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib import auth, messages
+from django.views.decorators.csrf import csrf_protect
+from django.template.loader import render_to_string
 
 from carts.models import Cart
+from goods.models import Products
+from users.models import Wishlist
+
 from users.forms import UserLoginForm, UserRegistrationForm, UserUpdateForm
 
+from users.utils import get_wishlist_count, get_user_wishlist
+
 from orders.phone_utils import format_phone, clean_phone
+
 
 def login(request):
     if request.method == 'POST':
@@ -132,9 +140,53 @@ def users_cart(request):
     }
     return render(request, 'users/users_cart.html', context)
 
+@csrf_protect
+def wishlist_add(request):
+    user = request.user
+    if user.is_authenticated:
+        if request.method == "POST":
+            product_id = request.POST.get("product_id")
+            product = get_object_or_404(Products, id=product_id)
+
+            in_wishlist = request.POST.get("in_wishlist")
+            in_wishlist = in_wishlist.lower() == "true"
+            if not in_wishlist:
+                Wishlist.objects.create(user=user, product=product)
+                response_data = {
+                    'success': True,
+                    'message': "Товар добавлен в избранное",
+                    'wishlist_count': get_wishlist_count(request)
+                }
+            else:
+                Wishlist.objects.filter(user=user, product=product).delete()
+                wishlist_products = get_user_wishlist(request)
+                wishlist_items_html = render_to_string(
+                "users/includes/wishlist_items.html", {"wishlist_products": wishlist_products}, request=request)
+
+                response_data = {
+                    'success': True,
+                    'message': "Товар удален из избранного",
+                    'wishlist_count': get_wishlist_count(request),
+                    'wishlist_items_html': wishlist_items_html
+                }
+        else:
+            response_data = {
+                'success': False,
+                'message': "error",
+            }
+    else:
+        response_data = {
+            'success': False,
+            'message': "Пожалуйста, авторизируйтесь"
+        }
+    return JsonResponse(response_data)
+
 def wishlist(request):
+    user = request.user
+    wishlist_products = Wishlist.objects.filter(user=user).order_by('-created_timestamp')
     context = {
         'title': 'Избранное',
+        'wishlist_products': wishlist_products,
     }
     return render(request, 'users/wishlist.html', context)
 
