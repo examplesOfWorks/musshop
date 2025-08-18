@@ -520,5 +520,20 @@ $(document).ready(function () {
         });
     });
 
+    /*----------------------------- Фильтрация каталога по типам ------------------------------ */
+
+    $(".cat-link").on("click", function (e) {
+        e.preventDefault();
+        var typeId = $(this).data('type-id'); 
+        var url = $(this).attr("href");
+        $.ajax({
+            url: url,
+            data: { type_id: typeId },
+            success: function(data) {
+                $('#catalog-container').html(data.catalog_html);
+            }
+        });
+    })
+
         
 });

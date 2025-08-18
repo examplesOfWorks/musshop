@@ -24,7 +24,7 @@
                 <td><span class="tbl-btn">
                     <div class="ec-pro-actions">
                         <a class="btn btn-lg btn-primary add-to-cart" data-product-id="{{ wishlist_product.product.id }}" 
-                            href="{% url "cart:cart_add" %}" title="Добавить в корзину">
+                            href="{% url "cart:cart_add" %}" title="Добавить в корзину">{% csrf_token %}
                             <img src="{% static "assets/images/icons/pro_cart.svg" %}" class="svg_img pro_svg" alt="" />
                         </a>
                     </div>

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load goods_tags %}
 
 {% block content %} 
 
@@ -19,11 +20,11 @@
                     <ul class="ec-cat-tab-nav nav">
                         {% if subcategory_types %}
                             {% for subcategory_type in subcategory_types %}
-                            <li class="cat-item"><a class="cat-link" data-bs-toggle="tab" href="#tab-cat-1">
+                            <li class="cat-item"><a class="cat-link" data-bs-toggle="tab" data-type-id="{{ subcategory_type.id }}" href="{% url 'goods:filter_products_by_type'%}">
                                     <div class="cat-icons"><img class="cat-icon" src="{% static "assets/images/icons/cat_1.png" %}"
                                             alt="cat-icon"><img class="cat-icon-hover" src="{% static "assets/images/icons/cat_1_1.png" %}"
                                             alt="cat-icon"></div>
-                                    <div class="cat-desc"><span>{{ subcategory_type.name }}</span><span>440 Products</span></div>
+                                    <div class="cat-desc"><span>{{ subcategory_type.name }}</span><span>Количество товаров: {% products_count_type subcategory_type.id %}</span></div>
                                 </a>
                             </li>
                             {% endfor %}
@@ -120,120 +121,37 @@
                         </div>
                     </div>
                     <!-- Shop Top End -->
-                    <div class="shop-pro-content">
-                        <div class="shop-pro-inner">
-                            <div class="row">
-                                <!-- Product Card starts -->
-                            {% if products %}
-                                {% for product in products %}
-                                
-                                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6 pro-gl-content">
-                                    <div class="ec-product-inner">
-                                        <div class="ec-pro-image-outer">
-                                            <div class="ec-pro-image">
-                                                <a href="product-left-sidebar.html" class="image">
-                                                    
-                                                    {% if product.images.first.image.url %}
+                    <div class="shop-pro-content" id="catalog-container">
+                        <!-- Разметка каталога -->
+                        {% include "goods/includes/included_catalog.html" %}
+                        <!-- Закончилась разметка каталога -->
+                        
+                        {% if products %}
+                        <!-- Ec Pagination Start -->
+                        <div class="ec-pro-pagination justify-content-end">
+                            <ul class="ec-pro-pagination-inner">
+                                <li><a class="next {% if not products.has_previous %} disabled {% endif %}"
+                                    href="{% if products.has_previous %}?{% change_params page=products.previous_page_number %}
+                                    {% else %}
+                                    #
+                                    {% endif %}"><i class="ecicon eci-angle-left"></i>&nbspНазад</a></li>
+                                    {% for page in products.paginator.page_range %}
+                                        {% if page >= products.number|add:-2 and page <= products.number|add:2 %}
+                                        <li><a class="{% if products.number == page %} active {% endif %}" href="?{% change_params page=page %}">
+                                            {{ page }}</a>
+                                        </li>
+                                        {% endif %}
+                                    {% endfor %}
         
-                                                        <div class="catalog_block catalog_image">
-                                                            <img class="main-image "
-                                                                src="{{ product.images.first.image.url }}" alt="Product" />
-                                                    
-                                                            <img class="hover-image"
-                                                                src="{{ product.images.first.image.url }}" alt="Product" />
-                                                        </div>
-                                                        
-                                                    {% else %}
-                                                        <img class="main-image"
-                                                            src="{% static "assets/images/product-image/1_1.jpg" %}" alt="Product" />
-                                                        <img class="hover-image"
-                                                            src="{% static "assets/images/product-image/1_2.jpg" %}" alt="Product" /> 
-                                                    {% endif %}
-        
-                                                    
-                                                </a>
-                                                <a href="#" class="quickview" data-link-action="quickview"
-                                                    title="Quick view" data-bs-toggle="modal"
-                                                    data-bs-target="#ec_quickview_modal"><img
-                                                        src="{% static "assets/images/icons/quickview.svg" %}" class="svg_img pro_svg"
-                                                        alt="" /></a>
-                                                <div class="ec-pro-actions">
-                                                    <a href="compare.html" class="ec-btn-group compare"
-                                                        title="Compare"><img src="{% static "assets/images/icons/compare.svg" %}"
-                                                            class="svg_img pro_svg" alt="" /></a>
-                                                    <a href="{% url "cart:cart_add" %}" 
-                                                        title="Добавить в корзину"
-                                                        class="btn add-to-cart"
-                                                        data-product-id="{{ product.id }}">
-                                                        {% csrf_token %}
-                                                        <img src="{% static "assets/images/icons/cart.svg" %}" 
-                                                            class="svg_img pro_svg" alt="" />
-                                                    </a>
-                                                    <a href="{% url "user:wishlist_add" %}"
-                                                        title="Избранное"
-                                                        class="ec-btn-group wishlist {% if product.id in wishlist_product_ids %}active{% endif %}"
-                                                        data-product-id="{{ product.id }}"
-                                                        data-in-wishlist="{% if product.id in wishlist_product_ids %}true{% else %}false{% endif %}">
-                                                        {% csrf_token %}
-                                                        <img src="{% static "assets/images/icons/wishlist.svg" %}"
-                                                            class="svg_img pro_svg" alt="" /></a>
-                                                </div>
-                                            </div>
-                                        </div>
-        
-                                        <div class="ec-pro-content">
-                                            <h5 class="ec-pro-title"><a href="{% url "catalog:product" product.article %}">
-                                                {% autoescape off %}
-                                                    {% if product.headline %}
-                                                    {{ product.headline }}
-                                                    {% else %}
-                                                    {{ product.name }}
-                                                    {% endif %}
-                                                {% endautoescape %}
-                                            </a></h5>
-                                            <span class="ec-single-sku">
-                                                {% autoescape off %}
-                                                    {% if product.skuline %}
-                                                    {{ product.skuline }}
-                                                    {% else %}
-                                                    {{ product.article }}
-                                                    {% endif %}
-                                                {% endautoescape %}
-                                            </span>
-                                            <div class="ec-pro-rating">
-                                                <i class="ecicon eci-star fill"></i>
-                                                <i class="ecicon eci-star fill"></i>
-                                                <i class="ecicon eci-star fill"></i>
-                                                <i class="ecicon eci-star fill"></i>
-                                                <i class="ecicon eci-star"></i>
-                                            </div>
-                                            <div class="ec-pro-list-desc">
-                                                {% autoescape off %}
-                                                    {% if product.bodyline %}
-                                                    {{ product.bodyline|truncatechars:300 }}
-                                                    {% else %}
-                                                    {{ product.description|truncatechars:300 }}
-                                                    {% endif %}
-                                                {% endautoescape %}
-                                            </div>
-                                            <span class="ec-price">
-                                                {% if product.discount %}
-                                                    <span class="old-price">{{ product.price }} ₽</span>
-                                                    <span class="new-price">{{ product.sell_price }} ₽</span>
-                                                {% else %}
-                                                    <span class="new-price">{{ product.price }} ₽</span>
-                                                {% endif %}
-                                                
-                                            </span>
-                                        </div>  
-                                    </div>
-                                </div>
-                                {% endfor %}
-                                {% else %}
-                                <h3>Товары не найдены</h3>
-                            {% endif %}
-                            </div>
+                                <li><a class="next {% if not products.has_next %} disabled {% endif %}" 
+                                    href="{% if products.has_next %}?{% change_params page=products.next_page_number %}
+                                    {% else %}
+                                    #
+                                    {% endif %}">Далее <i class="ecicon eci-angle-right"></i></a></li>
+                            </ul>
                         </div>
+                        <!-- Ec Pagination End -->
+                        {% endif %}
                     </div>
                 </div>
             </div>

@@ -78,7 +78,7 @@ def create_order(request):
 
                     cart_items.delete()
 
-                    return JsonResponse({'redirect_url': reverse('user:order_history')})
+                    return JsonResponse({'redirect_url': reverse('orders:order_history')})
             except ValidationError as e:
                 return JsonResponse({'success': False, 'message': e.message}, status=400)
         

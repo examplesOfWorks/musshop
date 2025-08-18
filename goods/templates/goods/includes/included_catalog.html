@@ -1,0 +1,117 @@
+{% load static %}
+
+<div class="shop-pro-inner">
+    <div class="row">
+        <!-- Product Card starts -->
+    {% if products %}
+        {% for product in products %}
+        
+        <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6 pro-gl-content">
+            <div class="ec-product-inner">
+                <div class="ec-pro-image-outer">
+                    <div class="ec-pro-image">
+                        <a href="product-left-sidebar.html" class="image">
+                            
+                            {% if product.images.first.image.url %}
+
+                                <div class="catalog_block">
+                                    <img class="main-image catalog_image"
+                                        src="{{ product.images.first.image.url }}" alt="Product" />
+                            
+                                    <img class="hover-image catalog_image"
+                                        src="{{ product.images.first.image.url }}" alt="Product" />
+                                </div>
+                                
+                            {% else %}
+                                <img class="main-image"
+                                    src="{% static "assets/images/product-image/1_1.jpg" %}" alt="Product" />
+                                <img class="hover-image"
+                                    src="{% static "assets/images/product-image/1_2.jpg" %}" alt="Product" /> 
+                            {% endif %}
+
+                            
+                        </a>
+                        <a href="#" class="quickview" data-link-action="quickview"
+                            title="Quick view" data-bs-toggle="modal"
+                            data-bs-target="#ec_quickview_modal"><img
+                                src="{% static "assets/images/icons/quickview.svg" %}" class="svg_img pro_svg"
+                                alt="" /></a>
+                        <div class="ec-pro-actions">
+                            <a href="compare.html" class="ec-btn-group compare"
+                                title="Compare"><img src="{% static "assets/images/icons/compare.svg" %}"
+                                    class="svg_img pro_svg" alt="" /></a>
+                            <a href="{% url "cart:cart_add" %}" 
+                                title="Добавить в корзину"
+                                class="btn add-to-cart"
+                                data-product-id="{{ product.id }}">
+                                {% csrf_token %}
+                                <img src="{% static "assets/images/icons/cart.svg" %}" 
+                                    class="svg_img pro_svg" alt="" />
+                            </a>
+                            <a href="{% url "user:wishlist_add" %}"
+                                title="Избранное"
+                                class="ec-btn-group wishlist {% if product.id in wishlist_product_ids %}active{% endif %}"
+                                data-product-id="{{ product.id }}"
+                                data-in-wishlist="{% if product.id in wishlist_product_ids %}true{% else %}false{% endif %}">
+                                {% csrf_token %}
+                                <img src="{% static "assets/images/icons/wishlist.svg" %}"
+                                    class="svg_img pro_svg" alt="" /></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ec-pro-content">
+                    <h5 class="ec-pro-title"><a href="{% url "catalog:product" product.article %}">
+                        {% autoescape off %}
+                            {% if product.headline %}
+                            {{ product.headline }}
+                            {% else %}
+                            {{ product.name }}
+                            {% endif %}
+                        {% endautoescape %}
+                    </a></h5>
+                    <span class="ec-single-sku">
+                        {% autoescape off %}
+                            {% if product.skuline %}
+                            {{ product.skuline }}
+                            {% else %}
+                            {{ product.article }}
+                            {% endif %}
+                        {% endautoescape %}
+                    </span>
+                    <div class="ec-pro-rating">
+                        <i class="ecicon eci-star fill"></i>
+                        <i class="ecicon eci-star fill"></i>
+                        <i class="ecicon eci-star fill"></i>
+                        <i class="ecicon eci-star fill"></i>
+                        <i class="ecicon eci-star"></i>
+                    </div>
+                    <div class="ec-pro-list-desc">
+                        {% autoescape off %}
+                            {% if product.bodyline %}
+                            {{ product.bodyline|truncatechars:300 }}
+                            {% else %}
+                            {% if product.description %}
+                            {{product.description.0 }}
+                            {% endif %}
+                            {% endif %}
+                        {% endautoescape %}
+                    </div>
+                    <span class="ec-price">
+                        {% if product.discount %}
+                            <span class="old-price">{{ product.price }} ₽</span>
+                            <span class="new-price">{{ product.sell_price }} ₽</span>
+                        {% else %}
+                            <span class="new-price">{{ product.price }} ₽</span>
+                        {% endif %}
+                        
+                    </span>
+                </div>  
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <h3>Товары не найдены</h3>
+    {% endif %}
+    </div>
+</div>

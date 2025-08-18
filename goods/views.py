@@ -1,8 +1,11 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
+from django.core.paginator import Paginator
+from django.template.loader import render_to_string
 
 from goods.models import Brands, Categories, Subcategories, Products, Types, Gallery
-from goods.search_utils import filter_by_brand, q_search 
+from goods.search_utils import filter_by_brand, q_search
+
 
 def catalog(request, subcategory_slug):
     subcategory = None
@@ -11,6 +14,8 @@ def catalog(request, subcategory_slug):
     all_brands = request.GET.getlist('brand', None)
     order_by = request.GET.get('order_by', None)
     query = request.GET.get('q', None)
+
+    page = request.GET.get('page', 1)
 
     if request.user.is_authenticated:
         wishlist_product_ids = set(
@@ -22,14 +27,11 @@ def catalog(request, subcategory_slug):
     if subcategory_slug == 'all':
         products = Products.objects.all()
         brands = Brands.objects.all()
-    # elif query:
-    #     products = q_search(query)
-    #     brands = Brands.objects.all()
     else:
         products = Products.objects.filter(subcategory__slug=subcategory_slug)
         subcategory = Subcategories.objects.filter(slug=subcategory_slug)[0]
         subcategory_types = Types.objects.filter(subcategory__slug=subcategory_slug)
-        brands = Brands.objects.filter(products__in=products)
+        brands = Brands.objects.filter(products__in=products).distinct()
 
     if on_sale:
         products = products.filter(discount__gt=0)
@@ -42,11 +44,15 @@ def catalog(request, subcategory_slug):
     
     if query:
         products = q_search(query)
-        brands = Brands.objects.all()
+        brands = Brands.objects.filter(products__in=products).distinct()
+    
+    paginator = Paginator(products, 12)
+    current_page = paginator.page(int(page))
     
     context = {
     'title': 'Каталог',
-    'products': products,
+    'all_products': products,
+    'products': current_page,
     'subcategory': subcategory,
     'subcategory_types': subcategory_types,
     'brands': brands,
@@ -56,12 +62,21 @@ def catalog(request, subcategory_slug):
     }
     return render(request, 'goods/catalog.html', context)
 
+def filter_products_by_type(request):
+    type_id = request.GET.get('type_id')
+    products = Products.objects.filter(type=type_id)
+
+    catalog_html = render_to_string('goods/includes/included_catalog.html', {'products': products}, request=request)
+    return JsonResponse({'catalog_html': catalog_html})
+
 def product(request, product_article):
     product = Products.objects.get(article=product_article)
-    specifications = product.specifications.split(';')
     images = product.images.all()[1:]
 
-    in_wishlist = request.user.wishlist_items.filter(product_id=product.id).exists()
+    if request.user.is_authenticated:
+        in_wishlist = request.user.wishlist_items.filter(product_id=product.id).exists()
+    else:
+        in_wishlist = False
 
     # sp = []
     # for spec in specifications:
@@ -75,13 +90,20 @@ def product(request, product_article):
     context = {
         'title': 'Карточка товара',
         'product': product,
-        'specifications': specifications,
         'images': images,
         'in_wishlist': in_wishlist
     }
     return render(request, 'goods/product.html', context)
 
-def categories(request, category_slug):
+def categories(request):
+    categories = Categories.objects.all()
+    context = {
+        'title': 'Категории',
+        'categories': categories,
+    }
+    return render(request, 'goods/category.html', context)
+
+def subcategories(request, category_slug):
     category = Categories.objects.get(slug=category_slug)
     subcategories = Subcategories.objects.filter(category_id=category.id)
     title = category.name
@@ -90,12 +112,6 @@ def categories(request, category_slug):
         'title': title,
         'category': category,
         'subcategories': subcategories,
-    }
-    return render(request, 'goods/category.html', context)
-
-def subcategories(request):
-    context = {
-        'title': 'Подкатегории',
     }
     return render(request, 'goods/subcategory.html', context)
 

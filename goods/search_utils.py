@@ -2,6 +2,7 @@ from django.db.models import Q
 
 from goods.models import Products
 from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, SearchHeadline
+from django.db.models import Func, Value
 # from goods.views import brand
 
 def filter_by_brand(all_brands, products):
@@ -46,11 +47,8 @@ def q_search(query):
 
     result = result.annotate(
         bodyline=SearchHeadline(
-            "description",
+            Func('description', Value(' '), function='array_to_string'),
             query,
-            start_sel='<span style="background-color: #3474d4; color: #ffffff; padding: 2px">',
-            stop_sel='</span>',
         ),
     )
     return result
-

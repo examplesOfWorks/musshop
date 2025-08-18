@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.postgres.fields import ArrayField
 
 class Categories(models.Model):
     name = models.CharField(max_length=150, unique=True, verbose_name='Название')
@@ -61,14 +62,13 @@ class Types(models.Model):
 class Products(models.Model):
     name = models.CharField(max_length=150, unique=True, verbose_name='Название')
     article = models.CharField(max_length=150, unique=True, verbose_name='Артикул')
-    slug = models.SlugField(max_length=200, unique=True, blank=True, null=True, verbose_name='URL') # убрать
+    slug = models.SlugField(max_length=200, unique=True, blank=True, null=True, verbose_name='URL')
     warranty = models.CharField(max_length=150, blank=True, null=True, verbose_name='Гарантия')
-    description = models.TextField(blank=True, null=True, verbose_name='Описание')
-    specifications = models.TextField(blank=True, null=True, verbose_name='Характеристики')
+    description = ArrayField(models.TextField(), blank=True, null=True, default=list, verbose_name='Описание')
+    specifications = models.JSONField(blank=True, null=True, verbose_name="Характеристики")
     instructions = models.FileField(upload_to='goods_instructions', blank=True, null=True, verbose_name='Инструкции')
-    # image = models.ImageField(upload_to='goods_images', blank=True, null=True, verbose_name='Изображение')
     price = models.DecimalField(default=0.00, max_digits=9, decimal_places=2, verbose_name='Цена')
-    discount =  models.DecimalField(default=0.00, max_digits=4, decimal_places=2, verbose_name='Скидка в %')
+    discount =  models.DecimalField(default=0.00, max_digits=4, decimal_places=0, verbose_name='Скидка в %')
     quantity = models.PositiveBigIntegerField(default=0.00, verbose_name='Количество')
     brand = models.ForeignKey(to=Brands, on_delete=models.CASCADE, verbose_name='Бренд')
     subcategory = models.ForeignKey(to=Subcategories, on_delete=models.CASCADE, verbose_name='Подкатегория')

@@ -25,8 +25,8 @@
                                         <div class="single-product-cover">
                                             {% if product.images.all %}
                                                 {% for img in product.images.all %}
-                                                    <div class="single-slide zoom-image-hover">
-                                                        <img class="img-responsive" src="{{ img.image.url }}"
+                                                    <div class="single-slide zoom-image-hover product_block">
+                                                        <img class="img-responsive product_image" src="{{ img.image.url }}"
                                                             alt="">
                                                     </div>
                                                 {% endfor %}
@@ -40,7 +40,7 @@
                                         <div class="single-nav-thumb">
                                             {% if product.images.all %}
                                                 {% for img in product.images.all %}
-                                                    <div class="single-slide">
+                                                    <div class="single-slide product_min_block">
                                                         <img class="img-responsive" src="{{ img.image.url }}"
                                                             alt="">
                                                     </div>
@@ -63,11 +63,14 @@
                                             <span class="ec-read-review"><a href="#ec-spt-nav-review">Be the first to
                                                     review this product</a></span>
                                         </div>
-                                        <div class="ec-single-desc">Lorem Ipsum is simply dummy text of the printing and
-                                            typesetting industry. Lorem Ipsum has been the industry's standard dummy
-                                            text ever since the 1990</div>
-
-                                        <div class="ec-single-price-stoke">
+                                        {% if product.description %}
+                                            {% for description in product.description %}
+                                                <div class="ec-single-pro-tab-desc">
+                                                    {{ description }}
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                        <div class="ec-single-price-stoke mt-3">
                                             <div class="ec-single-price">
                                                 {% if product.discount %}
                                                     <span class="ec-single-ps-title">Скидка {{ product.discount }}%</span>
@@ -126,11 +129,11 @@
                                 <ul class="nav nav-tabs">
                                     <li class="nav-item">
                                         <a class="nav-link active" data-bs-toggle="tab"
-                                            data-bs-target="#ec-spt-nav-details" role="tablist">Детали</a>
+                                            data-bs-target="#ec-spt-nav-details" role="tablist">Описание</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" data-bs-toggle="tab" data-bs-target="#ec-spt-nav-info"
-                                            role="tablist">Описание</a>
+                                            role="tablist">Характеристики</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link" data-bs-toggle="tab" data-bs-target="#ec-spt-nav-review"
@@ -141,17 +144,31 @@
                             <div class="tab-content  ec-single-pro-tab-content">
                                 <div id="ec-spt-nav-details" class="tab-pane fade show active">
                                     <div class="ec-single-pro-tab-desc">
-                                        {% if product.description %}<p>{{ product.description }}</p>{% endif %}
+                                        {% if product.description %}
+                                            {% for description in product.description %}
+                                                <p>{{ description }}</p>
+                                            {% endfor %}
+                                        {% else %}
+                                            <p>Описание отсутствует</p>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <div id="ec-spt-nav-info" class="tab-pane fade">
                                     <div class="ec-single-pro-tab-moreinfo">
-                                        {% if specifications %}
-                                        <ul>
-                                            {% for specification in specifications %}
-                                            <li>{{ specification }}</li>
-                                            {% endfor %}
-                                        </ul>
+                                        {% if product.specifications %}
+                                            <ul>
+                                                {% for title, value in product.specifications.items %}
+                                                    {% if value %}
+                                                        <li><span>{{ title }}</span> {{ value }}</li>
+                                                    {% else %}
+                                                        <li><span>{{ title }}</span> нет данных</li>
+                                                    {% endif %}
+                                                {% empty %}
+                                                    <li>Характеристики отсутствуют</li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% else %}
+                                            <p>Характеристики отсутствуют</p>
                                         {% endif %}
                                         {% comment %} <ul>
                                             <li><span>Weight</span> 1000 g</li>

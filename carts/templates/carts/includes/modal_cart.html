@@ -10,8 +10,13 @@
         <ul class="eccart-pro-items">
             {% for cart in carts %}
             <li>
-                <a href="product-left-sidebar.html" class="sidekka_pro_img"><img
-                        src="{% static "assets/images/product-image/6_1.jpg" %}" alt="product"></a>
+                <a href="{% url "catalog:product" cart.product.article %}" class="sidekka_pro_img">
+                    {% if cart.product.images.first.image.url %}
+                        <img src="{{ cart.product.images.first.image.url }}" alt="{{ cart.product.name }}">
+                    {% else %}
+                        <img src="{% static "assets/images/product-image/6_1.jpg" %}" alt="{{ cart.product.name }}">
+                    {% endif %}
+                </a>
                 <div class="ec-pro-content">
                     <a href="{% url "catalog:product" cart.product.article %}" class="cart_pro_title">{{ cart.product.name }}</a>
                     <span class="cart-price">

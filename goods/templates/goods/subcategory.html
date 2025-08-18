@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load goods_tags %}
 {% load static %}
 
 {% block content %} 
@@ -15,65 +16,32 @@
                 <div class="row">
                     <div class="col-md-12 text-center">
                         <div class="section-title">
-                            <h2 class="ec-bg-title">Classic</h2>
-                            <h2 class="ec-title">Classic</h2>
-                            <p class="sub-title">Browse The Collection of Top Categories</p>
+                            <h2 class="ec-bg-title">Категория: {{ category.name }}</h2>
+                            <h2 class="ec-title">Категория: {{ category.name }}</h2>
+                            {% comment %} <p class="sub-title">Browse The Collection of Top Categories</p> {% endcomment %}
                         </div>
                     </div>
                 </div>
                 <div class="row cat-space-2 margin-minus-tb-15">
+
+                    {% for subcategory in subcategories %}
                     <div class="col-lg-3 col-md-6 col-sm-12">
-                        <div class="cat-card">
-                            <img class="cat-icon" src="{% static "assets/images/cat-banner/11.jpg" %}" alt="cat-icon">
-                            <a class="btn-primary btn-primary-1" href="javacript:void(0)">shop now</a>
+                        <div class="cat-card category_block category_image">
+                            {% if subcategory.image %}
+                                <img src="{{ subcategory.image.url }}" alt="{{ subcategory.slug }}">
+                            {% else %}
+                                <img class="cat-icon" src="{% static "assets/images/cat-banner/12.jpg" %}" alt="cat-icon">
+                            {% endif %}
+                            <a class="btn-primary btn-primary-1" href="{% url "catalog:search" subcategory.slug %}">Перейти</a>
                             <div class="cat-detail">
                                 <div class="cat-detail-block">
-                                    <h4>Watches</h4>
-                                    <h5>Starting at <br>$79.00</h5>
-                                    <a class="btn-primary" href="">shop now</a>
+                                    <h4>{{ subcategory.name }}</h4>
+                                    <h5>Количество товаров <br>{% products_count_subcategory subcategory.id %}</h5>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-6 col-sm-12">
-                        <div class="cat-card">
-                            <img class="cat-icon" src="{% static "assets/images/cat-banner/12.jpg" %}" alt="cat-icon">
-                            <a class="btn-primary btn-primary-1" href="javacript:void(0)">shop now</a>
-                            <div class="cat-detail">
-                                <div class="cat-detail-block">
-                                    <h4>Head Phones</h4>
-                                    <h5>Starting at <br>$93.00</h5>
-                                    <a class="btn-primary" href="">shop now</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-12">
-                        <div class="cat-card">
-                            <img class="cat-icon" src="{% static "assets/images/cat-banner/13.jpg" %}" alt="cat-icon">
-                            <a class="btn-primary btn-primary-1" href="javacript:void(0)">shop now</a>
-                            <div class="cat-detail">
-                                <div class="cat-detail-block">
-                                    <h4>Shoes</h4>
-                                    <h5>Starting at <br>$60.00</h5>
-                                    <a class="btn-primary" href="">shop now</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-6 col-sm-12">
-                        <div class="cat-card">
-                            <img class="cat-icon" src="{% static "assets/images/cat-banner/14.jpg" %}" alt="cat-icon">
-                            <a class="btn-primary btn-primary-1" href="javacript:void(0)">shop now</a>
-                            <div class="cat-detail">
-                                <div class="cat-detail-block">
-                                    <h4>Belts</h4>
-                                    <h5>Starting at <br>$80.00</h5>
-                                    <a class="btn-primary" href="">shop now</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </section>

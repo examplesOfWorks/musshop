@@ -20,9 +20,13 @@
                             {% for cart in carts %}
                             <tr>
                                 <td data-label="Product" class="ec-cart-pro-name"><a
-                                        href="product-left-sidebar.html"><img class="ec-cart-pro-img mr-4"
+                                        href="{% url "catalog:product" cart.product.article %}"><img class="ec-cart-pro-img mr-4"
+                                        {% if cart.product.images.first.image.url %}
+                                            src="{{ cart.product.images.first.image.url }}"
+                                        {% else %}
                                             src="{% static "assets/images/product-image/1.jpg" %}"
-                                            alt="" />{{ cart.product.name }}</a></td>
+                                        {% endif %}
+                                            alt="{{ cart.product.name }}" />{{ cart.product.name }}</a></td>
                                 <td data-label="Price" class="ec-cart-pro-price">
                                     {% if cart.product.discount %}
                                     <s>{{ cart.product.price }} ₽</s><br>
