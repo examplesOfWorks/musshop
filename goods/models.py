@@ -73,6 +73,7 @@ class Products(models.Model):
     brand = models.ForeignKey(to=Brands, on_delete=models.CASCADE, verbose_name='Бренд')
     subcategory = models.ForeignKey(to=Subcategories, on_delete=models.CASCADE, verbose_name='Подкатегория')
     type = models.ForeignKey(to=Types, on_delete=models.CASCADE, blank=True, null=True, verbose_name='Тип')
+    created_timestamp = models.DateTimeField(auto_now_add=True, verbose_name='Дата добавления')
 
     class Meta:
         db_table = 'product'

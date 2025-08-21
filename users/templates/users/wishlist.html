@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load wishlist_tags %}
 
 {% block content %}
 
@@ -26,6 +27,32 @@
                             </div>
                             <!-- Закончилась разметка с избранными товарами -->
                         </div>
+                        {% if wishlist_products %}
+                        <!-- Ec Pagination Start -->
+                        <div class="ec-pro-pagination justify-content-end">
+                            <ul class="ec-pro-pagination-inner">
+                                <li><a class="next {% if not wishlist_products.has_previous %} disabled {% endif %}"
+                                    href="{% if wishlist_products.has_previous %}?{% change_params page=wishlist_products.previous_page_number %}
+                                    {% else %}
+                                    #
+                                    {% endif %}"><i class="ecicon eci-angle-left"></i>&nbspНазад</a></li>
+                                    {% for page in wishlist_products.paginator.page_range %}
+                                        {% if page >= wishlist_products.number|add:-2 and page <= wishlist_products.number|add:2 %}
+                                        <li><a class="{% if wishlist_products.number == page %} active {% endif %}" href="?{% change_params page=page %}">
+                                            {{ page }}</a>
+                                        </li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                <li><a class="next {% if not wishlist_products.has_next %} disabled {% endif %}" 
+                                    href="{% if wishlist_products.has_next %}?{% change_params page=wishlist_products.next_page_number %}
+                                    {% else %}
+                                    #
+                                    {% endif %}">Далее <i class="ecicon eci-angle-right"></i></a></li>
+                            </ul>
+                        </div>
+                        <!-- Ec Pagination End -->
+                        {% endif %}
                     </div>
                 </div>
             </div>

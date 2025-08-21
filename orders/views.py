@@ -114,6 +114,7 @@ def create_order(request):
     }
     return render(request, 'orders/create_order.html', context)
 
+@login_required
 def order_history(request):
     page = request.GET.get('page', 1)
 

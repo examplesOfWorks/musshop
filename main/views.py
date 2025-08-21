@@ -1,7 +1,8 @@
 from django.shortcuts import render
 
 def index(request):
-    context = {'title': 'Главная'}
+    context = {'title': 'Главная', 'test_top_products': range(4)}
+    
     return render(request, 'main/index.html', context)
 
 def about(request):

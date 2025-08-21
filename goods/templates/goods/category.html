@@ -10,18 +10,19 @@
     {% endblock  %}
     <!-- Ec breadcrumb end -->
 
-        <!--  Category Section Start -->
-        <section class="section ec-category-section ec-category-wrapper-5 section-space-p">
-            <div class="container ec-category-wrapper-5">
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <div class="section-title">
-                            <h2 class="ec-bg-title">Каталог</h2>
-                            <h2 class="ec-title">Каталог</h2>
-                        </div>
+    <!--  Category Section Start -->
+    <section class="section ec-category-section ec-category-wrapper-5 section-space-p">
+        <div class="container ec-category-wrapper-5">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <div class="section-title">
+                        <h2 class="ec-bg-title">Каталог</h2>
+                        <h2 class="ec-title">Каталог</h2>
                     </div>
                 </div>
-                <div class="row cat-space-2 margin-minus-tb-15">
+            </div>
+            <div class="row cat-space-2 margin-minus-tb-15">
+                {% if categories %}
                     {% for category in categories %}
                         <div class="col-lg-3 col-md-6 col-sm-12">
                             <div class="cat-card category_block category_image">
@@ -40,8 +41,11 @@
                             </div>
                         </div>
                     {% endfor %}
-                </div>
+                {% else %}
+                    <p>Категории и товары пока не добавлены</p>
+                {% endif %}
             </div>
-        </section>
+        </div>
+    </section>
 
 {% endblock %}

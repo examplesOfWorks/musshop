@@ -16,9 +16,11 @@
             {% for wishlist_product in wishlist_products %}
             <tr class="pro-gl-content">
                 <th scope="row"><span>{{ forloop.counter }}</span></th>
-                <td><img class=img class="prod-img" src="{% if wishlist_product.product.images.first.image.url %}{{wishlist_product.product.images.first.image.url}}{% else %}{% static "assets/images/product-image/1.jpg" %}{% endif %}"
-                        alt="{{ wishlist_product.product.name }}"></td>
-                <td><span>{{ wishlist_product.product.name }}</span></td>
+                <td class="prod_block">
+                    <img class="prod_image" src="{% if wishlist_product.product.images.first.image.url %}{{wishlist_product.product.images.first.image.url}}{% else %}{% static "assets/images/product-image/1.jpg" %}{% endif %}"
+                        alt="{{ wishlist_product.product.name }}">
+                </td>
+                <td><span><a href="{% url "catalog:product" wishlist_product.product.article %}">{{ wishlist_product.product.name }}</span></td>
                 <td><span>{{ wishlist_product.price }}</span></td>
                 <td><span class="avl">{% if wishlist_product.product.quantity > 0 %}В наличии {% else %} Нет в наличии {% endif %}</span></td>
                 <td><span class="tbl-btn">

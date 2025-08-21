@@ -12,7 +12,7 @@
             <li>
                 <a href="{% url "catalog:product" cart.product.article %}" class="sidekka_pro_img">
                     {% if cart.product.images.first.image.url %}
-                        <img src="{{ cart.product.images.first.image.url }}" alt="{{ cart.product.name }}">
+                        <img src="{{ cart.product.images.first.image.url }}" style="width: 70px; height: 70px; object-fit: contain" alt="{{ cart.product.name }}">
                     {% else %}
                         <img src="{% static "assets/images/product-image/6_1.jpg" %}" alt="{{ cart.product.name }}">
                     {% endif %}
@@ -48,7 +48,7 @@
         </ul>
         {% else %}
             <p class="emp-cart-msg">Ваша корзина пуста</p>
-            <a class="btn btn-primary" href="{% url "catalog:search" "all" %}">Начать покупки</a>
+            <a class="btn btn-primary" href="{% url "catalog:categories" %}">Начать покупки</a>
         {% endif %}
     </div>
     {% if carts %}
@@ -75,7 +75,7 @@
         </div>
         <div class="cart_btn">
             <a href="{% url "users:users_cart" %}" class="btn btn-primary">Подробнее</a>
-            <a href="{% url "orders:create_order" %}" class="btn btn-secondary">Оформить заказ</a>
+            <a href="{% url "orders:create_order" %}" class="btn btn-secondary">Заказать</a>
         </div>
     </div>
     {% endif %}

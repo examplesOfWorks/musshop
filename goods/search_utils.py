@@ -1,9 +1,8 @@
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, SearchHeadline
 from django.db.models import Q
+from django.db.models import Func, Value
 
 from goods.models import Products
-from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, SearchHeadline
-from django.db.models import Func, Value
-# from goods.views import brand
 
 def filter_by_brand(all_brands, products):
     q_objects = Q()
@@ -12,8 +11,6 @@ def filter_by_brand(all_brands, products):
     return products.filter(q_objects)
 
 def q_search(query):
-    # if len(query) == 6:
-    # print(query)
     if len(query) == 7 and query[1::].isdigit():
         result = Products.objects.filter(article=query)
         result = result.annotate(

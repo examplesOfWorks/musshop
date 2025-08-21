@@ -42,6 +42,7 @@
     max-height: 100%;
     object-fit: contain;
     display: block;
+    margin: auto !important;
 }
 
 .product_min_block {
@@ -51,4 +52,22 @@
 .product_min_block img {
     object-fit: contain;
     height: 100%;
+    margin: auto !important;
+}
+
+.prod_block {
+    height: 400px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    overflow: hidden !important;
+}
+
+.prod_image {
+    max-width: 45% !important;
+    max-height: 45% !important;
+    object-fit: contain !important;
+    display: block !important;
+    margin: auto !important;
+    
 }

@@ -10,7 +10,7 @@
             <div class="ec-product-inner">
                 <div class="ec-pro-image-outer">
                     <div class="ec-pro-image">
-                        <a href="product-left-sidebar.html" class="image">
+                        <a href="{% url "catalog:product" product.article %}" class="image">
                             
                             {% if product.images.first.image.url %}
 
@@ -29,17 +29,16 @@
                                     src="{% static "assets/images/product-image/1_2.jpg" %}" alt="Product" /> 
                             {% endif %}
 
-                            
                         </a>
-                        <a href="#" class="quickview" data-link-action="quickview"
+                        {% comment %} <a href="#" class="quickview" data-link-action="quickview"
                             title="Quick view" data-bs-toggle="modal"
                             data-bs-target="#ec_quickview_modal"><img
                                 src="{% static "assets/images/icons/quickview.svg" %}" class="svg_img pro_svg"
-                                alt="" /></a>
+                                alt="" /></a> {% endcomment %}
                         <div class="ec-pro-actions">
-                            <a href="compare.html" class="ec-btn-group compare"
+                            {% comment %} <a href="compare.html" class="ec-btn-group compare"
                                 title="Compare"><img src="{% static "assets/images/icons/compare.svg" %}"
-                                    class="svg_img pro_svg" alt="" /></a>
+                                    class="svg_img pro_svg" alt="" /></a> {% endcomment %}
                             <a href="{% url "cart:cart_add" %}" 
                                 title="Добавить в корзину"
                                 class="btn add-to-cart"

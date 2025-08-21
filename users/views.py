@@ -7,6 +7,8 @@ from django.contrib import auth, messages
 from django.views.decorators.csrf import csrf_protect
 from django.template.loader import render_to_string
 
+from django.core.paginator import Paginator
+
 from carts.models import Cart
 from goods.models import Products
 from users.models import Wishlist
@@ -181,12 +183,19 @@ def wishlist_add(request):
         }
     return JsonResponse(response_data)
 
+@login_required
 def wishlist(request):
+    page = request.GET.get('page', 1)
     user = request.user
+
     wishlist_products = Wishlist.objects.filter(user=user).order_by('-created_timestamp')
+
+    paginator = Paginator(wishlist_products, 3)
+    current_page = paginator.page(int(page))
+    
     context = {
         'title': 'Избранное',
-        'wishlist_products': wishlist_products,
+        'wishlist_products': current_page,
     }
     return render(request, 'users/wishlist.html', context)
 

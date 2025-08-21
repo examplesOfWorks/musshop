@@ -16,8 +16,8 @@
      
      <title>{{ title }}</title>
      <meta name="keywords" content="apparel, catalog, clean, ecommerce, ecommerce HTML, electronics, fashion, html eCommerce, html store, minimal, multipurpose, multipurpose ecommerce, online store, responsive ecommerce template, shops" />
-     <meta name="description" content="Best ecommerce html template for single and multi vendor store.">
-     <meta name="author" content="ashishmaraviya">
+     <meta name="description" content="Учебный проект.">
+     <meta name="author" content="Бритвина Анастасия">
  
      <!-- site Favicon -->
      <link rel="icon" href="{% static "assets/images/favicon/favicon.png" %}" sizes="32x32" >
@@ -56,102 +56,17 @@
  
      <!-- Header start  -->
      <header class="ec-header">
-         <!--Ec Header Top Start -->
+        <!--Ec Header Top Start -->
          <div class="header-top">
              <div class="container">
                  <div class="row align-items-center">
-                     <!-- Header Top social Start -->
-                     <div class="col text-left header-top-left d-none d-lg-block">
-                         <div class="header-top-social">
-                             <span class="social-text text-upper">Follow us on:</span>
-                             <ul class="mb-0">
-                                 <li class="list-inline-item"><a class="hdr-facebook" href="#"><i class="ecicon eci-facebook"></i></a></li>
-                                 <li class="list-inline-item"><a class="hdr-twitter" href="#"><i class="ecicon eci-twitter"></i></a></li>
-                                 <li class="list-inline-item"><a class="hdr-instagram" href="#"><i class="ecicon eci-instagram"></i></a></li>
-                                 <li class="list-inline-item"><a class="hdr-linkedin" href="#"><i class="ecicon eci-linkedin"></i></a></li>
-                             </ul>
-                         </div>
-                     </div>
-                     <!-- Header Top social End -->
                      <!-- Header Top Message Start -->
                      <div class="col text-center header-top-center">
                          <div class="header-top-message text-upper">
-                             <span>Free Shipping</span>This Week Order Over - $75
+                             Учебный проект
                          </div>
                      </div>
                      <!-- Header Top Message End -->
-                     <!-- Header Top Language Currency -->
-                     <div class="col header-top-right d-none d-lg-block">
-                         <div class="header-top-lan-curr d-flex justify-content-end">
-                             <!-- Currency Start -->
-                             <div class="header-top-curr dropdown">
-                                 <button class="dropdown-toggle text-upper" data-bs-toggle="dropdown">Currency <i
-                                         class="ecicon eci-caret-down" aria-hidden="true"></i></button>
-                                 <ul class="dropdown-menu">
-                                     <li class="active"><a class="dropdown-item" href="#">USD $</a></li>
-                                     <li><a class="dropdown-item" href="#">EUR €</a></li>
-                                 </ul>
-                             </div>
-                             <!-- Currency End -->
-                             <!-- Language Start -->
-                             <div class="header-top-lan dropdown">
-                                 <button class="dropdown-toggle text-upper" data-bs-toggle="dropdown">Language <i
-                                         class="ecicon eci-caret-down" aria-hidden="true"></i></button>
-                                 <ul class="dropdown-menu">
-                                     <li class="active"><a class="dropdown-item" href="#">English</a></li>
-                                     <li><a class="dropdown-item" href="#">Italiano</a></li>
-                                 </ul>
-                             </div>
-                             <!-- Language End -->
- 
-                         </div>
-                     </div>
-                     <!-- Header Top Language Currency -->
-                     <!-- Header Top responsive Action -->
-                     <div class="col d-lg-none ">
-                         <div class="ec-header-bottons">
-                             <!-- Header User Start -->
-                             <div class="ec-header-user dropdown">
-                                 <button class="dropdown-toggle" data-bs-toggle="dropdown"><img
-                                         src="{% static "assets/images/icons/user.svg" %}" class="svg_img header_svg" alt="" /></button>
-                                 <ul class="dropdown-menu dropdown-menu-right">
-                                    {% if not user.is_authenticated %}
-                                     <li><a class="dropdown-item" href="{% url "users:registration" %}">Регистрация</a></li>
-                                     <li><a class="dropdown-item" href="{% url "users:login" %}">Вход</a></li>
-                                    {% else %}
-                                     <li><a class="dropdown-item" href="{% url "users:profile" %}">Профиль</a></li>
-                                     <li><a class="dropdown-item" href="{% url "users:logout" %}">Выход</a></li>
-                                    {% endif %}
-                                </ul>
-                             </div>
-                             <!-- Header User End -->
-                             <!-- Header Cart Start -->
-                             {% if user.is_authenticated %}
-                             <a href="{% url "users:wishlist" %}" class="ec-header-btn ec-header-wishlist">
-                                 <div class="header-icon"><img src="{% static "assets/images/icons/wishlist.svg" %}"
-                                         class="svg_img header_svg" alt="" /></div>
-                                 <span class="ec-header-count wishlist-count-lable">{{ wishlist }}</span>
-                             </a>
-                             {% endif %}
-                             <!-- Header Cart End -->
-                             <!-- Header Cart Start -->
-                             <a href="#ec-side-cart" class="ec-header-btn ec-side-toggle">
-                                 <div class="header-icon"><img src="{% static "assets/images/icons/cart.svg" %}"
-                                         class="svg_img header_svg" alt="" /></div>
-                                 <span class="ec-header-count cart-count-lable">{% if carts %}{{ carts.total_quantity }}{% else %}0{% endif %}</span>
-                             </a>
-                             <!-- Header Cart End -->
-                             <a href="javascript:void(0)" class="ec-header-btn ec-sidebar-toggle">
-                                 <img src="{% static "assets/images/icons/category-icon.svg" %}" class="svg_img header_svg" alt="icon" />
-                             </a>
-                             <!-- Header menu Start -->
-                             <a href="#ec-mobile-menu" class="ec-header-btn ec-side-toggle d-lg-none">
-                                 <img src="{% static "assets/images/icons/menu.svg" %}" class="svg_img header_svg" alt="icon" />
-                             </a>
-                             <!-- Header menu End -->
-                         </div>
-                     </div>
-                     <!-- Header Top responsive Action -->
                  </div>
              </div>
          </div>
@@ -165,7 +80,7 @@
                          <div class="align-self-center">
                              <div class="header-logo">
                                  <a href="{% url "main:index" %}"><img src="{% static "assets/images/logo/logo.png" %}" alt="Site Logo" /><img
-                                         class="dark-logo" src="{% static "assets/images/logo/dark-logo.png" %}" alt="Site Logo"
+                                         {% comment %} class="dark-logo" src="{% static "assets/images/logo/dark-logo.png" %}" alt="Site Logo" {% endcomment %}
                                          style="display: none;" /></a>
                              </div>
                          </div>
@@ -235,7 +150,7 @@
                      <div class="col">
                          <div class="header-logo">
                              <a href="{% url "main:index" %}"><img src="{% static "assets/images/logo/logo.png" %}" alt="Site Logo" /><img
-                                     class="dark-logo" src="{% static "assets/images/logo/dark-logo.png" %}" alt="Site Logo"
+                                     {% comment %} class="dark-logo" src="{% static "assets/images/logo/dark-logo.png" %}" alt="Site Logo" {% endcomment %}
                                      style="display: none;" /></a>
                          </div>
                      </div>
@@ -261,14 +176,10 @@
                  <div class="row">
                      <div class="col-md-12 align-self-center">
                          <div class="ec-main-menu">
-                             <a href="javascript:void(0)" class="ec-header-btn ec-sidebar-toggle">
-                                 <img src="{% static "assets/images/icons/category-icon.svg" %}" class="svg_img header_svg" alt="icon" />
-                             </a>
                              <ul>
                                  <li><a href="{% url "main:index" %}">Главная</a></li>
                                  <li><a href="{% url "main:about" %}">О магазине</a></li>
                                  <li><a href="{% url "main:project" %}">О проекте</a></li>
-                                 <li><a href="{% url "catalog:brands" %}">Бренды</a></li>
 
                                  <li class="dropdown"><a href="{% url "catalog:categories" %}">Каталог</a>
 
@@ -292,15 +203,10 @@
                                  <li class="dropdown scroll-to"><a href="javascript:void(0)"><img
                                      src="{% static "assets/images/icons/scroll.svg" %}" class="svg_img header_svg scroll" alt="" /></a>
                                      <ul class="sub-menu">
-                                         <li class="menu_title">Scroll To Section</li>
-                                         <li><a href="javascript:void(0)" data-scroll="collection" class="nav-scroll">Top Collection</a></li>
-                                         <li><a href="javascript:void(0)" data-scroll="categories" class="nav-scroll">Categories</a></li>
-                                         <li><a href="javascript:void(0)" data-scroll="offers" class="nav-scroll">Offers</a></li>
-                                         <li><a href="javascript:void(0)" data-scroll="vendors" class="nav-scroll">Top Vendors</a></li>
-                                         <li><a href="javascript:void(0)" data-scroll="services" class="nav-scroll">Services</a></li>
-                                         <li><a href="javascript:void(0)" data-scroll="arrivals" class="nav-scroll">New Arrivals</a></li>
-                                         <li><a href="javascript:void(0)" data-scroll="reviews" class="nav-scroll">Client Review</a></li>
-                                         <li><a href="javascript:void(0)" data-scroll="insta" class="nav-scroll">Instagram Feed</a></li>
+                                         <li class="menu_title">Перейти к разделу</li>
+                                         <li><a href="javascript:void(0)" data-scroll="arrivals" class="nav-scroll">Новые поступления</a></li>
+                                         {% comment %} <li><a href="javascript:void(0)" data-scroll="reviews" class="nav-scroll">Отзывы</a></li> {% endcomment %}
+                                         <li><a href="javascript:void(0)" data-scroll="brands" class="nav-scroll">Бренды</a></li>
                                      </ul>
                                  </li>
                              </ul>
@@ -555,352 +461,6 @@
         {% include "carts/includes/modal_cart.html" %}
      </div>
      <!-- Закончилась разметка модального окна корзины -->
- 
-     <!-- Category Sidebar start -->
-     <div class="ec-side-cat-overlay"></div>
-     <div class="col-lg-3 category-sidebar" data-animation="fadeIn">
-             <div class="cat-sidebar">
-                 <div class="cat-sidebar-box">
-                     <div class="ec-sidebar-wrap">
-                         <!-- Sidebar Category Block -->
-                         <div class="ec-sidebar-block">
-                             <div class="ec-sb-title">
-                                 <h3 class="ec-sidebar-title">Category<button class="ec-close">×</button></h3>
-                             </div>
-                             <div class="ec-sb-block-content">
-                                 <ul>
-                                     <li>
-                                         <div class="ec-sidebar-block-item"><img src="{% static "assets/images/icons/dress-8.svg" %}" class="svg_img" alt="drink" />Cothes</div>
-                                         <ul style="display: block;">
-                                             <li>
-                                                 <div class="ec-sidebar-sub-item"><a href="shop-left-sidebar-col-3.html">Shirt <span title="Available Stock">- 25</span></a>
-                                                 </div>
-                                             </li>
-                                             <li>
-                                                 <div class="ec-sidebar-sub-item"><a href="shop-left-sidebar-col-3.html">shorts & jeans <span title="Available Stock">- 52</span></a>
-                                                 </div>
-                                             </li>
-                                             <li>
-                                                 <div class="ec-sidebar-sub-item"><a href="shop-left-sidebar-col-3.html">jacket<span title="Available Stock">- 500</span></a>
-                                                 </div>
-                                             </li>
-                                             <li>
-                                                 <div class="ec-sidebar-sub-item"><a href="shop-left-sidebar-col-3.html">dress & frock  <span title="Available Stock">- 35</span></a>
-                                                 </div>
-                                             </li>
-                                         </ul>
-                                     </li>
-                                 </ul>
-                             </div>
-                             <div class="ec-sb-block-content">
-                                 <ul>
-                                     <li>
-                                         <div class="ec-sidebar-block-item"><img src="{% static "assets/images/icons/shoes-8.svg" %}" class="svg_img" alt="drink" />Footwear</div>
-                                         <ul>
-                                             <li>
-                                                 <div class="ec-sidebar-sub-item"><a href="shop-left-sidebar-col-3.html">Sports <span title="Available Stock">- 25</span></a>
-                                                 </div>
-                                             </li>
-                                             <li>
-                                                 <div class="ec-sidebar-sub-item"><a href="shop-left-sidebar-col-3.html">Formal <span title="Available Stock">- 52</span></a>
-                                                 </div>
-                                             </li>
-                                             <li>
-                                                 <div class="ec-sidebar-sub-item"><a href="shop-left-sidebar-col-3.html">Casual <span title="Available Stock">- 40</span></a>
-                                                 </div>
-                                             </li>
-                                             <li>
-                                                 <div class="ec-sidebar-sub-item"><a href="shop-left-sidebar-col-3.html">safety shoes <span title="Available Stock">- 35</span></a>
-                                                 </div>
-                                             </li>
-                                         </ul>
-                                     </li>
-                                 </ul>
-                             </div>
-                             <div class="ec-sb-block-content">
-                                 <ul>
-                                     <li>
-                                         <div class="ec-sidebar-block-item"><img src="{% static "assets/images/icons/jewelry-8.svg" %}" class="svg_img" alt="drink" />jewelry</div>
-                                         <ul>
-                                             <li>
-                                                 <div class="ec-sidebar-sub-item"><a href="shop-left-sidebar-col-3.html">Earrings <span title="Available Stock">- 50</span></a>
-                                                 </div>
-                                             </li>
-                                             <li>
-                                                 <div class="ec-sidebar-sub-item"><a href="shop-left-sidebar-col-3.html">Couple Rings <span title="Available Stock">- 35</span></a>
-                                                 </div>
-                                             </li>
-                                             <li>
-                                                 <div class="ec-sidebar-sub-item"><a href="shop-left-sidebar-col-3.html">Necklace <span title="Available Stock">- 40</span></a>
-                                                 </div>
-                                             </li>
-                                         </ul>
-                                     </li>
-                                 </ul>
-                             </div>
-                             <div class="ec-sb-block-content">
-                                 <ul>
-                                     <li>
-                                         <div class="ec-sidebar-block-item"><img src="{% static "assets/images/icons/perfume-8.svg" %}" class="svg_img" alt="drink" />perfume</div>
-                                         <ul>
-                                             <li>
-                                                 <div class="ec-sidebar-sub-item"><a href="shop-left-sidebar-col-3.html">Clothes perfume<span title="Available Stock">- 4 pcs</span></a>
-                                                 </div>
-                                             </li>
-                                             <li>
-                                                 <div class="ec-sidebar-sub-item"><a href="shop-left-sidebar-col-3.html">deodorant <span title="Available Stock">- 52 pcs</span></a>
-                                                 </div>
-                                             </li>
-                                             <li>
-                                                 <div class="ec-sidebar-sub-item"><a href="shop-left-sidebar-col-3.html">Flower fragrance <span title="Available Stock">- 10 pack</span></a>
-                                                 </div>
-                                             </li>
-                                             <li>
-                                                 <div class="ec-sidebar-sub-item"><a href="shop-left-sidebar-col-3.html">Air Freshener<span title="Available Stock">- 35 pack</span></a>
-                                                 </div>
-                                             </li>
-                                         </ul>
-                                     </li>
-                                 </ul>
-                             </div>
-                             <div class="ec-sb-block-content">
-                                 <ul>
-                                     <li>
-                                         <div class="ec-sidebar-block-item"><img src="{% static "assets/images/icons/cosmetics-8.svg" %}" class="svg_img" alt="drink" />cosmetics</div>
-                                         <ul>
-                                             <li>
-                                                 <div class="ec-sidebar-sub-item"><a href="shop-left-sidebar-col-3.html">shampoo<span title="Available Stock"></span></a>
-                                                 </div>
-                                             </li>
-                                             <li>
-                                                 <div class="ec-sidebar-sub-item"><a href="shop-left-sidebar-col-3.html">Sunscreen<span title="Available Stock"></span></a>
-                                                 </div>
-                                             </li>
-                                             <li>
-                                                 <div class="ec-sidebar-sub-item"><a href="shop-left-sidebar-col-3.html">body wash<span title="Available Stock"></span></a>
-                                                 </div>
-                                             </li>
-                                             <li>
-                                                 <div class="ec-sidebar-sub-item"><a href="shop-left-sidebar-col-3.html">makeup kit<span title="Available Stock"></span></a>
-                                                 </div>
-                                             </li>
-                                         </ul>
-                                     </li>
-                                 </ul>
-                             </div>
-                             <div class="ec-sb-block-content">
-                                 <ul>
-                                     <li>
-                                         <div class="ec-sidebar-block-item"><img src="{% static "assets/images/icons/glasses-8.svg" %}" class="svg_img" alt="drink" />glasses</div>
-                                         <ul>
-                                             <li>
-                                                 <div class="ec-sidebar-sub-item"><a href="shop-left-sidebar-col-3.html">Sunglasses <span title="Available Stock">- 20</span></a>
-                                                 </div>
-                                             </li>
-                                             <li>
-                                                 <div class="ec-sidebar-sub-item"><a href="shop-left-sidebar-col-3.html">Lenses <span title="Available Stock">- 52</span></a>
-                                                 </div>
-                                             </li>
-                                         </ul>
-                                     </li>
-                                 </ul>
-                             </div>
-                             <div class="ec-sb-block-content">
-                                 <ul>
-                                     <li>
-                                         <div class="ec-sidebar-block-item"><img src="{% static "assets/images/icons/bag-8.svg" %}" class="svg_img" alt="drink" />bags</div>
-                                         <ul>
-                                             <li>
-                                                 <div class="ec-sidebar-sub-item"><a href="shop-left-sidebar-col-3.html">shopping bag <span title="Available Stock">- 25</span></a>
-                                                 </div>
-                                             </li>
-                                             <li>
-                                                 <div class="ec-sidebar-sub-item"><a href="shop-left-sidebar-col-3.html">Gym backpack <span title="Available Stock">- 52</span></a>
-                                                 </div>
-                                             </li>
-                                             <li>
-                                                 <div class="ec-sidebar-sub-item"><a href="shop-left-sidebar-col-3.html">purse <span title="Available Stock">- 40</span></a>
-                                                 </div>
-                                             </li>
-                                             <li>
-                                                 <div class="ec-sidebar-sub-item"><a href="shop-left-sidebar-col-3.html">wallet <span title="Available Stock">- 35</span></a>
-                                                 </div>
-                                             </li>
-                                         </ul>
-                                     </li>
-                                 </ul>
-                             </div>
-                         </div>
-                         <!-- Sidebar Category Block -->
-                     </div>
-                 </div>
-                 <div class="ec-sidebar-slider-cat">
-                     <div class="ec-sb-slider-title">Best Sellers</div>
-                     <div class="ec-sb-pro-sl">
-                         <div>
-                             <div class="ec-sb-pro-sl-item">
-                                 <a href="product-left-sidebar.html" class="sidekka_pro_img"><img
-                                         src="{% static "assets/images/product-image/1.jpg" %}" alt="product" /></a>
-                                 <div class="ec-pro-content">
-                                     <h5 class="ec-pro-title"><a href="product-left-sidebar.html">baby fabric shoes</a></h5>
-                                     <div class="ec-pro-rating">
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star fill"></i>
-                                     </div>
-                                     <span class="ec-price">
-                                         <span class="old-price">$5.00</span>
-                                         <span class="new-price">$4.00</span>
-                                     </span>
-                                 </div>
-                             </div>
-                         </div>
-                         <div>
-                             <div class="ec-sb-pro-sl-item">
-                                 <a href="product-left-sidebar.html" class="sidekka_pro_img"><img
-                                         src="{% static "assets/images/product-image/2.jpg" %}" alt="product" /></a>
-                                 <div class="ec-pro-content">
-                                     <h5 class="ec-pro-title"><a href="product-left-sidebar.html">Men's hoodies t-shirt</a></h5>
-                                     <div class="ec-pro-rating">
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star"></i>
-                                     </div>
-                                     <span class="ec-price">
-                                         <span class="old-price">$10.00</span>
-                                         <span class="new-price">$7.00</span>
-                                     </span>
-                                 </div>
-                             </div>
-                         </div>
-                         <div>
-                             <div class="ec-sb-pro-sl-item">
-                                 <a href="product-left-sidebar.html" class="sidekka_pro_img"><img
-                                         src="{% static "assets/images/product-image/3.jpg" %}" alt="product" /></a>
-                                 <div class="ec-pro-content">
-                                     <h5 class="ec-pro-title"><a href="product-left-sidebar.html">Girls t-shirt</a></h5>
-                                     <div class="ec-pro-rating">
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star"></i>
-                                         <i class="ecicon eci-star"></i>
-                                     </div>
-                                     <span class="ec-price">
-                                         <span class="old-price">$5.00</span>
-                                         <span class="new-price">$3.00</span>
-                                     </span>
-                                 </div>
-                             </div>
-                         </div>
-                         <div>
-                             <div class="ec-sb-pro-sl-item">
-                                 <a href="product-left-sidebar.html" class="sidekka_pro_img"><img
-                                         src="{% static "assets/images/product-image/4.jpg" %}" alt="product" /></a>
-                                 <div class="ec-pro-content">
-                                     <h5 class="ec-pro-title"><a href="product-left-sidebar.html">woolen hat for men</a></h5>
-                                     <div class="ec-pro-rating">
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star fill"></i>
-                                     </div>
-                                     <span class="ec-price">
-                                         <span class="old-price">$15.00</span>
-                                         <span class="new-price">$12.00</span>
-                                     </span>
-                                 </div>
-                             </div>
-                         </div>
-                         <div>
-                             <div class="ec-sb-pro-sl-item">
-                                 <a href="product-left-sidebar.html" class="sidekka_pro_img"><img
-                                         src="{% static "assets/images/product-image/5.jpg" %}" alt="product" /></a>
-                                 <div class="ec-pro-content">
-                                     <h5 class="ec-pro-title"><a href="product-left-sidebar.html">Womens purse</a></h5>
-                                     <div class="ec-pro-rating">
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star"></i>
-                                     </div>
-                                     <span class="ec-price">
-                                         <span class="old-price">$15.00</span>
-                                         <span class="new-price">$12.00</span>
-                                     </span>
-                                 </div>
-                             </div>
-                         </div>
-                         <div>
-                             <div class="ec-sb-pro-sl-item">
-                                 <a href="product-left-sidebar.html" class="sidekka_pro_img"><img
-                                         src="{% static "assets/images/product-image/6.jpg" %}" alt="product" /></a>
-                                 <div class="ec-pro-content">
-                                     <h5 class="ec-pro-title"><a href="product-left-sidebar.html">Baby toy doctor kit</a></h5>
-                                     <div class="ec-pro-rating">
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star"></i>
-                                         <i class="ecicon eci-star"></i>
-                                         <i class="ecicon eci-star"></i>
-                                     </div>
-                                     <span class="ec-price">
-                                         <span class="old-price">$50.00</span>
-                                         <span class="new-price">$45.00</span>
-                                     </span>
-                                 </div>
-                             </div>
-                         </div>
-                         <div>
-                             <div class="ec-sb-pro-sl-item">
-                                 <a href="product-left-sidebar.html" class="sidekka_pro_img"><img
-                                         src="{% static "assets/images/product-image/7.jpg" %}" alt="product" /></a>
-                                 <div class="ec-pro-content">
-                                     <h5 class="ec-pro-title"><a href="product-left-sidebar.html">teddy bear baby toy</a></h5>
-                                     <div class="ec-pro-rating">
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star fill"></i>
-                                     </div>
-                                     <span class="ec-price">
-                                         <span class="old-price">$35.00</span>
-                                         <span class="new-price">$25.00</span>
-                                     </span>
-                                 </div>
-                             </div>
-                         </div>
-                         <div>
-                             <div class="ec-sb-pro-sl-item">
-                                 <a href="product-left-sidebar.html" class="sidekka_pro_img"><img
-                                         src="{% static "assets/images/product-image/2.jpg" %}" alt="product" /></a>
-                                 <div class="ec-pro-content">
-                                     <h5 class="ec-pro-title"><a href="product-left-sidebar.html">Mens hoodies blue</a></h5>
-                                     <div class="ec-pro-rating">
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star fill"></i>
-                                         <i class="ecicon eci-star"></i>
-                                         <i class="ecicon eci-star"></i>
-                                     </div>
-                                     <span class="ec-price">
-                                         <span class="old-price">$15.00</span>
-                                         <span class="new-price">$13.00</span>
-                                     </span>
-                                 </div>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-             </div>
-     </div>
 
      {% include "includes/notifications.html" %}
      {% block content %}
@@ -909,96 +469,51 @@
    <!-- Footer Start -->
      <footer class="ec-footer section-space-mt">
          <div class="footer-container">
-             <div class="footer-offer">
-                 <div class="container">
-                     <div class="row">
-                         <div class="text-center footer-off-msg">
-                             <span>Win a contest! Get this limited-editon</span><a href="#" target="_blank">View
-                                 Detail</a>
-                         </div>
-                     </div>
-                 </div>
-             </div>
              <div class="footer-top section-space-footer-p">
                  <div class="container">
                      <div class="row">
-                         <div class="col-sm-12 col-lg-3 ec-footer-contact">
+                         <div class="col-sm-12 col-lg-6 ec-footer-contact">
                              <div class="ec-footer-widget">
                                  <div class="ec-footer-logo"><a href="#"><img src="{% static "assets/images/logo/footer-logo.png" %}"
-                                             alt=""><img class="dark-footer-logo" src="{% static "assets/images/logo/dark-logo.png" %}"
+                                             {% comment %} alt=""><img class="dark-footer-logo" src="{% static "assets/images/logo/dark-logo.png" %}" {% endcomment %}
                                              alt="Site Logo" style="display: none;" /></a></div>
-                                 <h4 class="ec-footer-heading">Contact us</h4>
+                                 <h4 class="ec-footer-heading">Контакты</h4>
                                  <div class="ec-footer-links">
                                      <ul class="align-items-center">
-                                         <li class="ec-footer-link">71 Pilgrim Avenue Chevy Chase, east california.</li>
-                                         <li class="ec-footer-link"><span>Call Us:</span><a href="tel:+440123456789">+44
+                                         <li class="ec-footer-link">Учебный проект Бритвиной Анастасии</li>
+                                         {% comment %} <li class="ec-footer-link"><span>Call Us:</span>+44
                                                  0123 456 789</a></li>
                                          <li class="ec-footer-link"><span>Email:</span><a
-                                                 href="mailto:example@ec-email.com">+example@ec-email.com</a></li>
+                                                 href="mailto:example@ec-email.com">+example@ec-email.com</a></li> {% endcomment %}
                                      </ul>
                                  </div>
                              </div>
                          </div>
-                         <div class="col-sm-12 col-lg-2 ec-footer-info">
+                         <div class="col-sm-12 col-lg-3 ec-footer-info">
                              <div class="ec-footer-widget">
-                                 <h4 class="ec-footer-heading">Information</h4>
+                                 <h4 class="ec-footer-heading">Информация</h4>
                                  <div class="ec-footer-links">
                                      <ul class="align-items-center">
-                                         <li class="ec-footer-link"><a href="about-us.html">About us</a></li>
-                                         <li class="ec-footer-link"><a href="faq.html">FAQ</a></li>
-                                         <li class="ec-footer-link"><a href="track-order.html">Delivery Information</a></li>
-                                         <li class="ec-footer-link"><a href="contact-us.html">Contact us</a></li>
+                                         <li class="ec-footer-link"><a href="{% url "main:about" %}">О магазине</a></li>
+                                         <li class="ec-footer-link"><a href="{% url "main:project" %}">О проекте</a></li>
                                      </ul>
                                  </div>
                              </div>
                          </div>
-                         <div class="col-sm-12 col-lg-2 ec-footer-account">
+                         <div class="col-sm-12 col-lg-3 ec-footer-account">
                              <div class="ec-footer-widget">
-                                 <h4 class="ec-footer-heading">Account</h4>
+                                 <h4 class="ec-footer-heading">Пользователь</h4>
                                  <div class="ec-footer-links">
                                      <ul class="align-items-center">
-                                         <li class="ec-footer-link"><a href="user-profile.html">My Account</a></li>
-                                         <li class="ec-footer-link"><a href="track-order.html">Order History</a></li>
-                                         <li class="ec-footer-link"><a href="{% url "users:wishlist" %}">Избранное</a></li>
-                                         <li class="ec-footer-link"><a href="offer.html">Specials</a></li>
+                                         {% if not user.is_authenticated or user.is_superuser %}
+                                            <li class="ec-footer-link"><a href="{% url "users:registration" %}">Регистрация</a></li>
+                                            <li class="ec-footer-link"><a href="{% url "users:login" %}">Вход</a></li>
+                                         {% else %}
+                                            <li class="ec-footer-link"><a href="{% url "users:profile" %}">Профиль</a></li>
+                                            <li class="ec-footer-link"><a href="{% url "orders:order_history" %}">История заказов</a></li>
+                                            <li class="ec-footer-link"><a href="{% url "users:wishlist" %}">Избранное</a></li>
+                                         {% endif %}
                                      </ul>
-                                 </div>
-                             </div>
-                         </div>
-                         <div class="col-sm-12 col-lg-2 ec-footer-service">
-                             <div class="ec-footer-widget">
-                                 <h4 class="ec-footer-heading">Services</h4>
-                                 <div class="ec-footer-links">
-                                     <ul class="align-items-center">
-                                         <li class="ec-footer-link"><a href="track-order.html">Discount Returns</a></li>
-                                         <li class="ec-footer-link"><a href="privacy-policy.html">Policy & policy </a></li>
-                                         <li class="ec-footer-link"><a href="terms-condition.html">Customer Service</a></li>
-                                         <li class="ec-footer-link"><a href="terms-condition.html">Term & condition</a>
-                                         </li>
-                                     </ul>
-                                 </div>
-                             </div>
-                         </div>
-                         <div class="col-sm-12 col-lg-3 ec-footer-news">
-                             <div class="ec-footer-widget">
-                                 <h4 class="ec-footer-heading">Newsletter</h4>
-                                 <div class="ec-footer-links">
-                                     <ul class="align-items-center">
-                                         <li class="ec-footer-link">Get instant updates about our new products and
-                                             special promos!</li>
-                                     </ul>
-                                     <div class="ec-subscribe-form">
-                                         <form id="ec-newsletter-form" name="ec-newsletter-form" method="post"
-                                             action="#">
-                                             <div id="ec_news_signup" class="ec-form">
-                                                 <input class="ec-email" type="email" required=""
-                                                     placeholder="Enter your email here..." name="ec-email" value="" />
-                                                 <button id="ec-news-btn" class="button btn-primary" type="submit"
-                                                     name="subscribe" value=""><i class="ecicon eci-paper-plane-o"
-                                                         aria-hidden="true"></i></button>
-                                             </div>
-                                         </form>
-                                     </div>
                                  </div>
                              </div>
                          </div>
@@ -1008,37 +523,12 @@
              <div class="footer-bottom">
                  <div class="container">
                      <div class="row align-items-center">
-                         <!-- Footer social Start -->
-                         <div class="col text-left footer-bottom-left">
-                             <div class="footer-bottom-social">
-                                 <span class="social-text text-upper">Follow us on:</span>
-                                 <ul class="mb-0">
-                                     <li class="list-inline-item"><a class="hdr-facebook" href="#"><i class="ecicon eci-facebook"></i></a></li>
-                                     <li class="list-inline-item"><a class="hdr-twitter" href="#"><i class="ecicon eci-twitter"></i></a></li>
-                                     <li class="list-inline-item"><a class="hdr-instagram" href="#"><i class="ecicon eci-instagram"></i></a></li>
-                                     <li class="list-inline-item"><a class="hdr-linkedin" href="#"><i class="ecicon eci-linkedin"></i></a></li>
-                                 </ul>
-                             </div>
-                         </div>
-                         <!-- Footer social End -->
                          <!-- Footer Copyright Start -->
                          <div class="col text-center footer-copy">
                              <div class="footer-bottom-copy ">
-                                 <div class="ec-copy">Copyright © 2021-2022 <a class="site-name text-upper"
-                                         href="#">ekka<span>.</span></a>. All Rights Reserved</div>
+                                 <div class="ec-copy">Учебный проект</div>
                              </div>
                          </div>
-                         <!-- Footer Copyright End -->
-                         <!-- Footer payment -->
-                         <div class="col footer-bottom-right">
-                             <div class="footer-bottom-payment d-flex justify-content-end">
-                                 <div class="payment-link">
-                                     <img src="{% static "assets/images/icons/payment.png" %}" alt="">
-                                 </div>
- 
-                             </div>
-                         </div>
-                         <!-- Footer payment -->
                      </div>
                  </div>
              </div>

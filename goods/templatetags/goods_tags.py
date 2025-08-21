@@ -1,7 +1,8 @@
 from django import template
+from django.db.models import Count
 from django.utils.http import urlencode
 
-from goods.models import Categories, Subcategories, Products
+from goods.models import Brands, Categories, Subcategories, Products
 from goods.views import subcategories
 
 register = template.Library()
@@ -36,3 +37,18 @@ def change_params(context, **kwargs):
     query = context['request'].GET.dict()
     query.update(kwargs)
     return urlencode(query)
+
+@register.simple_tag()
+def slider_products():
+    top_products = Products.objects.filter(discount__gt=20).order_by('quantity')[:4]
+    return top_products
+
+@register.simple_tag()
+def new_arrivals():
+    new_products = Products.objects.filter(discount__gt=0).order_by('-created_timestamp')[:4]
+    return new_products
+
+@register.simple_tag()
+def top_brands():
+    brands = Brands.objects.filter(image__isnull=False).annotate(product_count=Count('products')).filter(product_count__gt=0).order_by('-product_count')[:10]
+    return brands
