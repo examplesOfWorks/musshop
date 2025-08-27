@@ -52,7 +52,10 @@
                                                 <li>
                                                     <div class="ec-sidebar-block-item">
                                                         <input type="checkbox" name="brand" value="{{ brand.slug }}"
-                                                            {% for b in all_brands %}{% if b == brand.slug %} checked {% endif %}{% endfor %}/>                                                        
+                                                            {% for b in filter_brand %}
+                                                            {% if b == brand.slug %} checked {% endif %}
+                                                            {% endfor %}
+                                                            />                                                         
                                                             <p class="ms-4 mb-0">{{ brand.name }}</p><span
                                                             class="checked"></span>
                                                     </div>
@@ -80,10 +83,25 @@
                                             </li>                                       
                                         </ul>
                                     </div>
+                                    <p>{{subcategory_slug}}</p>
                                     <button type="submit" class="btn btn-primary mt-3">Применить</button>
-                                    <a class="btn btn-outline-secondary mt-3" type="button" href="{% url 'goods:search' subcategory_slug %}">Сбросить</a>
+                                    {% comment %} <a class="btn btn-outline-secondary mt-3" type="button" href="{% url 'goods:search' subcategory_slug %}">Сбросить</a> {% endcomment %}
+                                    
+                                    {% if request.GET.q %}
+                                        <a class="btn btn-outline-secondary mt-3" type="button" onclick="window.history.back();">Сбросить</a>
+                                    {% else %}
+                                        <a class="btn btn-outline-secondary mt-3" type="button" href="{% url 'goods:search' subcategory_slug %}">Сбросить</a>
+                                    {% endif %}
+
                                 </div>                            
                             </div>
+                            {% if request.GET.order_by %}
+                                <input type="hidden" name="order_by" value="{{ request.GET.order_by }}">
+                            {% endif %}
+
+                            {% if request.GET.q %}
+                                <input type="hidden" name="q" value="{{ request.GET.q }}">
+                            {% endif %}
                         </form>
                     </div>
                 </div>
@@ -117,6 +135,17 @@
                                         <button class="btn btn-primary" type="submit">ОК</button>
                                     </div>
                                 </div>
+                                {% if filter_brand %}
+                                    {% for brand in filter_brand %}
+                                        <input type="hidden" name="brand" value="{{ brand }}">
+                                    {% endfor %}
+                                {% endif %}
+                                {% if request.GET.discount %}
+                                    <input type="hidden" name="discount" value="{{ request.GET.discount }}">
+                                {% endif %}
+                                {% if request.GET.q %}
+                                    <input type="hidden" name="q" value="{{ request.GET.q }}" type="search">
+                                {% endif %}
                             </form>
                         </div>
                     </div>
@@ -130,21 +159,21 @@
                         <!-- Ec Pagination Start -->
                         <div class="ec-pro-pagination justify-content-end">
                             <ul class="ec-pro-pagination-inner">
-                                <li><a class="next {% if not products.has_previous %} disabled {% endif %}"
-                                    href="{% if products.has_previous %}?{% change_params page=products.previous_page_number %}
+                                <li><a class="next {% if not page_obj.has_previous %} disabled {% endif %}"
+                                    href="{% if page_obj.has_previous %}?{% change_params page=page_obj.previous_page_number %}
                                     {% else %}
                                     #
                                     {% endif %}"><i class="ecicon eci-angle-left"></i>&nbspНазад</a></li>
-                                    {% for page in products.paginator.page_range %}
-                                        {% if page >= products.number|add:-2 and page <= products.number|add:2 %}
-                                        <li><a class="{% if products.number == page %} active {% endif %}" href="?{% change_params page=page %}">
+                                    {% for page in page_obj.paginator.page_range %}
+                                        {% if page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
+                                        <li><a class="{% if page_obj.number == page %} active {% endif %}" href="?{% change_params page=page %}">
                                             {{ page }}</a>
                                         </li>
                                         {% endif %}
                                     {% endfor %}
         
-                                <li><a class="next {% if not products.has_next %} disabled {% endif %}" 
-                                    href="{% if products.has_next %}?{% change_params page=products.next_page_number %}
+                                <li><a class="next {% if not page_obj.has_next %} disabled {% endif %}" 
+                                    href="{% if page_obj.has_next %}?{% change_params page=page_obj.next_page_number %}
                                     {% else %}
                                     #
                                     {% endif %}">Далее <i class="ecicon eci-angle-right"></i></a></li>

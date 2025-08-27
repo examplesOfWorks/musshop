@@ -21,7 +21,7 @@
                     <div class="ec-vendor-card-header">
                         <h5>История заказов</h5>
                         <div class="ec-header-btn">
-                            <a class="btn btn-lg btn-primary" href="{% url "catalog:search" "all" %}">Перейти к покупкам</a>
+                            <a class="btn btn-lg btn-primary" href="{% url "catalog:categories" %}">Перейти к покупкам</a>
                         </div>
                     </div>
                     {% if orders %}
@@ -56,7 +56,7 @@
                                             <span class="tbl-btn">
                                                 <button type="button" class="btn btn-lg btn-danger" data-bs-toggle="modal" 
                                                     data-bs-target="#confirmDeleteModal" data-order-id="{{ order.id }}">
-                                                    Отмена
+                                                    Отменить
                                                 </button>
                                             </span> 
                                             {% endif %}
@@ -77,21 +77,21 @@
                 <!-- Ec Pagination Start -->
                 <div class="ec-pro-pagination justify-content-end">
                     <ul class="ec-pro-pagination-inner">
-                        <li><a class="next {% if not orders.has_previous %} disabled {% endif %}"
-                            href="{% if orders.has_previous %}?{% change_params page=orders.previous_page_number %}
+                        <li><a class="next {% if not page_obj.has_previous %} disabled {% endif %}"
+                            href="{% if page_obj.has_previous %}?{% change_params page=page_obj.previous_page_number %}
                             {% else %}
                             #
                             {% endif %}"><i class="ecicon eci-angle-left"></i>&nbspНазад</a></li>
-                            {% for page in orders.paginator.page_range %}
-                                {% if page >= orders.number|add:-2 and page <= orders.number|add:2 %}
-                                <li><a class="{% if orders.number == page %} active {% endif %}" href="?{% change_params page=page %}">
+                            {% for page in page_obj.paginator.page_range %}
+                                {% if page >= page_obj.number|add:-2 and page <= page_obj.number|add:2 %}
+                                <li><a class="{% if page_obj.number == page %} active {% endif %}" href="?{% change_params page=page %}">
                                     {{ page }}</a>
                                 </li>
                                 {% endif %}
                             {% endfor %}
 
-                        <li><a class="next {% if not orders.has_next %} disabled {% endif %}" 
-                            href="{% if orders.has_next %}?{% change_params page=orders.next_page_number %}
+                        <li><a class="next {% if not page_obj.has_next %} disabled {% endif %}" 
+                            href="{% if page_obj.has_next %}?{% change_params page=page_obj.next_page_number %}
                             {% else %}
                             #
                             {% endif %}">Далее <i class="ecicon eci-angle-right"></i></a></li>
@@ -109,19 +109,20 @@
 <div class="modal fade" id="confirmDeleteModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form action="{% url 'orders:order_delete' %}" method="post">
+            {% comment %} <form action="{% url 'orders:order_delete' %}" method="post"> {% endcomment %}
+            <form method="post" id="deleteOrderForm">
                 {% csrf_token %}
                 <input type="hidden" name="order_id" id="modalOrderId">
                 <div class="modal-header">
-                <h5 class="modal-title">Подтверждение удаления</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title">Подтверждение удаления</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                <p id="modalOrderText">Вы уверены, что хотите отменить заказ?</p>
+                    <p id="modalOrderText">Вы уверены, что хотите отменить заказ?</p>
                 </div>
                 <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                <button type="submit" class="btn btn-danger">Отменить</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                    <button type="submit" class="btn btn-danger">Отменить</button>
                 </div>
             </form>
         </div>

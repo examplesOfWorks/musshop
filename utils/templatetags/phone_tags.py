@@ -1,6 +1,6 @@
 from django import template
 
-from orders.phone_utils import format_phone
+from utils.filters import format_phone
 
 register = template.Library()
 

@@ -1,150 +1,89 @@
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_protect
-from django.template.loader import render_to_string
+from django.views import View
 
-from goods.models import Products
 from carts.models import Cart
 from carts.utils import get_user_carts
+from carts.mixins import CartMixin
 
-@csrf_protect
-def cart_add(request):
-    
-    product_id = request.POST.get("product_id")
-    product = Products.objects.get(id=product_id)
+from goods.models import Products
 
-    product_qty = request.POST.get("product_qty")
 
-    if product_qty:
-        qty = int(product_qty)
-    else:
-        qty = 1
+class CartAddView(CartMixin, View):
+    def post(self, request):
+        product_id = request.POST.get("product_id")
+        product_qty = request.POST.get("product_qty")
+        product = Products.objects.get(id=product_id)
 
-    if request.user.is_authenticated:
-        carts = Cart.objects.filter(user=request.user, product=product)
+        cart = self.get_cart(request, product=product)
 
-        if carts.exists():
-            cart = carts.first()
-            if cart:
-                cart.quantity += qty
-                cart.save()
+        if product_qty:
+            qty = int(product_qty)
         else:
-            Cart.objects.create(user=request.user, product=product, quantity=qty)
-    else:
-        carts = Cart.objects.filter(
-            session_key=request.session.session_key, product=product)
-        
-        if carts.exists():
-            cart = carts.first()
-            if cart:
-                cart.quantity += qty
-                cart.save()
+            qty = 1
+
+        if cart:
+            cart.quantity += qty
+            cart.save()
         else:
-            Cart.objects.create(
-                 session_key=request.session.session_key, product=product, quantity=qty)
-
-    user_cart = get_user_carts(request)
-
-    cart_items_html = render_to_string(
-        "carts/includes/included_cart.html", {"carts": user_cart}, request=request)
-    
-    modal_cart_items_html = render_to_string(
-        "carts/includes/modal_cart.html", {"carts": user_cart}, request=request)
-
-    response_data = {
-        "cart_items_html": cart_items_html,
-        "modal_cart_items_html": modal_cart_items_html,
-        "qty": qty,
-    }
-
-    return JsonResponse(response_data)
-
-@csrf_protect
-def cart_change(request):
-    quantity = request.POST.get("quantity")
-
-    user_cart = get_user_carts(request)
-
-    try:
-        cart_id = request.POST.get("cart_id")
-
-        cart = Cart.objects.get(id=cart_id)
-
-        cart.quantity = quantity
-        cart.save()
-        updated_quantity = cart.quantity
-
-        message = ""
-        qty = 0
-
-    except Cart.DoesNotExist:
-        updated_quantity = 0
-        qty = user_cart.total_quantity()
-        message = "Позиция ранее уже была удалена"
-
-    finally:
-
-        context = {"carts": user_cart, 'show_btn': True, 'title': 'Корзина'}
-
-        cart_items_html = render_to_string(
-            "carts/includes/included_cart.html", context, request=request)
-        
-        modal_cart_items_html = render_to_string(
-            "carts/includes/modal_cart.html", context, request=request)
-        
-        total = render_to_string(
-            "carts/includes/total.html", context, request=request)
-
-        response_data = {
-            "cart_items_html": cart_items_html,
-            "modal_cart_items_html": modal_cart_items_html,
-            "total": total,
-            "quantity": updated_quantity,
-            "message": message,
-            "qty": qty,
-        }
-
-    return JsonResponse(response_data)
-
-@csrf_protect
-def cart_remove(request):
-    user_cart = get_user_carts(request)
-
-    try:
-        cart_id = request.POST.get("cart_id")
-        cart = Cart.objects.get(id=cart_id)
-
-        quantity = cart.quantity
-        cart.delete()
-
-        message = ""
-        qty = 0
-
-    except Cart.DoesNotExist:
-        qty = user_cart.total_quantity()
-        quantity = 0
-        message = "Позиция ранее уже была удалена"
-
-    finally:
-        context = {"carts": user_cart, 'show_btn': True, 'title': 'Корзина'}
-
-        cart_items_html = render_to_string(
-            "carts/includes/included_cart.html", context, request=request)
-        
-        modal_cart_items_html = render_to_string(
-            "carts/includes/modal_cart.html", context, request=request)
+            Cart.objects.create(user=request.user if request.user.is_authenticated else None,
+                session_key=request.session.session_key if not request.user.is_authenticated else None,
+                product=product, quantity=qty)
             
-        total = render_to_string(
-            "carts/includes/total.html", context, request=request)
+        response_data = {
+            "qty": qty,
+            "message_ajax": "Товар добавлен в корзину",
+            "cart_items_html": self.render_cart(request).get('cart_items_html'),
+            "modal_cart_items_html": self.render_cart(request).get('modal_cart_items_html'),
+        }
+        
+        return JsonResponse(response_data)
 
+class CartChangeView(CartMixin, View):
+    def post(self, request):
+        cart_id = request.POST.get("cart_id")
+        cart = self.get_cart(request, cart_id=cart_id)
+        message_ajax = ""
+
+        if cart:
+            cart.quantity = request.POST.get("quantity")
+            cart.save()
+            quantity = cart.quantity
+        else:
+            quantity = 0
+            message_ajax = "Позиция ранее уже была удалена"
 
         response_data = {
-            "cart_items_html": cart_items_html,
-            "modal_cart_items_html": modal_cart_items_html,
-            "total": total,
-            "quantity_deleted": quantity,
-            "message": message,
-            "qty": qty,
-            "show_btn": True,
+            "quantity": quantity,
+            "qty": get_user_carts(request).total_quantity(),
+            "cart_items_html": self.render_cart(request).get('cart_items_html'),
+            "modal_cart_items_html": self.render_cart(request).get('modal_cart_items_html'),
+            "total": self.render_cart(request).get('total'),
+            "message_ajax": message_ajax
         }
 
-    return JsonResponse(response_data)
+        return JsonResponse(response_data)
+
+class CartRemoveView(CartMixin, View):
+    def post(self, request):
+        cart_id = request.POST.get("cart_id")
+        cart = self.get_cart(request, cart_id=cart_id)
+
+        if cart:
+            cart.quantity = request.POST.get("quantity")
+            cart.delete()
+            quantity = cart.quantity
+            message_ajax = "Товар удален из корзины"
+        else:
+            quantity = 0
+            message_ajax = "Позиция ранее уже была удалена"
+
+        response_data = {
+            "quantity": quantity,
+            "qty": get_user_carts(request).total_quantity(),
+            "cart_items_html": self.render_cart(request).get('cart_items_html'),
+            "modal_cart_items_html": self.render_cart(request).get('modal_cart_items_html'),
+            "total": self.render_cart(request).get('total'),
+            "message_ajax": message_ajax
+        }
+
+        return JsonResponse(response_data)

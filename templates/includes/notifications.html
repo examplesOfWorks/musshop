@@ -1,8 +1,20 @@
 {% load static %}
 
-<div class="recent-purchase invisible">
+{% if messages %}
+    <div class="recent-purchase alert alert-dismissible fade show" role="alert" id="info-message">
+        <div class="detail">
+            {% for message in messages %}
+            <h6 class="text-{{ message.tags }}">{{ message }}</h6>
+            {% endfor %}
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="×"></button>
+    </div>
+{% endif %}
+
+<div class="recent-purchase invisible" id="info-message-ajax">
     <div class="detail">
-        <h6 id="recent-notification">{{ message }}</h6>
+        <h6 id="recent-notification"></h6> 
     </div>
     <a href="javascript:void(0)" class="icon-btn recent-close">×</a>
 </div>
+

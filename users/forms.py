@@ -1,12 +1,19 @@
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django import forms
+from django.forms import fields
 
 from users.models import User
 
-class UserLoginForm(AuthenticationForm): #из AuthenticationForm. Просмотр содержания через F12
+from utils.filters import clean_phone
+
+class UserLoginForm(AuthenticationForm):
 
     class Meta: 
         model = User
+        fields = ['username', 'password']
+
+    username = forms.CharField()
+    password = forms.CharField()
 
 class UserRegistrationForm(UserCreationForm):
 
@@ -31,11 +38,8 @@ class UserRegistrationForm(UserCreationForm):
     password2 = forms.CharField()
 
     def clean_phone_number(self):
-        phone = self.cleaned_data.get('phone_number')
-        digits = ''.join(filter(str.isdigit, phone))
-        if digits.startswith(('7', '8')):
-            digits = digits[1:]
-        return f'+7{digits}'
+        phone_number = self.cleaned_data.get('phone_number', '')
+        return clean_phone(phone_number)
     
 class UserUpdateForm(forms.ModelForm):
     class Meta:
@@ -53,3 +57,7 @@ class UserUpdateForm(forms.ModelForm):
     username = forms.CharField(label="Логин")
     email = forms.CharField(label="Email")
     phone_number = forms.CharField(label="Номер телефона")
+
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data.get('phone_number', '')
+        return clean_phone(phone_number)

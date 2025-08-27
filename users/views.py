@@ -1,13 +1,17 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
+from django.db import transaction
 from django.db.models import Sum
 from django.http import HttpResponseRedirect, JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.contrib import auth, messages
-from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import View
 from django.template.loader import render_to_string
+from django.contrib.auth.views import LogoutView
 
 from django.core.paginator import Paginator
+from django.views.generic import CreateView, ListView, TemplateView, UpdateView
 
 from carts.models import Cart
 from goods.models import Products
@@ -17,146 +21,127 @@ from users.forms import UserLoginForm, UserRegistrationForm, UserUpdateForm
 
 from users.utils import get_wishlist_count, get_user_wishlist
 
-from orders.phone_utils import format_phone, clean_phone
+class UserLoginView(LoginView):
+    template_name = 'users/login.html'
+    form_class = UserLoginForm
 
+    def get_success_url(self):
+        redirect_page = self.request.POST.get('next', None)
+        if redirect_page and redirect_page != reverse('user:logout'):
+            return redirect_page
+        return reverse_lazy('user:profile')
+    
+    def form_valid(self, form):
+        session_key = self.request.session.session_key
+        user = form.get_user()
 
-def login(request):
-    if request.method == 'POST':
-        form = UserLoginForm(data=request.POST)
-        if form.is_valid():
-            username =  request.POST['username']
-            password =  request.POST['password']
-            user = auth.authenticate(username=username, password=password)
-
-            session_key=request.session.session_key
-
-            if user:
-                auth.login(request, user)
-                messages.success(request, f"{username}, Вы вошли в аккаунт")
-
-                if session_key:
-                    new_carts = Cart.objects.filter(session_key=session_key)
-                    old_carts = Cart.objects.filter(user=user)
-                    products_from_new_carts = new_carts.values_list('product_id', flat=True)
-
-                    for product_id in products_from_new_carts:
-                        new_cart = new_carts.filter(product_id=product_id)
-                        forgot_cart =  old_carts.filter(product_id=product_id)
-
-                        new_quantity = new_cart.aggregate(Sum('quantity'))
-                        old_quantity = forgot_cart.aggregate(Sum('quantity'))
-
-                        if not old_quantity['quantity__sum']:
-                            old_quantity['quantity__sum'] = 0
-                        if not new_quantity['quantity__sum']:
-                            new_quantity['quantity__sum'] = 0
-
-                        quantity = new_quantity['quantity__sum'] + old_quantity['quantity__sum']
-
-                        if new_cart.exists() and forgot_cart.exists():
-                            forgot_cart.delete()
-
-                        new_cart.update(user=user, session_key=None, quantity=quantity)
-
-                redirect_page = request.POST.get('next', None)
-
-                if redirect_page and redirect_page != reverse('user:logout'):
-                    return HttpResponseRedirect(request.POST.get('next'))
-                
-                return HttpResponseRedirect(reverse('user:profile'))
-    else:
-        form = UserLoginForm()
-        
-    context = {
-        'title': 'Авторизация',
-        'form': form
-    }
-    return render(request, 'users/login.html', context)
-
-def registration(request):
-    if request.method == 'POST':
-        form = UserRegistrationForm(data=request.POST)
-        if form.is_valid():
-            form.save()
-
-            session_key=request.session.session_key
-
-            user = form.instance
-            auth.login(request, user)
+        if user:
+            auth.login(self.request, user)
 
             if session_key:
-                Cart.objects.filter(session_key=session_key).update(user=user)
+                new_carts = Cart.objects.filter(session_key=session_key)
+                old_carts = Cart.objects.filter(user=user)
+                products_from_new_carts = new_carts.values_list('product_id', flat=True)
 
-            messages.success(request, f"{user.username}, Вы успешно зарегистрировались и вошли в аккаунт")
-            return HttpResponseRedirect(reverse('user:profile'))
+                for product_id in products_from_new_carts:
+                    new_cart = new_carts.filter(product_id=product_id)
+                    forgot_cart =  old_carts.filter(product_id=product_id)
 
-    else:
-        form = UserRegistrationForm()
+                    new_quantity = new_cart.aggregate(Sum('quantity'))
+                    old_quantity = forgot_cart.aggregate(Sum('quantity'))
 
-    context = {
-        'title': 'Регистрация',
-        'form': form,  
-    }
-    return render(request, 'users/registration.html', context)
+                    if not old_quantity['quantity__sum']:
+                        old_quantity['quantity__sum'] = 0
+                    if not new_quantity['quantity__sum']:
+                        new_quantity['quantity__sum'] = 0
 
-@login_required
-def profile(request):
-    user = request.user
-    initial = {
-        'username': user.username,
-        'first_name': user.first_name,
-        'last_name': user.last_name,
-        'email': user.email,
-        'phone_number': format_phone(user.phone_number or ''),
-    }
-    form = UserUpdateForm(initial=initial)
+                    quantity = new_quantity['quantity__sum'] + old_quantity['quantity__sum']
 
-    context = {
-        'title': 'Профиль пользователя',
-        'body_class': 'shop_page',
-        'form': form
-    }
-    return render(request, 'users/profile.html', context)
+                    if new_cart.exists() and forgot_cart.exists():
+                        forgot_cart.delete()
 
-@login_required
-def update_profile(request):
-    if request.method == "POST" and request.headers.get("x-requested-with") == "XMLHttpRequest":
-        post_data = request.POST.copy()
+                    new_cart.update(user=user, session_key=None, quantity=quantity)
 
-        phone = post_data.get('phone_number', '')
-        post_data['phone_number'] = clean_phone(phone)
+            messages.success(self.request, f"{user.username}, Вы вошли в аккаунт")
+            return HttpResponseRedirect(self.get_success_url())
+            
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Авторизация'
+        return context
 
-        form = UserUpdateForm(post_data, instance=request.user)
+class UserRegistrationView(CreateView):
+    template_name = 'users/registration.html'
+    form_class = UserRegistrationForm
+    success_url = reverse_lazy('user:profile')
 
-        if form.is_valid():
+    @transaction.atomic
+    def form_valid(self, form):
+        session_key=self.request.session.session_key
+        user = form.instance
+
+        if user:
             form.save()
+            auth.login(self.request, user)
+        if session_key:
+            Cart.objects.filter(session_key=session_key).update(user=user)
+            
+        messages.success(self.request, f"{user.username}, Вы успешно зарегистрировались и вошли в аккаунт")
+        return HttpResponseRedirect(self.success_url)
+    
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Регистрация'
+        return context
+
+class UserProfileView(LoginRequiredMixin, UpdateView):
+    template_name = 'users/profile.html'
+    form_class = UserUpdateForm
+    success_url = reverse_lazy('users:profile')
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def form_valid(self, form):
+        form.save()
+        if self.request.headers.get("x-requested-with") == "XMLHttpRequest":
+            messages.success(self.request, f"{self.request.user.username}, Вы успешно обновили профиль")
             return JsonResponse({'success': True})
-        else:
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        if self.request.headers.get("x-requested-with") == "XMLHttpRequest":
             return JsonResponse({'success': False, 'errors': form.errors}, status=400)
-    return JsonResponse({'success': False, 'error': 'Недопустимый запрос'}, status=400)
+        return super().form_invalid(form)
 
-def users_cart(request):
-    context = {
-        'title': 'Корзина',
-        'show_btn': True,
-    }
-    return render(request, 'users/users_cart.html', context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Профиль пользователя'
+        context['body_class'] = 'shop_page'
+        return context
 
-@csrf_protect
-def wishlist_add(request):
-    user = request.user
-    if user.is_authenticated:
-        if request.method == "POST":
+class UsersCartView(LoginRequiredMixin, TemplateView):
+    template_name = 'users/users_cart.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Корзина'
+        context['show_btn'] = True
+        return context
+
+class WishlistAddView(View):
+    def post(self, request):
+        user = request.user
+        if user.is_authenticated:
             product_id = request.POST.get("product_id")
-            product = get_object_or_404(Products, id=product_id)
-
-            in_wishlist = request.POST.get("in_wishlist")
-            in_wishlist = in_wishlist.lower() == "true"
+            product = Products.objects.get(id=product_id)
+            in_wishlist = request.POST.get("in_wishlist").lower() == "true"
             if not in_wishlist:
                 Wishlist.objects.create(user=user, product=product)
                 response_data = {
                     'success': True,
-                    'message': "Товар добавлен в избранное",
+                    'message_ajax': "Товар добавлен в избранное",
                     'wishlist_count': get_wishlist_count(request)
                 }
             else:
@@ -167,39 +152,32 @@ def wishlist_add(request):
 
                 response_data = {
                     'success': True,
-                    'message': "Товар удален из избранного",
+                    'message_ajax': "Товар удален из избранного",
                     'wishlist_count': get_wishlist_count(request),
                     'wishlist_items_html': wishlist_items_html
                 }
         else:
             response_data = {
                 'success': False,
-                'message': "error",
+                'message_ajax': "Пожалуйста, авторизируйтесь"
             }
-    else:
-        response_data = {
-            'success': False,
-            'message': "Пожалуйста, авторизируйтесь"
-        }
-    return JsonResponse(response_data)
+        return JsonResponse(response_data)
 
-@login_required
-def wishlist(request):
-    page = request.GET.get('page', 1)
-    user = request.user
+class WishlistView(LoginRequiredMixin, ListView):
+    template_name = 'users/wishlist.html'
+    context_object_name = 'wishlist_products'
+    paginate_by = 3
 
-    wishlist_products = Wishlist.objects.filter(user=user).order_by('-created_timestamp')
-
-    paginator = Paginator(wishlist_products, 3)
-    current_page = paginator.page(int(page))
+    def get_queryset(self):
+        return Wishlist.objects.filter(user=self.request.user).order_by('-created_timestamp')
     
-    context = {
-        'title': 'Избранное',
-        'wishlist_products': current_page,
-    }
-    return render(request, 'users/wishlist.html', context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Избранное'
+        return context
 
-def logout(request):
-    messages.success(request, f"{request.user.username}, Вы вышли из аккаунта")
-    auth.logout(request)
-    return redirect(reverse('main:index'))
+class CustomLogoutView(LogoutView):
+    def dispatch(self, request, *args, **kwargs):
+        username = request.user.username 
+        messages.success(request, f"{username}, Вы вышли из аккаунта")
+        return super().dispatch(request, *args, **kwargs)

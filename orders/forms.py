@@ -2,11 +2,17 @@ from django import forms
 
 from orders.models import DeliveryMethod
 
+from utils.filters import clean_phone
+
 class UserInfoForm(forms.Form):
     first_name = forms.CharField(label='Имя*')
     last_name = forms.CharField(label='Фамилия*')
     phone_number = forms.CharField(label='Номер телефона*')
     email = forms.EmailField(label='Email*')
+
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data.get('phone_number', '')
+        return clean_phone(phone_number)
 
 class DeliveryForm(forms.Form):
     delivery_method = forms.ModelChoiceField(

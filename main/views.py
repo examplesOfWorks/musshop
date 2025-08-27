@@ -1,14 +1,27 @@
 from django.shortcuts import render
+from django.views.generic.base import TemplateView
 
-def index(request):
-    context = {'title': 'Главная', 'test_top_products': range(4)}
-    
-    return render(request, 'main/index.html', context)
+class IndexView(TemplateView):
+    template_name = "main/index.html"
 
-def about(request):
-    context = {'title': 'О магазине'}
-    return render(request, 'main/about.html', context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Главная'
+        context['test_top_products'] = range(4)
+        return context
 
-def project(request):
-    context = {'title': 'О проекте'}
-    return render(request, 'main/project.html', context)
+class AboutView(TemplateView):
+    template_name = "main/about.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'О магазине'
+        return context
+
+class ProjectView(TemplateView):
+    template_name = "main/project.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'О проекте'
+        return context

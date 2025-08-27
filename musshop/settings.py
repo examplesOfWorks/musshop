@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+
 from .secret_key import secret_key
 from .db_secret import NAME, USER, PASSWORD
 
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     'users',
     'carts',
     'orders',
+    'utils',
 ]
 
 MIDDLEWARE = [
@@ -150,3 +152,5 @@ INTERNAL_IPS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.User'
 LOGIN_URL = '/user/login/'
+LOGIN_REDIRECT_URL ='/'
+LOGOUT_REDIRECT_URL = '/'

@@ -22,13 +22,6 @@
                                 {% if request.GET.next %}
                                     <input type="hidden" name="next" value={{ request.GET.next }}>
                                 {% endif %}
-
-                                {% comment %} <span class="ec-login-wrap">
-                                    <label for="id_email">Введите email*</label>
-                                    <input type="text" name="email" id="id_email" 
-                                    value="{% if form.email.value %}{{ form.email.value }}{% endif %}" 
-                                    placeholder="Введите email..." required />
-                                </span> {% endcomment %}
                                 <span class="ec-login-wrap">
                                     <label for="id_username">Введите email*</label>
                                     <input type="text" name="username" id="id_username" 

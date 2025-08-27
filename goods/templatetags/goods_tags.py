@@ -3,7 +3,6 @@ from django.db.models import Count
 from django.utils.http import urlencode
 
 from goods.models import Brands, Categories, Subcategories, Products
-from goods.views import subcategories
 
 register = template.Library()
 
@@ -11,14 +10,11 @@ register = template.Library()
 @register.simple_tag()
 def tag_all_categories():
     categories = Categories.objects.all()
-    # if categories:
     all_categories = []
     for category in categories:
         subcategory = Subcategories.objects.filter(category_id=category.id)
         all_categories.append({'category': category, 'subcategory': subcategory})
     return all_categories
-    # else:
-    #     return None
 
 @register.simple_tag()
 def products_count_category(category):

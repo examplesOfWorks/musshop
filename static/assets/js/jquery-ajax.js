@@ -28,11 +28,25 @@ $(document).ready(function () {
 
                 var modalCartItemsContainer = $("#ec-side-cart");
                 modalCartItemsContainer.html(data.modal_cart_items_html);
+
+                if (data.message_ajax) {
+                    $("#recent-notification").html(data.message_ajax);
+                    $("#info-message-ajax").removeClass("invisible"); 
+                    setTimeout(function() {
+                        $("#info-message-ajax").addClass("invisible");
+                    }, 3000);
+                }
             },
 
             error: function (data) {
                 console.log("Ошибка при добавлении товара в корзину");
+                $("#recent-notification").html("Ошибка при добавлении товара в корзину");
+                $("#info-message-ajax").removeClass("invisible"); 
+                setTimeout(function() {
+                    $("#info-message-ajax").addClass("invisible");
+                }, 3000);
             },
+
         });
     });
 
@@ -85,10 +99,22 @@ $(document).ready(function () {
 
                 var cartSummaryContainer = $("#cart-summary-container");
                 cartSummaryContainer.html(data.total);
-                },
+                if (data.message_ajax) {
+                    $("#recent-notification").html(data.message_ajax);
+                    $("#info-message-ajax").removeClass("invisible"); 
+                    setTimeout(function() {
+                        $("#info-message-ajax").addClass("invisible");
+                    }, 3000);
+                }
+            },
 
             error: function (data) {
                 console.log("Ошибка при добавлении товара в корзину");
+                $("#recent-notification").html("Ошибка при добавлении товара в корзину");
+                $("#info-message-ajax").removeClass("invisible"); 
+                setTimeout(function() {
+                    $("#info-message-ajax").addClass("invisible");
+                }, 3000);
             },
         });
     })
@@ -162,23 +188,12 @@ $(document).ready(function () {
 
             success: function (data) {
 
-                if (data.message) {
-                    $("#recent-notification").html(data.message);
-                    infoMessage.removeClass("invisible")
-
-                    // count = data.qty;
-                    $(".cart-count-lable").html(data.qty);
-
-                    setTimeout(function () {
-                        infoMessage.addClass("invisible");
-                    }, 4000);
-
-                } else {
+                if (data.cart_id) {
                     count += change; 
-                    $(".cart-count-lable").html(count);
                 }
 
-                // Изменяем количество товаров в значке корзины
+                $(".cart-count-lable").html(data.qty);
+
                 var cartItemsContainer = $("#cart-items-container");
                 cartItemsContainer.html(data.cart_items_html);
 
@@ -188,9 +203,22 @@ $(document).ready(function () {
                 var cartSummaryContainer = $("#cart-summary-container");
                 cartSummaryContainer.html(data.total);
 
+                if (data.message_ajax) {
+                    $("#recent-notification").html(data.message_ajax);
+                    $("#info-message-ajax").removeClass("invisible"); 
+                    setTimeout(function() {
+                        $("#info-message-ajax").addClass("invisible");
+                    }, 3000);
+                }
+                
             },
             error: function (data) {
                 console.log("Ошибка при изменении количества товара в корзине");
+                $("#recent-notification").html("Ошибка при изменении количества товара в корзине");
+                $("#info-message-ajax").removeClass("invisible"); 
+                setTimeout(function() {
+                    $("#info-message-ajax").addClass("invisible");
+                }, 3000);
             },
         });
     }
@@ -214,20 +242,12 @@ $(document).ready(function () {
 
             success: function (data) {
 
-                if (data.message) {
-                    $("#recent-notification").html(data.message);
-                    infoMessage.removeClass("invisible")
-
-                    count = data.qty;
-
-                    setTimeout(function () {
-                        infoMessage.addClass("invisible");
-                    }, 4000);
-        
-                } else {
-                    count -= data.quantity_deleted;    
-
+                if (data.cart_id) {
+                    count -= data.quantity;
                 }
+
+                $(".cart-count-lable").html(data.qty);
+
                 var cartItemsContainer = $("#cart-items-container");
                 cartItemsContainer.html(data.cart_items_html);
 
@@ -237,11 +257,22 @@ $(document).ready(function () {
                 var cartSummaryContainer = $("#cart-summary-container");
                 cartSummaryContainer.html(data.total);
 
-                $(".cart-count-lable").html(count);
+                if (data.message_ajax) {
+                    $("#recent-notification").html(data.message_ajax);
+                    $("#info-message-ajax").removeClass("invisible"); 
+                    setTimeout(function() {
+                        $("#info-message-ajax").addClass("invisible");
+                    }, 3000);
+                }
 
             },
             error: function (data) {
                 console.log("Ошибка при удалении товара из корзины");
+                $("#recent-notification").html("Ошибка при удалении товара из корзины");
+                $("#info-message-ajax").removeClass("invisible"); 
+                setTimeout(function() {
+                    $("#info-message-ajax").addClass("invisible");
+                }, 3000);
             },
         });
     });
@@ -331,6 +362,7 @@ $(document).ready(function () {
                 if (data.redirect_url) {
                     window.location.href = data.redirect_url;
                 }
+
             },
             error: function (xhr) {
 
@@ -353,27 +385,38 @@ $(document).ready(function () {
                     }
                 }
 
-                if (xhr.responseJSON.message) {
-                    $("#recent-notification").html(xhr.responseJSON.message);
-                    infoMessage.removeClass("invisible")
-    
-                    setTimeout(function () {
-                        infoMessage.addClass("invisible");
-                    }, 4000);
+                if (xhr.responseJSON.message_ajax) {
+                    $("#recent-notification").html(xhr.responseJSON.message_ajax);
+                        console.log(xhr.responseJSON.message_ajax);
+                        $("#info-message-ajax").removeClass("invisible"); 
+                        setTimeout(function() {
+                            $("#info-message-ajax").addClass("invisible");
+                        }, 3000);
     
                 }
             },
         });
     }
 
+    /*----------------------------- Подтверждение удаления заказа  ------------------------------ */
+    $('#confirmDeleteModal').on('show.bs.modal', function (event) {
+        const button = $(event.relatedTarget);
+        const orderId = button.data('order-id');
+ 
+        $('#modalOrderText').text(`Вы уверены, что хотите отменить заказ №${orderId}?`);
+
+        $('#deleteOrderForm').attr('action', `/order/order-delete/${orderId}/`);
+        
+    });
+
     /*----------------------------- Редактирование профиля  ------------------------------ */
     $('#updateForm').on('submit', function (e) {
         e.preventDefault();
-    
+
         var formData = new FormData(this);
 
         $.ajax({
-            url: "/user/update-profile/",
+            url: $(this).attr('action'),
             type: "POST",
             data: formData,
             headers: {
@@ -384,10 +427,7 @@ $(document).ready(function () {
             success: function (data) {
 
                 if (data.success) {
-                    setTimeout(() => {
-                        $('#edit_modal').modal('hide');
-                        location.reload();
-                      }, 100);
+                    location.reload();
                 }
             },
             error: function (data) {
@@ -408,16 +448,6 @@ $(document).ready(function () {
         });
     });
 
-    /*----------------------------- Подтверждение удаления заказа  ------------------------------ */
-    $('#confirmDeleteModal').on('show.bs.modal', function (event) {
-        const button = $(event.relatedTarget);
-        const orderId = button.data('order-id');
-
-        $('#modalOrderId').val(orderId);
- 
-        $('#modalOrderText').text(`Вы уверены, что хотите отменить заказ №${orderId}?`);
-    });
-
     /*----------------------------- Удаление из избранного на странице избранных товаров ------------------------------ */
     $(".ec-remove-wish").on("click", function (e) {
         e.preventDefault();
@@ -426,6 +456,7 @@ $(document).ready(function () {
         var prod_id = $btn.data("product-id");
         var add_to_wishlist_url = $btn.attr("href");
         var in_wishlist = $btn.data("in-wishlist");
+        var wishlistItemsContainer = $("#wishlist-items-container");
 
         $.ajax({
             type: "POST",
@@ -439,29 +470,25 @@ $(document).ready(function () {
             success: function (data) {
                 $(".wishlist-count-lable").html(data.wishlist_count);
 
-                if (data.message) {
-                    $("#recent-notification").html(data.message);
-                    infoMessage.removeClass("invisible")
+                wishlistItemsContainer.html(data.wishlist_items_html);
 
-                    location.reload();
-                    
-                    setTimeout(function () {
-                        infoMessage.addClass("invisible");
-                    }, 2000);
-
-        
+                if (data.message_ajax) {
+                    $("#recent-notification").html(data.message_ajax);
+                    $("#info-message-ajax").removeClass("invisible"); 
+                    setTimeout(function() {
+                        $("#info-message-ajax").addClass("invisible");
+                    }, 3000);
                 }
+                
             },
             error: function (data) {
-                if (data.message) {
-                    $("#recent-notification").html(data.message);
+                $("#recent-notification").html("Ошибка при удалении товара из избранного");
                     infoMessage.removeClass("invisible")
 
                     setTimeout(function () {
                         infoMessage.addClass("invisible");
-                    }, 4000);
+                    }, 3000);
         
-                }
             },
         });
 	});
@@ -494,14 +521,12 @@ $(document).ready(function () {
   
                 $(".wishlist-count-lable").html(data.wishlist_count);
 
-                if (data.message) {
-                    $("#recent-notification").html(data.message);
-                    infoMessage.removeClass("invisible")
-
-                    setTimeout(function () {
-                        infoMessage.addClass("invisible");
-                    }, 4000);
-        
+                if (data.message_ajax) {
+                    $("#recent-notification").html(data.message_ajax);
+                    $("#info-message-ajax").removeClass("invisible"); 
+                    setTimeout(function() {
+                        $("#info-message-ajax").addClass("invisible");
+                    }, 3000);
                 }
             }, 
             error: function (data) {
@@ -535,5 +560,12 @@ $(document).ready(function () {
         });
     })
 
+    setTimeout(function() {
+        const alert = document.querySelector('#info-message');
+        if (alert) {
+            alert.classList.remove('show');
+            alert.classList.add('fade');
+        }
+    }, 3000);
         
 });

@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load carts_tags %}
+{% load phone_tags %}
 
 {% block content %}
 
@@ -62,7 +63,7 @@
                                                     <label for="id_phone_number">{{ user_info.phone_number.label }}</label>
                                                     <input type="text" id="id_phone_number"
                                                     name="phone_number"
-                                                    value="{% if user_info.phone_number.value %}{{ user_info.phone_number.value }}{% else %}+7({% endif %}"
+                                                    value="{% if user_info.phone_number.value %}{{ user_info.phone_number.value|format_phone_tag }}{% else %}+7({% endif %}"
                                                     required />
                                                     <div class="alert alert-danger alert-dismissible fade show" style="display: none" id="phone_number_error">Неверный формат номера</div>
                                                 </span>
