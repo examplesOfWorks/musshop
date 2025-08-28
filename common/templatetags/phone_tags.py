@@ -1,6 +1,6 @@
 from django import template
 
-from utils.filters import format_phone
+from common.filters import format_phone
 
 register = template.Library()
 

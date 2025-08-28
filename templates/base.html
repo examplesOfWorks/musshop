@@ -3,6 +3,8 @@
 {% load carts_tags %}
 {% load wishlist_tags %}
 
+{% load cache %}
+
 {% user_carts request as carts %}
 {% user_wishlist request as wishlist %}
 
@@ -188,6 +190,7 @@
                                  <li class="dropdown"><a href="{% url "catalog:categories" %}">Каталог</a>
 
                                      <ul class="sub-menu">
+                                     {% cache 60 catalog_categories %}
                                      {% tag_all_categories as all_categories %}
                                      {% if all_categories %}
                                         {% for cat in all_categories %}
@@ -200,7 +203,7 @@
                                             Категории не добавлены
                                         </li>
                                      {% endif %}
-
+                                     {% endcache %}
                                      </ul>
                                   </li>
 

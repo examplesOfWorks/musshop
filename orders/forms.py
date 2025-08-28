@@ -2,7 +2,7 @@ from django import forms
 
 from orders.models import DeliveryMethod
 
-from utils.filters import clean_phone
+from common.filters import clean_phone
 
 class UserInfoForm(forms.Form):
     first_name = forms.CharField(label='Имя*')

@@ -7,7 +7,9 @@ from django.db.models import F, ExpressionWrapper, DecimalField
 from goods.models import Brands, Categories, Subcategories, Products, Types
 from goods.search_utils import q_search
 
-class CatalogView(ListView):
+from common.mixins import CacheMixin
+
+class CatalogView(CacheMixin, ListView):
     template_name = 'goods/catalog.html'
     context_object_name = 'products'
     paginate_by = 12
@@ -58,7 +60,8 @@ class CatalogView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Каталог'
-        context['brands'] = Brands.objects.filter(products__in=self.products).distinct()
+        brands = Brands.objects.filter(products__in=self.products).distinct()
+        context['brands'] = self.set_get_cache(brands, f'catalog_brands_{self.kwargs.get("subcategory_slug")}', 60 * 2)
         context['subcategory_slug'] = self.kwargs.get('subcategory_slug')
         context['subcategory_types'] = Types.objects.filter(subcategory__slug=self.kwargs.get('subcategory_slug'))
         context['wishlist_product_ids'] = self.wishlist_product_ids

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load cache %}
 {% load goods_tags %}
 
 {% block content %} 
@@ -10,6 +11,7 @@
              <div class="swiper-wrapper">
                 {% slider_products as top_products %}
                 {% if top_products %}
+                    {% cache 60 top_products %}
                     {% for product in top_products %}
                     <div class="ec-slide-item swiper-slide d-flex ec-slide-1">
                         <div class="container align-self-center">
@@ -30,6 +32,7 @@
                         </div>
                     </div>
                     {% endfor %}
+                    {% endcache %}
                 {% else %}
                 <div class="ec-slide-item swiper-slide d-flex ec-slide-1">
                     <div class="container align-self-center">
@@ -73,6 +76,7 @@
                  <!-- New Product Content -->
                  {% new_arrivals as new_products %}
                  {% if new_products %}
+                 {% cache 60 new_products %}
                     {% for product in new_products %}
                     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6  ec-product-content" data-animation="flipInY">
                         <div class="ec-product-inner">
@@ -90,12 +94,7 @@
                                     <span class="flags">
                                         <span class="sale">Скидка</span>
                                     </span>
-                                    {% comment %} <a href="#" class="quickview" data-link-action="quickview" title="Quick view"
-                                        data-bs-toggle="modal" data-bs-target="#ec_quickview_modal"><img
-                                            src="{% static "assets/images/icons/quickview.svg" %}" class="svg_img pro_svg" alt="" /></a> {% endcomment %}
                                     <div class="ec-pro-actions">
-                                        {% comment %} <a href="compare.html" class="ec-btn-group compare" title="Compare"><img
-                                                src="{% static "assets/images/icons/compare.svg" %}" class="svg_img pro_svg" alt="" /></a> {% endcomment %}
                                         <a href="{% url "cart:cart_add" %}" 
                                             title="Добавить в корзину"
                                             class="btn add-to-cart"
@@ -111,7 +110,8 @@
                                             data-in-wishlist="{% if product.id in wishlist_product_ids %}true{% else %}false{% endif %}">
                                             {% csrf_token %}
                                             <img src="{% static "assets/images/icons/wishlist.svg" %}"
-                                                class="svg_img pro_svg" alt="" /></a>
+                                                class="svg_img pro_svg" alt="" />
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -125,6 +125,7 @@
                         </div>
                     </div>
                     {% endfor %}
+                    {% endcache %}
                  {% else %}
                     {% for i in test_top_products %}
                     <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6 mb-6  ec-product-content" data-animation="flipInY">
@@ -285,6 +286,7 @@
                              </div>
                          </div>
                          {% else %}
+                            {% cache 60 brands %}
                             {% for brand in brands %}
                             <!-- Brand item -->
                             <div class="ec-insta-item">
@@ -295,6 +297,7 @@
                             </div>
                             <!-- Brand item -->
                             {% endfor %}
+                            {% endcache %}
                          {% endif %}
                      </div>
                  </div>

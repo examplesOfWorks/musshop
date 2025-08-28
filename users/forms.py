@@ -4,7 +4,7 @@ from django.forms import fields
 
 from users.models import User
 
-from utils.filters import clean_phone
+from common.filters import clean_phone
 
 class UserLoginForm(AuthenticationForm):
 

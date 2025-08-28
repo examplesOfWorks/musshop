@@ -83,12 +83,10 @@
                                             </li>                                       
                                         </ul>
                                     </div>
-                                    <p>{{subcategory_slug}}</p>
                                     <button type="submit" class="btn btn-primary mt-3">Применить</button>
-                                    {% comment %} <a class="btn btn-outline-secondary mt-3" type="button" href="{% url 'goods:search' subcategory_slug %}">Сбросить</a> {% endcomment %}
                                     
                                     {% if request.GET.q %}
-                                        <a class="btn btn-outline-secondary mt-3" type="button" onclick="window.history.back();">Сбросить</a>
+                                        <a class="btn btn-outline-secondary mt-3" type="button" href="{% url "catalog:categories" %}">Сбросить</a>
                                     {% else %}
                                         <a class="btn btn-outline-secondary mt-3" type="button" href="{% url 'goods:search' subcategory_slug %}">Сбросить</a>
                                     {% endif %}

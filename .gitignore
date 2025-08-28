@@ -6,6 +6,7 @@ db_secret.py
 venv/
 .pylintrc
 __pycache__/
+cache/
 
 #ide
 .vscode
