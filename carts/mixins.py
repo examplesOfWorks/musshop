@@ -22,10 +22,9 @@ class CartMixin:
         user_cart = get_user_carts(request)
         context = {"carts": user_cart, "show_btn": True}
 
-        referer = request.META.get('HTTP_REFERER')
+        referer = request.META.get('HTTP_REFERER', '')
         if reverse('orders:create_order') in referer:
             context["orders"] = True
-            # context["show_btn"] = False
 
         modal_cart_items_html = render_to_string(
             "carts/includes/modal_cart.html", context, request=request)

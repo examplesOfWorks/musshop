@@ -1,7 +1,5 @@
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.db import transaction
-from django.db.models import Sum
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse, reverse_lazy
 from django.contrib import auth, messages
@@ -10,7 +8,6 @@ from django.views import View
 from django.template.loader import render_to_string
 from django.contrib.auth.views import LogoutView
 
-from django.core.paginator import Paginator
 from django.views.generic import CreateView, ListView, TemplateView, UpdateView
 
 from carts.models import Cart
@@ -41,26 +38,18 @@ class UserLoginView(LoginView):
             if session_key:
                 new_carts = Cart.objects.filter(session_key=session_key)
                 old_carts = Cart.objects.filter(user=user)
-                products_from_new_carts = new_carts.values_list('product_id', flat=True)
+                
+                for cart in new_carts:
+                    existing_cart = old_carts.filter(product=cart.product).first()
 
-                for product_id in products_from_new_carts:
-                    new_cart = new_carts.filter(product_id=product_id)
-                    forgot_cart =  old_carts.filter(product_id=product_id)
-
-                    new_quantity = new_cart.aggregate(Sum('quantity'))
-                    old_quantity = forgot_cart.aggregate(Sum('quantity'))
-
-                    if not old_quantity['quantity__sum']:
-                        old_quantity['quantity__sum'] = 0
-                    if not new_quantity['quantity__sum']:
-                        new_quantity['quantity__sum'] = 0
-
-                    quantity = new_quantity['quantity__sum'] + old_quantity['quantity__sum']
-
-                    if new_cart.exists() and forgot_cart.exists():
-                        forgot_cart.delete()
-
-                    new_cart.update(user=user, session_key=None, quantity=quantity)
+                    if existing_cart:
+                        existing_cart.quantity += cart.quantity
+                        existing_cart.save()
+                        cart.delete()
+                    else:
+                        cart.user = user
+                        cart.session_key = None
+                        cart.save()
 
             messages.success(self.request, f"{user.username}, Вы вошли в аккаунт")
             return HttpResponseRedirect(self.get_success_url())
@@ -84,7 +73,7 @@ class UserRegistrationView(CreateView):
             form.save()
             auth.login(self.request, user)
         if session_key:
-            Cart.objects.filter(session_key=session_key).update(user=user)
+            Cart.objects.filter(session_key=session_key).update(user=user, session_key=None)
             
         messages.success(self.request, f"{user.username}, Вы успешно зарегистрировались и вошли в аккаунт")
         return HttpResponseRedirect(self.success_url)
