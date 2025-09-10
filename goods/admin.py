@@ -30,7 +30,6 @@ class GalleryInline(admin.TabularInline):
 
 @admin.register(Products)
 class ProductsAdmin(admin.ModelAdmin):
-    prepopulated_fields= {'slug': ('article',)}
     readonly_fields = ('created_timestamp',)
     list_display = ['name', 'warranty', 'quantity', 'price', 'discount']
     list_editable = ['discount']
@@ -43,10 +42,9 @@ class ProductsAdmin(admin.ModelAdmin):
         'subcategory',
         'type',
         'brand',
-        'slug',
         'specifications',
         'description',
-        'instructions',
+        # 'instructions',
         'warranty',
         ('price', 'discount'),
         'quantity',
