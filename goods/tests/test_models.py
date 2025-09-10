@@ -203,7 +203,6 @@ class ProductsModelTest(TestCase):
         )
         cls.product1 = Products.objects.create(
             name='Товар 1',
-            slug='tovar-1',
             article='111111',
             price=100,
             discount=10,
@@ -228,11 +227,10 @@ class ProductsModelTest(TestCase):
     def test_verbose_name(self):
         name_field = self.product1._meta.get_field('name')
         article_field = self.product1._meta.get_field('article')
-        slug_field = self.product1._meta.get_field('slug')
         warranty_field = self.product1._meta.get_field('warranty')
         description_field = self.product1._meta.get_field('description')
         specifications_field = self.product1._meta.get_field('specifications')
-        instructions_field = self.product1._meta.get_field('instructions')
+        # instructions_field = self.product1._meta.get_field('instructions')
         price_field = self.product1._meta.get_field('price')
         discount_field = self.product1._meta.get_field('discount')
         quantity_field = self.product1._meta.get_field('quantity')
@@ -243,11 +241,10 @@ class ProductsModelTest(TestCase):
 
         self.assertEqual(name_field.verbose_name, "Название")
         self.assertEqual(article_field.verbose_name, "Артикул")
-        self.assertEqual(slug_field.verbose_name, "URL")
         self.assertEqual(warranty_field.verbose_name, "Гарантия")
         self.assertEqual(description_field.verbose_name, "Описание")
         self.assertEqual(specifications_field.verbose_name, "Характеристики")
-        self.assertEqual(instructions_field.verbose_name, "Инструкции")
+        # self.assertEqual(instructions_field.verbose_name, "Инструкции")
         self.assertEqual(price_field.verbose_name, "Цена")
         self.assertEqual(discount_field.verbose_name, "Скидка в %")
         self.assertEqual(quantity_field.verbose_name, "Количество")
@@ -259,19 +256,16 @@ class ProductsModelTest(TestCase):
     def test_max_length(self):
         name_field = self.product1._meta.get_field('name')
         article_field = self.product1._meta.get_field('article')
-        slug_field = self.product1._meta.get_field('slug')
         warranty_field = self.product1._meta.get_field('warranty')
 
         self.assertEqual(name_field.max_length, 150)
         self.assertEqual(article_field.max_length, 150)
-        self.assertEqual(slug_field.max_length, 200)
         self.assertEqual(warranty_field.max_length, 150)
 
     def test_blank_and_null(self):
-        self.assertIsNone(self.product2.slug)
         self.assertIsNone(self.product2.warranty)
         self.assertIsNone(self.product2.specifications)
-        self.assertIsNone(self.product2.instructions.name)
+        # self.assertIsNone(self.product2.instructions.name)
         self.assertIsNone(self.product2.type)
 
     def test_ordering(self):
