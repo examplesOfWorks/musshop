@@ -53,6 +53,11 @@ class UserLoginView(LoginView):
 
             messages.success(self.request, f"{user.username}, Вы вошли в аккаунт")
             return HttpResponseRedirect(self.get_success_url())
+        
+    def form_invalid(self, form):
+        messages.error(self.request, "Пользователь не найден")
+        return super().form_invalid(form)
+    
             
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

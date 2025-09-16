@@ -27,13 +27,13 @@
                                                 {% for img in product.images.all %}
                                                     <div class="single-slide zoom-image-hover product_block">
                                                         <img class="img-responsive product_image" src="{{ img.image.url }}"
-                                                            alt="">
+                                                            alt="{{ product.name }}">
                                                     </div>
                                                 {% endfor %}
                                             {% else %}      
                                                 <div class="single-slide">
                                                     <img class="img-responsive" src="{% static "assets/images/product-360/1_2.jpg" %}"
-                                                        alt="">
+                                                        alt="{{ product.name }}">
                                                 </div>
                                             {% endif %}
                                         </div>
@@ -42,7 +42,7 @@
                                                 {% for img in product.images.all %}
                                                     <div class="single-slide product_min_block">
                                                         <img class="img-responsive" src="{{ img.image.url }}"
-                                                            alt="">
+                                                            alt="{{ product.name }}">
                                                     </div>
                                                 {% endfor %}
                                             {% endif %}
@@ -52,7 +52,7 @@
                                 <div class="single-pro-desc single-pro-desc-no-sidebar">
                                     <div class="single-pro-content">
                                         <h5 class="ec-single-title">{{ product.name }}</h5>
-                                        <div class="ec-single-rating-wrap">
+                                        {% comment %} <div class="ec-single-rating-wrap">
                                             <div class="ec-single-rating">
                                                 <i class="ecicon eci-star fill"></i>
                                                 <i class="ecicon eci-star fill"></i>
@@ -62,7 +62,7 @@
                                             </div>
                                             <span class="ec-read-review"><a href="#ec-spt-nav-review">Be the first to
                                                     review this product</a></span>
-                                        </div>
+                                        </div> {% endcomment %}
                                         {% if product.description %}
                                             {% for description in product.description %}
                                                 <div class="ec-single-pro-tab-desc">
@@ -135,10 +135,10 @@
                                         <a class="nav-link" data-bs-toggle="tab" data-bs-target="#ec-spt-nav-info"
                                             role="tablist">Характеристики</a>
                                     </li>
-                                    <li class="nav-item">
+                                    {% comment %} <li class="nav-item">
                                         <a class="nav-link" data-bs-toggle="tab" data-bs-target="#ec-spt-nav-review"
                                             role="tablist">Отзывы</a>
-                                    </li>
+                                    </li> {% endcomment %}
                                 </ul>
                             </div>
                             <div class="tab-content  ec-single-pro-tab-content">
@@ -170,15 +170,10 @@
                                         {% else %}
                                             <p>Характеристики отсутствуют</p>
                                         {% endif %}
-                                        {% comment %} <ul>
-                                            <li><span>Weight</span> 1000 g</li>
-                                            <li><span>Dimensions</span> 35 × 30 × 7 cm</li>
-                                            <li><span>Color</span> Black, Pink, Red, White</li>
-                                        </ul> {% endcomment %}
                                     </div>
                                 </div>
 
-                                <div id="ec-spt-nav-review" class="tab-pane fade">
+                                {% comment %} <div id="ec-spt-nav-review" class="tab-pane fade">
                                     <div class="row">
                                         <div class="ec-t-review-wrapper">
                                             <div class="ec-t-review-item">
@@ -264,7 +259,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> {% endcomment %}
                             </div>
                         </div>
                     </div>

@@ -107,30 +107,34 @@
                                     <form action="{% url 'orders:create_order' %}" method="post" id="id_delivery_form">
                                         {% csrf_token %}
                                         <span class="ec-del-option">
-                                            {% for delivery_option in delivery_options %}
-                                            <span>
-                                                {% if delivery_option.is_active == False %}
+                                            {% if delivery_options %}
+                                                {% for delivery_option in delivery_options %}
+                                                <span>
+                                                    {% if delivery_option.is_active == False %}
 
-                                                    <span class="ec-del-opt-head" style="opacity: 0.5;">{{ delivery_option.name }}</span>
-                                                    <span style="opacity: 0.5;">(недоступно)</span>
-                                                    <input style="opacity: 0.5;" type="radio" id="{{ delivery_option.id }}" data-option="{{ delivery_option.required_address }}"
-                                                        value="{{ delivery_option.id }}"
-                                                        name="delivery_method"
-                                                        disabled>
-                                                    <label style="opacity: 0.5;" for="{{ delivery_option.id }}">{{ delivery_option.price }} ₽</label>
-                                                
-                                                {% else %}
-                                                
-                                                    <span class="ec-del-opt-head">{{ delivery_option.name }}</span>
-                                                    <input type="radio" id="{{ delivery_option.id }}" data-option="{{ delivery_option.required_address }}"
-                                                        value="{{ delivery_option.id }}"
-                                                        name="delivery_method"
-                                                        {% if delivery_option.id == default_delivery_id %}checked{% endif %}>
-                                                    <label for="{{ delivery_option.id }}">{{ delivery_option.price }} ₽</label>
+                                                        <span class="ec-del-opt-head" style="opacity: 0.5;">{{ delivery_option.name }}</span>
+                                                        <span style="opacity: 0.5;">(недоступно)</span>
+                                                        <input style="opacity: 0.5;" type="radio" id="{{ delivery_option.id }}" data-option="{{ delivery_option.required_address }}"
+                                                            value="{{ delivery_option.id }}"
+                                                            name="delivery_method"
+                                                            disabled>
+                                                        <label style="opacity: 0.5;" for="{{ delivery_option.id }}">{{ delivery_option.price }} ₽</label>
+                                                    
+                                                    {% else %}
+                                                    
+                                                        <span class="ec-del-opt-head">{{ delivery_option.name }}</span>
+                                                        <input type="radio" id="{{ delivery_option.id }}" data-option="{{ delivery_option.required_address }}"
+                                                            value="{{ delivery_option.id }}"
+                                                            name="delivery_method"
+                                                            {% if delivery_option.id == default_delivery_id %}checked{% endif %}>
+                                                        <label for="{{ delivery_option.id }}">{{ delivery_option.price }} ₽</label>
 
-                                                {% endif %}
-                                            </span>
-                                            {% endfor %}
+                                                    {% endif %}
+                                                </span>
+                                                {% endfor %}
+                                            {% else %}
+                                                <span class="ec-del-opt-head">Выбор способа получения пока недоступен</span>
+                                            {% endif %}
                                         </span>
                                         <span class="ec-del-commemt">
                                             <span class="ec-del-opt-head">{{ delivery_info.delivery_comment.label }}</span>

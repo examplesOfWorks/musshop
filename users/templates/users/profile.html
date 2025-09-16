@@ -48,7 +48,7 @@
                                             <div class="ec-vendor-detail-block ec-vendor-block-contact space-bottom-30">
                                                 <h6>Контактный номер</h6>
                                                 <ul>
-                                                    <li><b>Номер телефона: </b>{{ user.phone_number|format_phone_tag }}</li>
+                                                    <li><b>Номер телефона: </b>{% if user.phone_number %}{{ user.phone_number|format_phone_tag }}{% endif %}</li>
                                                 </ul>
                                             </div>
                                         </div>

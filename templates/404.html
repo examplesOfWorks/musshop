@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %} 
+	<!-- Start main Section -->
+	<section class="ec-under-maintenance">
+
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="under-maintenance">
+						<h1>Ошибка 404</h1>
+						<h4>Страница не найдена.</h4>
+						<a href="{% url "main:index" %}" class="btn btn-lg btn-primary" tabindex="0">Вернуться на главную</a>
+					</div>
+				</div>
+				<div class="col-md-6 disp-768">
+					<div class="under-maintenance">
+						<img class="maintenance-img" src="{% static "assets/images/common/404.png" %}" alt="Ошибка 404">
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End main Section -->
+{% endblock %}

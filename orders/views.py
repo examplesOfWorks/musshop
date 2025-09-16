@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import DeleteView, DetailView, ListView
@@ -49,7 +49,7 @@ class CreateOrderView(LoginRequiredMixin, View):
     def get_context_data(self, request):
         user = request.user
         delivery_options = DeliveryMethod.objects.all().order_by('id')
-        del_price = DeliveryMethod.objects.filter(name='Доставка').first().price
+        del_price = DeliveryMethod.objects.filter(name='Доставка').first().price if DeliveryMethod.objects.filter(name='Доставка').exists() else None
 
         default_delivery = DeliveryMethod.objects.filter(name="Самовывоз", is_active=True).first()
         default_delivery_id = default_delivery.id if default_delivery else None
@@ -136,7 +136,7 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'order'
 
     def get_object(self, queryset = None):
-        order = Order.objects.get(id=self.kwargs.get('order_id'))
+        order = get_object_or_404(Order, id=self.kwargs.get('order_id'))
         return order
     
     def get_context_data(self, **kwargs):

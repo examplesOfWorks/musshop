@@ -9,10 +9,14 @@
 </div>
 {% endif %}
 {% if not show_btn %}
-    <div id="id_plus_delivery" data-delivery="{{ del_price }}">
-        <span class="text-left">Доставка:</span>
-        <span class="text-right">{{ del_price }} ₽</span>
-    </div>
+    {% if del_price %}
+        <div id="id_plus_delivery" data-delivery="{{ del_price }}">
+            <span class="text-left">Доставка:</span>
+            <span class="text-right">{{ del_price }} ₽</span>
+        </div>
+    {% else %}
+        <span class="text-right">0 ₽</span>
+    {% endif %}
 {% endif %}
 
 <div class="ec-cart-summary-total">

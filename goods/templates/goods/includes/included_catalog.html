@@ -16,17 +16,19 @@
 
                                 <div class="catalog_block">
                                     <img class="main-image catalog_image"
-                                        src="{{ product.images.first.image.url }}" alt="Product" />
+                                        src="{{ product.images.first.image.url }}" alt="{{ product.name }}" />
                             
                                     <img class="hover-image catalog_image"
-                                        src="{{ product.images.first.image.url }}" alt="Product" />
+                                        src="{{ product.images.first.image.url }}" alt="{{ product.name }}" />
                                 </div>
                                 
                             {% else %}
+
                                 <img class="main-image"
-                                    src="{% static "assets/images/product-image/1_1.jpg" %}" alt="Product" />
+                                    src="{% static "assets/images/product-image/1_1.jpg" %}" alt="{{ product.name }}" />
                                 <img class="hover-image"
-                                    src="{% static "assets/images/product-image/1_2.jpg" %}" alt="Product" /> 
+                                    src="{% static "assets/images/product-image/1_2.jpg" %}" alt="{{ product.name }}" /> 
+                                    
                             {% endif %}
 
                         </a>
@@ -70,13 +72,13 @@
                             {% endif %}
                         {% endautoescape %}
                     </span>
-                    <div class="ec-pro-rating">
+                    {% comment %} <div class="ec-pro-rating">
                         <i class="ecicon eci-star fill"></i>
                         <i class="ecicon eci-star fill"></i>
                         <i class="ecicon eci-star fill"></i>
                         <i class="ecicon eci-star fill"></i>
                         <i class="ecicon eci-star"></i>
-                    </div>
+                    </div> {% endcomment %}
                     <div class="ec-pro-list-desc">
                         {% autoescape off %}
                             {% if product.bodyline %}

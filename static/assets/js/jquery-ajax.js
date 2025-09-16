@@ -392,7 +392,13 @@ $(document).ready(function () {
                         setTimeout(function() {
                             $("#info-message-ajax").addClass("invisible");
                         }, 3000);
-    
+                } else {
+                    $("#recent-notification").html("Оформление заказа пока недоступно, не выбран способ получения");
+                        console.log("Оформление заказа пока недоступно, не выбран способ получения");
+                        $("#info-message-ajax").removeClass("invisible"); 
+                        setTimeout(function() {
+                            $("#info-message-ajax").addClass("invisible");
+                        }, 3000);
                 }
             },
         });

@@ -1,4 +1,5 @@
 from django.http import JsonResponse
+from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
 from django.views import View
 from django.views.generic import DetailView, ListView
@@ -82,7 +83,7 @@ class ProductView(DetailView):
     context_object_name = 'product'
 
     def get_object(self, queryset = None):
-        product = Products.objects.get(article=self.kwargs.get(self.slug_url_kwarg))
+        product = get_object_or_404(Products, article=self.kwargs.get(self.slug_url_kwarg))
         return product
     
     def get_context_data(self, **kwargs):
@@ -115,7 +116,7 @@ class SubcategoriesView(ListView):
     context_object_name = 'subcategories'
 
     def get_queryset(self):
-        self.category = Categories.objects.get(slug=self.kwargs.get('category_slug'))
+        self.category = get_object_or_404(Categories, slug=self.kwargs.get('category_slug'))
         return Subcategories.objects.filter(category=self.category)
     
     def get_context_data(self, **kwargs):

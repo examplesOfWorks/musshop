@@ -25,3 +25,9 @@ class ProjectView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'О проекте'
         return context
+
+def page_not_found(request, exception):
+    return render(request, "404.html", status=404)
+
+def server_error(request):
+    return render(request, "error.html", status=500)

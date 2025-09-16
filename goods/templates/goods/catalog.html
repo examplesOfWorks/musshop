@@ -21,9 +21,6 @@
                         {% if subcategory_types %}
                             {% for subcategory_type in subcategory_types %}
                             <li class="cat-item"><a class="cat-link" data-bs-toggle="tab" data-type-id="{{ subcategory_type.id }}" href="{% url 'goods:filter_products_by_type'%}">
-                                    <div class="cat-icons"><img class="cat-icon" src="{% static "assets/images/icons/cat_1.png" %}"
-                                            alt="cat-icon"><img class="cat-icon-hover" src="{% static "assets/images/icons/cat_1_1.png" %}"
-                                            alt="cat-icon"></div>
                                     <div class="cat-desc"><span>{{ subcategory_type.name }}</span><span>Количество товаров: {% products_count_type subcategory_type.id %}</span></div>
                                 </a>
                             </li>
