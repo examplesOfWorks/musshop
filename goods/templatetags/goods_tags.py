@@ -46,5 +46,5 @@ def new_arrivals():
 
 @register.simple_tag()
 def top_brands():
-    brands = Brands.objects.filter(image__isnull=False).annotate(product_count=Count('products')).filter(product_count__gt=0).order_by('-product_count')[:10]
+    brands = Brands.objects.filter(image__isnull=False).exclude(image="").annotate(product_count=Count('products')).filter(product_count__gt=0).order_by('-product_count')[:10]
     return brands

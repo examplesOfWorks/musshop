@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 
-from .secret_key import secret_key
+# from .secret_key import secret_key
+import os
+from os import environ
 from .db_secret import NAME, USER, PASSWORD
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,12 +25,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = secret_key
+SECRET_KEY = environ.get("DJANGO_SECRET_KEY", 'default-secret-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = environ.get('DJANGO_ALLOWED_HOSTS').split(' ') if environ.get('DEPLOY') == 'docker' else []
 
 
 # Application definition
@@ -91,11 +93,11 @@ WSGI_APPLICATION = 'musshop.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': NAME,
-        'USER': USER,
-        'PASSWORD': PASSWORD,
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': environ.get('DATABASE_NAME', NAME),
+        'USER': environ.get('DATABASE_USERNAME', USER),
+        'PASSWORD': environ.get('DATABASE_PASSWORD', PASSWORD),
+        'HOST': environ.get('DATABASE_HOST', 'localhost'),
+        'PORT': environ.get('DATABASE_PORT', '5432'),
     }
 }
 
@@ -143,9 +145,12 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'static'
-    ]
+if environ.get('DEPLOY') == 'docker':
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+else:
+    STATICFILES_DIRS = [
+        BASE_DIR / 'static'
+        ]
 
 MEDIA_URL = 'media/'
 

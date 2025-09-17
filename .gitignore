@@ -15,3 +15,6 @@ cache/
 #django
 db.sqlite3
 media/
+
+musshop_access.log
+musshop_error.log

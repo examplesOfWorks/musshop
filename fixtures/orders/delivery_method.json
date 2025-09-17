@@ -1,0 +1,1 @@
+[{"model": "orders.deliverymethod", "pk": 1, "fields": {"name": "Самовывоз", "price": "0.00", "required_address": false, "is_active": true}}, {"model": "orders.deliverymethod", "pk": 2, "fields": {"name": "Доставка", "price": "200.00", "required_address": true, "is_active": true}}]

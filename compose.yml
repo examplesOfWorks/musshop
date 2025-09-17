@@ -1,0 +1,80 @@
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx-server
+    restart: always
+    networks:
+      - dbnet
+    expose:
+      - 8088
+    ports:
+      - "80:8088"
+    volumes:
+      - ./musshop/static:/app/www/musshop/static
+      - ./musshop/media:/app/www/musshop/media
+      - ./musshop/logs:/app/www/musshop/logs
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - musshop
+  musshop:
+    build: ./musshop
+    image: musshop
+    container_name: musshop
+    restart: always
+    # command: "python manage.py runserver 0.0.0.0:8000"
+    # command: "gunicorn -c gunicorn.py musshop.wsgi"
+    command: >
+      sh -c "
+      python manage.py migrate --noinput &&
+      python manage.py loaddata fixtures/goods/brands.json &&
+      python manage.py loaddata fixtures/goods/categories.json &&
+      python manage.py loaddata fixtures/goods/subcategories.json &&
+      python manage.py loaddata fixtures/goods/types.json &&
+      python manage.py loaddata fixtures/goods/products.json &&
+      python manage.py loaddata fixtures/goods/gallery.json &&
+      python manage.py loaddata fixtures/orders/delivery_method.json &&
+      gunicorn -c gunicorn.py musshop.wsgi
+      "
+    env_file:
+      - .env 
+    links:
+      - "postrgres:dbps"
+    networks:
+      - dbnet
+    volumes:
+      - ./musshop:/app/www/musshop
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postrgres
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    ports:
+      - "8080:8080"
+    links:
+      - postrgres:db
+    networks:
+      - dbnet
+    depends_on:
+      - postrgres
+
+  postrgres:
+    image: postgres:17-alpine
+    container_name: psgr
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${DATABASE_NAME}
+      - POSTGRES_USER=${DATABASE_USERNAME}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    networks:
+      - dbnet
+
+networks:
+  dbnet:
+    driver: bridge
+
+volumes:
+  postgres-data:
