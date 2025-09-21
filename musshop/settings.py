@@ -11,8 +11,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-
-# from .secret_key import secret_key
 import os
 from os import environ
 from .db_secret import NAME, USER, PASSWORD
@@ -28,10 +26,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = environ.get("DJANGO_SECRET_KEY", 'default-secret-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if environ.get('DEPLOY') == 'docker':
+    DEBUG = False
+else:
+    DEBUG = True
 
-ALLOWED_HOSTS = environ.get('DJANGO_ALLOWED_HOSTS').split(' ') if environ.get('DEPLOY') == 'docker' else []
-
+if environ.get('DEPLOY') == 'docker':
+    ALLOWED_HOSTS = environ.get('DJANGO_ALLOWED_HOSTS', '').split(' ')
+elif DEBUG:
+    ALLOWED_HOSTS = []
+else:
+    ALLOWED_HOSTS = ['*']
 
 # Application definition
 

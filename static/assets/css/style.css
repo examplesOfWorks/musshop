@@ -15919,11 +15919,11 @@ li {
 body {
   font-size: 14px;
   color: #777;
-  user-select: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
+  user-select: auto;
+  -webkit-user-select: auto;
+  -khtml-user-select: auto;
+  -moz-user-select: auto;
+  -ms-user-select: auto;
   font-family: "Poppins, sans-serif";
   font-weight: 300;
   top: 0 !important;
@@ -31479,21 +31479,21 @@ input[type=email]:focus::-webkit-input-placeholder {
   display: grid;
 }
 .typography .ec-dl-blurbs dl {
-  counter-reset: count;
+  /* counter-reset: count; */
   padding-left: 25px;
   padding-right: 25px;
   margin: 0;
 }
 .typography .ec-dl-blurbs dl dt {
   margin-top: 10px;
-  counter-increment: count;
+  /* counter-increment: count; */
   color: #3474d4;
   font-family: "Montserrat", sans-serif;
   font-size: 25px;
   text-transform: uppercase;
 }
 .typography .ec-dl-blurbs dl dt::before {
-  content: counter(count, decimal-leading-zero) ".";
+  /* content: counter(count, decimal-leading-zero) "."; */
   color: #3474d4;
   margin-left: -1vw;
   padding-right: 12px;
@@ -31505,14 +31505,14 @@ input[type=email]:focus::-webkit-input-placeholder {
   font-size: 14px;
 }
 .typography .ec-dl-blurbs dl + dl {
-  counter-reset: counter 4;
+  /* counter-reset: counter 4; */
 }
 .typography .ec-check-list {
   margin: 0;
   padding-left: 20px;
 }
 .typography .ec-check-list li {
-  margin-bottom: 15px;
+  margin-bottom: 8px;
   padding-left: 20px;
   position: relative;
   list-style-type: none;

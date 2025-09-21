@@ -22,19 +22,7 @@ services:
     container_name: musshop
     restart: always
     # command: "python manage.py runserver 0.0.0.0:8000"
-    # command: "gunicorn -c gunicorn.py musshop.wsgi"
-    command: >
-      sh -c "
-      python manage.py migrate --noinput &&
-      python manage.py loaddata fixtures/goods/brands.json &&
-      python manage.py loaddata fixtures/goods/categories.json &&
-      python manage.py loaddata fixtures/goods/subcategories.json &&
-      python manage.py loaddata fixtures/goods/types.json &&
-      python manage.py loaddata fixtures/goods/products.json &&
-      python manage.py loaddata fixtures/goods/gallery.json &&
-      python manage.py loaddata fixtures/orders/delivery_method.json &&
-      gunicorn -c gunicorn.py musshop.wsgi
-      "
+    command: "gunicorn -c gunicorn.py musshop.wsgi"
     env_file:
       - .env 
     links:
