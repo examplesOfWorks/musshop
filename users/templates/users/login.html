@@ -23,7 +23,7 @@
                                     <input type="hidden" name="next" value={{ request.GET.next }}>
                                 {% endif %}
                                 <span class="ec-login-wrap">
-                                    <label for="id_username">Введите email*</label>
+                                    <label for="id_username">Введите логин*</label>
                                     <input type="text" name="username" id="id_username" 
                                     value="{% if form.username.value %}{{ form.username.value }}{% endif %}" 
                                     placeholder="Введите логин..." required />

@@ -13,7 +13,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 from os import environ
-from .db_secret import NAME, USER, PASSWORD
+
+try:
+    from .db_secret import NAME, USER, PASSWORD
+except ImportError:
+    NAME = USER = PASSWORD = None
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
