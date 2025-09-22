@@ -74,7 +74,15 @@ class TypeFilterView(View):
         type_id = request.GET.get('type_id')
         products = Products.objects.filter(type=type_id)
 
-        catalog_html = render_to_string('goods/includes/included_catalog.html', {'products': products}, request=request)
+        if self.request.user.is_authenticated:
+            self.wishlist_product_ids = set(
+                self.request.user.wishlist_items.values_list("product_id", flat=True)
+            )
+        else:
+            self.wishlist_product_ids = set()
+
+        catalog_html = render_to_string('goods/includes/included_catalog.html', {'products': products, 'wishlist_product_ids': self.wishlist_product_ids}, request=request)
+
         return JsonResponse({'catalog_html': catalog_html})
 
 class ProductView(DetailView):

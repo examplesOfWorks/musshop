@@ -500,13 +500,13 @@ $(document).ready(function () {
 	});
     
     /*----------------------------- Добавление и удаление в избранных товаров со страницы каталога и страницы товара  ------------------------------ */
-    $(".ec-btn-group.wishlist").click(function(e) {
+    $(document).on("click", ".ec-btn-group.wishlist", function(e) {
         e.preventDefault();
             
         var $btn = $(this)
         var isWishlist = $btn.hasClass("active");
         var prod_id = $btn.data("product-id");
-        var add_to_wishlist_url = $btn.attr("href");
+        var add_to_wishlist_url = $btn.data("url");
 
         $.ajax({
             type: "POST",
