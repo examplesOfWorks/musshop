@@ -33,7 +33,7 @@
                     <a class="btn btn-lg btn-primary ec-com-remove ec-remove-wish" 
                         data-product-id="{{ wishlist_product.product.id }}" 
                         data-in-wishlist="true"
-                        href="{% url "user:wishlist_add" %}" 
+                        data-url="{% url 'user:wishlist_add' %}"
                         title="Удалить из избранного">×</a></span>
                 </td>
             </tr>

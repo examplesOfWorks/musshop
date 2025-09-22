@@ -455,12 +455,12 @@ $(document).ready(function () {
     });
 
     /*----------------------------- Удаление из избранного на странице избранных товаров ------------------------------ */
-    $(".ec-remove-wish").on("click", function (e) {
+    $(document).on("click", ".ec-remove-wish", function(e) {
         e.preventDefault();
             
         var $btn = $(this)
         var prod_id = $btn.data("product-id");
-        var add_to_wishlist_url = $btn.attr("href");
+        var add_to_wishlist_url = $btn.data("url");
         var in_wishlist = $btn.data("in-wishlist");
         var wishlistItemsContainer = $("#wishlist-items-container");
 
