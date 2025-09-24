@@ -10,7 +10,9 @@
 
 Тематика – музыкальные инструменты и аксессуары. Материалы для сайта были взяты с сайта Музторг - www.muztorg.ru. 
 
-С указанного ресурса с помощью парсинга были собраны наименования категорий, подкатегорий, типов и брендов, а также основные сведения о товарах. Так как проект создан для практики, было принято решение собрать не все данные, а только часть их. Наличие и скидки были проставлены рандомно.
+С указанного ресурса с помощью парсинга были собраны наименования категорий, подкатегорий, типов и брендов, а также основные сведения о товарах. Так как проект создан для практики, было принято решение собрать не все данные, а только часть их. Наличие и скидки были проставлены рандомно. 
+
+Ссылка на репозиторий с парсером: https://github.com/examplesOfWorks/parser-for-musshop
 
 <h4 align="center">Функционал каталога:</h4>
 
@@ -79,7 +81,11 @@ python manage.py loaddata fixtures/orders/delivery_method.json
 python manage.py createsuperuser
 ```
 9)	Скачать архив с медиафайлами по ссылке https://drive.google.com/file/d/1RLh33K-FICeVh8u1Tpv-U5XB-AT5Vg6k/view?usp=drive_link. Распаковать архив, перенеся папку media в папку проекта.
-10)	Запустить локальный сервер
+10)	Запуск тестов:
+```bash
+python manage.py test
+```
+12)	Запустить локальный сервер
 ```bash
 python manage.py runserver
 ```
@@ -120,10 +126,14 @@ docker compose exec musshop python manage.py loaddata fixtures/goods/products.js
 docker compose exec musshop python manage.py loaddata fixtures/goods/gallery.json
 docker compose exec musshop python manage.py loaddata fixtures/orders/delivery_method.json
 ```
-7)	Доступ:
+7) Запуск тестов:
+```bash
+docker compose exec musshop python manage.py test
+```
+8)	Доступ:
 http://127.0.0.1 – сайт
 http://127.0.0.1:8080 – панель администратора. Данные для входа указаны в файле .env. База данных – PostgreSQL 
-8)	Работа с контейнером:
+9)	Работа с контейнером:
 ```bash
 docker compose stop # остановка контейнеров
 docker compose start # запуск имеющихся контейнеров
