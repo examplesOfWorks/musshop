@@ -36,8 +36,9 @@
 
 <h4 align="center">Технологии:</h4>
 
-- HTML, CSS, JS, jQuery;
+- HTML, CSS, JS, jQuery, Bootstrap;
 - python, Django;
+- unit-тесты (Django TestCase)
 - PostgreSQL;
 - git, docker.
   
